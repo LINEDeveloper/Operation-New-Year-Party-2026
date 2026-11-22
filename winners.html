@@ -3,33 +3,41 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>ทำเนียบผู้โชคดี 90s Mixtape | Operation New Year Party 2026</title>
+  <title>Hall of Winners | Operation New Year Party 2026</title>
 
-  <!-- Google Fonts: Prompt + Share Tech Mono -->
+  <!-- Google Fonts: Prompt -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   <script>
     tailwind.config = {
       theme: {
         extend: {
           fontFamily: {
-            sans: ['Prompt', 'sans-serif'],
-            mono90: ['"Share Tech Mono"', 'monospace']
+            prompt: ['Prompt', 'sans-serif']
           },
           colors: {
+            obsidian: {
+              950: '#121216',
+              900: '#1C1C24',
+              800: '#282834'
+            },
             truered: {
               DEFAULT: '#E60012',
-              dark: '#B0000E',
-              vivid: '#FF2938'
+              dark: '#7A000A'
             },
-            metallic: {
-              silver: '#C5CBD6'
-            }
+            champagne: {
+              DEFAULT: '#D4AF37',
+              light: '#F5D77F'
+            },
+            silver: '#B8B8C5'
           }
         }
       }
@@ -39,71 +47,38 @@
   <style>
     body {
       font-family: 'Prompt', sans-serif;
-      -webkit-font-smoothing: antialiased;
-      background-color: #12141A;
+      background-color: #121216;
       background-image:
-        radial-gradient(circle at 50% 10%, rgba(230, 0, 18, 0.15) 0%, rgba(18, 20, 26, 0) 48%),
-        radial-gradient(circle at 50% 40%, #282D37 0%, #171A21 62%, #111318 100%);
+        radial-gradient(circle at 50% -10%, rgba(230, 0, 18, 0.3) 0%, rgba(18, 18, 22, 0) 55%),
+        radial-gradient(circle at 90% 85%, rgba(212, 175, 55, 0.12) 0%, rgba(18, 18, 22, 0) 45%);
       color: #FFFFFF;
       min-height: 100vh;
     }
 
-    /* พื้นผิวการ์ด 90s Chrome Cassette Metallic */
-    .metallic-card {
-      background: linear-gradient(160deg, #3D4351 0%, #262B35 50%, #1A1E26 100%);
-      border: 1px solid rgba(255, 255, 255, 0.22);
-      box-shadow:
-        0 24px 60px rgba(0, 0, 0, 0.68),
-        inset 0 1px 0 rgba(255, 255, 255, 0.24),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.45);
-      position: relative;
-      overflow: hidden;
+    .header-true-luxury {
+      background: linear-gradient(135deg, #E60012 0%, #7A000A 100%);
+      border-bottom: 2px solid #D4AF37;
     }
 
-    .metallic-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -25%;
-      width: 150%;
-      height: 175px;
-      background: radial-gradient(ellipse at center top, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
-      pointer-events: none;
+    .glass-card {
+      background: rgba(28, 28, 36, 0.84);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(212, 175, 55, 0.32);
+      box-shadow: 0 14px 35px rgba(0, 0, 0, 0.55);
     }
 
-    /* หน้าปัดช่องเทปคาสเซ็ท */
-    .cassette-deck-strip {
-      background: linear-gradient(90deg, #151820 0%, #222733 50%, #151820 100%);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.65);
+    .gold-badge {
+      background: linear-gradient(90deg, #D4AF37 0%, #F5D77F 50%, #D4AF37 100%);
+      color: #121216;
     }
 
-    @keyframes slowSpin {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-    .reel-spin {
-      animation: slowSpin 9s linear infinite;
+    .gold-text {
+      background: linear-gradient(90deg, #F5D77F 0%, #D4AF37 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
-    .filter-pill-active {
-      background: linear-gradient(135deg, #E60012 0%, #B0000E 100%);
-      color: #FFFFFF;
-      border-color: rgba(255, 255, 255, 0.35);
-      box-shadow: 0 6px 16px rgba(230, 0, 18, 0.4);
-    }
-
-    .filter-pill-idle {
-      background: rgba(255, 255, 255, 0.07);
-      color: #C5CBD6;
-      border-color: rgba(255, 255, 255, 0.16);
-    }
-    .filter-pill-idle:hover {
-      background: rgba(255, 255, 255, 0.14);
-      color: #FFFFFF;
-    }
-
-    /* ซ่อนแถบ Scrollbar แนวนอนของปุ่มกรองรางวัลบนมือถือ */
     .no-scrollbar::-webkit-scrollbar {
       display: none;
     }
@@ -114,446 +89,398 @@
   </style>
 </head>
 
-<body class="py-5 px-4 sm:py-8 selection:bg-[#E60012] selection:text-white">
-  <main class="max-w-3xl mx-auto space-y-5">
-
-    <!-- ================================================================== -->
-    <!-- HERO HEADER CARD: 90s Chrome Cassette Hall of Fame                 -->
-    <!-- ================================================================== -->
-    <section class="metallic-card rounded-[30px]">
-      <div class="h-[4px] w-full bg-gradient-to-r from-[#E60012] via-[#FF3B4B] to-[#E60012]"></div>
-
-      <div class="p-6 relative z-10 space-y-4">
-        <!-- Row 1: โลโก้ True สีขาวไร้พื้นหลัง + ป้ายสถานะ LIVE -->
-        <div class="flex items-center justify-between gap-3">
-          <img
-            src="https://img2.pic.in.th/True--W9082df0ce2da3b92.png"
-            alt="True"
-            onerror="this.onerror=null;this.src='https://placehold.co/180x64/262B35/FFFFFF?text=true';"
-            class="w-[86px] h-auto object-contain shrink-0 drop-shadow-[0_2px_6px_rgba(0,0,0,0.35)]"
-          />
-
-          <div class="flex items-center gap-2">
-            <button
-              type="button"
-              id="btnAutoSync"
-              onclick="toggleAutoRefresh()"
-              class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/35 border border-white/20 text-[10px] font-bold tracking-wider text-white uppercase"
-            >
-              <span id="liveDot" class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-              <span id="liveLabel">LIVE SYNC • 15s</span>
-            </button>
-
-            <button
-              type="button"
-              onclick="fetchWinnersData(true)"
-              class="px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-[11px] font-semibold text-white transition"
-              title="อัปเดตข้อมูลทันที"
-            >
-              ↻ รีเฟรช
-            </button>
-          </div>
-        </div>
-
-        <!-- Row 2: ชื่อหน้ากระดานประกาศผล -->
-        <div class="text-center pt-1">
-          <span class="inline-block text-[11px] font-mono90 font-bold tracking-[0.2em] text-[#FF4D5A] uppercase">
-            🏆 WINNERS HALL OF FAME
-          </span>
-          <h1 class="text-2xl sm:text-3xl font-bold text-white tracking-tight mt-0.5">
-            Operation New Year Party 2026
-          </h1>
-          <p class="text-xs text-[#C5CBD6] mt-1">
-            ตรวจสอบรายชื่อผู้โชคดีจากกิจกรรม Lucky Draw แบบเรียลไทม์
-          </p>
-        </div>
-
-        <!-- Row 3: แถบหน้าปัดเทปคาสเซ็ท 90s Chrome Deck -->
-        <div class="cassette-deck-strip rounded-xl px-4 py-2.5 flex items-center justify-between gap-2">
-          <div class="flex items-center gap-2">
-            <svg class="w-4 h-4 reel-spin text-white/80 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="12" cy="12" r="9" />
-              <circle cx="12" cy="12" r="3" />
-              <path d="M12 3v3M12 18v3M3 12h3M18 12h3" />
-            </svg>
-            <span class="text-[11px] font-mono90 tracking-wider text-white/90 uppercase">
-              SIDE B • WINNERS MIXTAPE 2026
-            </span>
-          </div>
-
-          <div class="flex items-center gap-2">
-            <span id="totalWinnersBadge" class="text-xs font-mono90 font-bold text-emerald-400">
-              ผู้โชคดี 0 ท่าน
-            </span>
-            <svg class="w-4 h-4 reel-spin text-white/80 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="12" cy="12" r="9" />
-              <circle cx="12" cy="12" r="3" />
-              <path d="M12 3v3M12 18v3M3 12h3M18 12h3" />
-            </svg>
-          </div>
-        </div>
-
-        <!-- Row 4: ช่องค้นหารายชื่อด่วน + แถบกรองประเภทรางวัล -->
-        <div class="space-y-3 pt-1">
-          <div class="relative">
-            <input
-              id="searchInput"
-              type="text"
-              oninput="renderFilteredWinners()"
-              placeholder="ค้นหารหัสพนักงาน, ชื่อ-นามสกุล หรือชื่อทีม..."
-              autocomplete="off"
-              class="w-full bg-[#14171F]/95 border border-white/20 rounded-2xl pl-10 pr-9 py-3 text-sm text-white placeholder:text-[#C5CBD6]/50 focus:outline-none focus:border-white transition"
-            />
-            <svg class="w-4 h-4 text-[#C5CBD6] absolute left-3.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35m1.85-5.15a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-            <button
-              type="button"
-              id="btnClearSearch"
-              onclick="clearSearch()"
-              class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[#C5CBD6] hover:text-white px-1.5 py-0.5"
-            >
-              ✕
-            </button>
-          </div>
-
-          <!-- ปุ่มกรองตามชื่อรางวัล -->
-          <div id="prizeFilterBar" class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
-            <button
-              type="button"
-              onclick="selectPrizeFilter('ALL')"
-              class="filter-pill-active px-3.5 py-1.5 rounded-full text-xs font-semibold border shrink-0 transition"
-            >
-              ทุกรางวัล
-            </button>
-          </div>
-        </div>
+<body class="antialiased pb-14">
+  <!-- Hero Header -->
+  <header class="header-true-luxury px-4 pt-6 pb-6 shadow-xl relative overflow-hidden">
+    <div class="max-w-3xl mx-auto text-center space-y-2">
+      <div class="inline-flex items-center gap-2">
+        <span class="gold-badge text-[10px] font-extrabold px-3 py-0.5 rounded-full uppercase tracking-wider shadow">
+          HALL OF WINNERS • REAL-TIME
+        </span>
       </div>
-    </section>
-
-    <!-- ================================================================== -->
-    <!-- WINNERS LIST CONTAINER                                             -->
-    <!-- ================================================================== -->
-    <section id="winnersListSection" class="space-y-3">
-      <!-- สถานะกำลังโหลดครั้งแรก -->
-      <div id="loadingBox" class="metallic-card rounded-3xl p-10 text-center space-y-3">
-        <div class="w-11 h-11 rounded-full border-[3px] border-t-[#E60012] border-r-white border-b-transparent border-l-transparent animate-spin mx-auto"></div>
-        <p class="text-xs font-semibold text-[#C5CBD6] tracking-wider uppercase">
-          กำลังซิงค์รายชื่อผู้โชคดีล่าสุด...
-        </p>
-      </div>
-
-      <!-- กริดแสดงการ์ดผู้โชคดี -->
-      <div id="winnersGrid" class="hidden grid grid-cols-1 sm:grid-cols-2 gap-3.5"></div>
-
-      <!-- กรณีไม่พบข้อมูล -->
-      <div id="emptyStateBox" class="hidden metallic-card rounded-3xl p-10 text-center space-y-2">
-        <p id="emptyStateTitle" class="text-base font-bold text-white">
-          ยังไม่มีการประกาศผลรางวัลในขณะนี้
-        </p>
-        <p id="emptyStateSub" class="text-xs text-[#C5CBD6]">
-          หน้าจอนี้จะอัปเดตรายชื่อผู้โชคดีอัตโนมัติทันทีที่มีการยืนยันรางวัลบนเวที
-        </p>
-      </div>
-    </section>
-
-    <!-- ================================================================== -->
-    <!-- FOOTER: ชื่อบริษัท + นโยบายความเป็นส่วนตัว                            -->
-    <!-- ================================================================== -->
-    <footer class="pt-3 pb-6 text-center">
-      <p id="lastUpdatedLabel" class="text-[11px] text-[#C5CBD6]/70 mb-3"></p>
-      <p class="text-xs font-medium text-[#C0C6D2]">
-        บริษัท ทรู คอร์ปอเรชั่น จำกัด (มหาชน)
+      <h1 id="eventTitleHeader" class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+        Operation New Year Party 2026
+      </h1>
+      <p class="text-xs sm:text-sm text-white/85">
+        ทำเนียบรายชื่อผู้โชคดีที่ได้รับรางวัลภายในงานทั้งหมด
       </p>
-      <a
-        href="https://linedeveloper.github.io/True/privacy.html"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="inline-block mt-1 text-[13px] font-bold text-[#FF2938] hover:text-[#FF525E] underline-offset-2 hover:underline transition"
-      >
-        นโยบายความเป็นส่วนตัว (Privacy Policy)
-      </a>
-    </footer>
 
+      <!-- Summary Bar -->
+      <div class="pt-2 flex flex-wrap items-center justify-center gap-3 text-xs">
+        <div class="bg-obsidian-950/60 border border-champagne/50 px-3.5 py-1.5 rounded-full">
+          ผู้โชคดีทั้งหมด: <span id="totalWinnersCount" class="font-bold text-champagne-light">0</span> ท่าน
+        </div>
+        <button
+          type="button"
+          onclick="fetchWinnersData(true)"
+          class="bg-obsidian-950/60 border border-white/25 px-3.5 py-1.5 rounded-full text-white hover:border-champagne-light active:scale-95 transition flex items-center gap-1.5"
+        >
+          <span id="refreshSpinner" class="inline-block">↻</span> อัปเดตล่าสุด: <span id="lastUpdatedLabel">-</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Sticky Search & PrizeGroup Filter -->
+  <div class="sticky top-0 z-30 bg-obsidian-950/90 backdrop-blur-lg border-b border-champagne/25 px-4 py-3 shadow-lg">
+    <div class="max-w-3xl mx-auto space-y-2.5">
+      <!-- ช่องค้นหาชื่อ รหัสพนักงาน ชื่อทีม หรือชื่อรางวัล -->
+      <div class="relative">
+        <svg class="w-4 h-4 text-champagne-light absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35m1.85-5.15a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+        <input
+          type="text"
+          id="searchInput"
+          oninput="renderFilteredWinners()"
+          placeholder="ค้นหาชื่อ-นามสกุล, ทีม, รหัสพนักงาน หรือของรางวัล..."
+          autocomplete="off"
+          class="w-full bg-obsidian-900 border border-champagne/40 rounded-xl pl-10 pr-9 py-2.5 text-sm text-white placeholder:text-silver/50 focus:outline-none focus:border-champagne-light"
+        />
+        <button
+          type="button"
+          id="btnClearSearch"
+          onclick="clearSearchInput()"
+          class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-xs text-silver hover:text-white px-1.5 py-0.5"
+        >
+          ✕
+        </button>
+      </div>
+
+      <!-- แถบเลือกหมวดหมู่รางวัล (PrizeGroup Filter Chips) -->
+      <div id="groupFilterBar" class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-0.5">
+        <button
+          type="button"
+          onclick="selectGroupFilter('ALL')"
+          class="px-3.5 py-1 rounded-full text-xs font-bold gold-badge shrink-0"
+        >
+          ทั้งหมด
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content Container -->
+  <main class="max-w-3xl mx-auto px-4 pt-5">
+    <!-- Loading Skeleton -->
+    <div id="initialLoading" class="py-16 text-center space-y-3">
+      <div class="w-12 h-12 rounded-full border-4 border-t-truered border-r-champagne-light border-b-transparent border-l-transparent animate-spin mx-auto"></div>
+      <p class="text-sm text-champagne-light font-medium">กำลังดึงรายชื่อผู้โชคดีแบบ Real-time...</p>
+    </div>
+
+    <!-- Grouped Winners Container -->
+    <div id="winnersContainer" class="hidden space-y-7"></div>
+
+    <!-- Empty State -->
+    <div id="emptyStateBox" class="hidden glass-card rounded-3xl p-8 text-center space-y-2.5 my-6">
+      <div class="w-14 h-14 rounded-full bg-white/5 border border-champagne/35 mx-auto flex items-center justify-center text-2xl">
+        🏆
+      </div>
+      <h2 id="emptyStateTitle" class="text-base font-bold text-champagne-light">
+        ยังไม่มีรายชื่อผู้ได้รับรางวัลในขณะนี้
+      </h2>
+      <p id="emptyStateDesc" class="text-xs text-silver leading-relaxed max-w-sm mx-auto">
+        รายชื่อผู้โชคดีจะแสดงผลบนหน้านี้แบบ Real-time ทันทีที่มีการยืนยันรับรางวัลบนเวที
+      </p>
+    </div>
   </main>
 
+  <footer class="max-w-3xl mx-auto px-4 mt-10 text-center text-[11px] text-silver/60">
+    อัปเดตข้อมูลอัตโนมัติทุก 30 วินาที • Operation New Year Party 2026
+  </footer>
+
   <script>
-    /* ========================================================================
-       CONFIG: เชื่อมต่อฐานข้อมูลจริงของงาน Operation New Year Party 2026
-       ======================================================================== */
+    /**
+     * ========================================================================
+     * CONFIG: ตั้งค่าระบบจุดเดียวด้านบนสุดของไฟล์
+     * ========================================================================
+     */
     const CONFIG = {
-      LIFF_ID: '1656846002-2BvPPmrM',
-      GAS_WEB_APP_URL: 'https://script.google.com/macros/s/AKfycbzL9SNCIhSiDC2hgaQ8xSiVqbT9GpEFErE2UAJX5CM1tleziGBfLT2eGdASj7pD_eg/exec',
+      LIFF_ID: 'PUT_YOUR_LIFF_ID_HERE',
+      GAS_WEB_APP_URL: 'https://script.google.com/macros/s/PUT_YOUR_DEPLOYMENT_ID/exec',
+      WINNERS_PAGE_URL: 'https://your-org.github.io/newyear2026/winners.html',
       SOUVENIR_IMAGE_URL: 'https://images.unsplash.com/photo-1513885535751-8b9238bd345a?auto=format&fit=crop&w=1000&q=80',
+      DEFAULT_PRIZE_IMAGE_URL: 'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&w=800&q=80',
+      MAP_URL: 'https://maps.google.com/?q=True+Digital+Park+Bangkok',
       STAFF_PIN: '2026',
-      AUTO_REFRESH_MS: 15000,
-      WINNER_ACTIONS: ['getWinners', 'getPublicWinners', 'getWinnersList', 'getLuckyDrawData']
+
+      AUTO_REFRESH_INTERVAL_MS: 30000 // อัปเดตข้อมูล Real-time ทุก 30 วินาที
     };
 
     const boardState = {
       winners: [],
-      prizeImageMap: {},
-      selectedPrize: 'ALL',
-      autoRefresh: true,
-      timerId: null,
+      prizeGroups: [],
+      selectedGroup: 'ALL',
       isFetching: false
     };
 
     document.addEventListener('DOMContentLoaded', async () => {
       await fetchWinnersData(false);
-      startAutoRefreshTimer();
-    });
 
-    function startAutoRefreshTimer() {
-      if (boardState.timerId) clearInterval(boardState.timerId);
-      boardState.timerId = setInterval(() => {
-        if (boardState.autoRefresh && !document.hidden) {
+      // ตั้งเวลาดึงผลผู้โชคดีแบบ Real-time อัตโนมัติ
+      setInterval(() => {
+        if (!document.hidden) {
           fetchWinnersData(false);
         }
-      }, CONFIG.AUTO_REFRESH_MS);
-    }
+      }, CONFIG.AUTO_REFRESH_INTERVAL_MS);
+    });
 
-    function toggleAutoRefresh() {
-      boardState.autoRefresh = !boardState.autoRefresh;
-      const dot = document.getElementById('liveDot');
-      const label = document.getElementById('liveLabel');
-
-      if (boardState.autoRefresh) {
-        dot.className = 'w-2 h-2 rounded-full bg-emerald-400 animate-ping';
-        label.textContent = 'LIVE SYNC • 15s';
-        fetchWinnersData(false);
-      } else {
-        dot.className = 'w-2 h-2 rounded-full bg-slate-400';
-        label.textContent = 'PAUSED';
-      }
-    }
-
-    async function fetchWinnersData(manualTrigger) {
+    /**
+     * ดึงรายชื่อผู้โชคดีที่ยืนยันได้รับรางวัลแล้วจากชีท Winners
+     */
+    async function fetchWinnersData(isManualClick) {
       if (boardState.isFetching) return;
       boardState.isFetching = true;
 
-      if (manualTrigger && boardState.winners.length === 0) {
-        document.getElementById('loadingBox').classList.remove('hidden');
-      }
+      const spinner = document.getElementById('refreshSpinner');
+      spinner.classList.add('animate-spin');
 
       try {
-        let res = null;
-        for (let i = 0; i < CONFIG.WINNER_ACTIONS.length; i++) {
-          const candidateRes = await callGasApi({
-            action: CONFIG.WINNER_ACTIONS[i],
-            pin: CONFIG.STAFF_PIN
-          });
-          res = candidateRes;
-          const msg = String((candidateRes && candidateRes.message) || '');
-          const isUnknown =
-            !candidateRes.success &&
-            /unknown|invalid action|ไม่รู้จักคำสั่ง|ไม่พบ action/i.test(msg);
-          if (!isUnknown) break;
+        if (
+          !CONFIG.GAS_WEB_APP_URL ||
+          CONFIG.GAS_WEB_APP_URL.includes('PUT_YOUR_DEPLOYMENT_ID')
+        ) {
+          throw new Error('กรุณาตั้งค่า GAS_WEB_APP_URL ในส่วน CONFIG ของไฟล์ winners.html');
         }
 
-        if (res && res.success) {
-          // เก็บรูปภาพของรางวัลจากรายการ prizes (ถ้ามีส่งมาด้วย)
-          const rawPrizes = res.prizes || res.prizeList || [];
-          rawPrizes.forEach((p) => {
-            const pName = String(p.prizeName || p.PrizeName || p.name || '').trim();
-            const pImg = String(p.imageUrl || p.ImageURL || p.prizeImage || '').trim();
-            if (pName && pImg) {
-              boardState.prizeImageMap[pName] = pImg;
-            }
-          });
+        const response = await fetch(CONFIG.GAS_WEB_APP_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'text/plain;charset=utf-8'
+          },
+          body: JSON.stringify({ action: 'getWinners' }),
+          redirect: 'follow'
+        });
 
-          const rawWinners = res.winners || res.winnerList || res.recentWinners || res.data || [];
-          boardState.winners = rawWinners.map((w, idx) => {
-            const prizeName = String(w.prizeName || w.PrizeName || 'รางวัลพิเศษ').trim();
-            const directImg = String(w.imageUrl || w.prizeImageUrl || w.ImageURL || '').trim();
-            return {
-              order: idx + 1,
-              empId: String(w.empId || w.EmpID || '-').trim(),
-              fullName: String(w.fullName || w.FullName || 'พนักงาน').trim(),
-              team: String(w.team || w.Team || '-').trim(),
-              prizeName: prizeName,
-              timestamp: String(w.timestamp || w.winTime || w.Timestamp || '').trim(),
-              imageUrl: directImg || boardState.prizeImageMap[prizeName] || ''
-            };
-          });
-
-          updateTimestampLabel();
-          renderPrizeFilterPills();
-          renderFilteredWinners();
+        if (!response.ok) {
+          throw new Error('HTTP Error ' + response.status);
         }
+
+        const res = await response.json();
+        document.getElementById('initialLoading').classList.add('hidden');
+
+        if (!res.success) {
+          throw new Error(res.message || 'ไม่สามารถดึงรายชื่อผู้โชคดีได้');
+        }
+
+        if (res.eventName) {
+          document.getElementById('eventTitleHeader').textContent = res.eventName;
+        }
+
+        boardState.winners = Array.isArray(res.winners) ? res.winners : [];
+        boardState.prizeGroups = Array.isArray(res.prizeGroups) ? res.prizeGroups : [];
+
+        document.getElementById('totalWinnersCount').textContent =
+          boardState.winners.length.toLocaleString();
+
+        const timePart = String(res.updatedAt || '').split(' ')[1] || res.updatedAt || 'เมื่อสักครู่';
+        document.getElementById('lastUpdatedLabel').textContent = timePart;
+
+        renderGroupFilterChips();
+        renderFilteredWinners();
       } catch (err) {
-        console.warn('Winners fetch warning:', err);
-        if (boardState.winners.length === 0) {
+        document.getElementById('initialLoading').classList.add('hidden');
+        if (isManualClick) {
+          Swal.fire({
+            icon: 'error',
+            title: 'ไม่สามารถอัปเดตข้อมูลได้',
+            text: err.message,
+            confirmButtonColor: '#E60012'
+          });
+        } else {
+          console.error('Winners fetch error:', err);
           renderFilteredWinners();
         }
       } finally {
         boardState.isFetching = false;
-        document.getElementById('loadingBox').classList.add('hidden');
+        spinner.classList.remove('animate-spin');
       }
     }
 
-    function renderPrizeFilterPills() {
-      const uniquePrizes = Array.from(
-        new Set(boardState.winners.map((w) => w.prizeName).filter(Boolean))
-      );
+    /**
+     * สร้างปุ่มเลือกหมวดหมู่รางวัล (PrizeGroup)
+     */
+    function renderGroupFilterChips() {
+      const bar = document.getElementById('groupFilterBar');
 
-      if (boardState.selectedPrize !== 'ALL' && !uniquePrizes.includes(boardState.selectedPrize)) {
-        boardState.selectedPrize = 'ALL';
-      }
-
-      const bar = document.getElementById('prizeFilterBar');
-      const allBtnClass =
-        boardState.selectedPrize === 'ALL' ? 'filter-pill-active' : 'filter-pill-idle';
-
-      let html =
-        '<button type="button" onclick="selectPrizeFilter(\'ALL\')" class="' +
-        allBtnClass +
-        ' px-3.5 py-1.5 rounded-full text-xs font-semibold border shrink-0 transition">' +
-        'ทุกรางวัล (' +
-        boardState.winners.length +
-        ')</button>';
-
-      uniquePrizes.forEach((prize) => {
-        const count = boardState.winners.filter((w) => w.prizeName === prize).length;
-        const activeClass =
-          boardState.selectedPrize === prize ? 'filter-pill-active' : 'filter-pill-idle';
-        html +=
-          '<button type="button" data-prize="' +
-          escapeHtml(prize) +
-          '" onclick="selectPrizeFilter(this.dataset.prize)" class="' +
-          activeClass +
-          ' px-3.5 py-1.5 rounded-full text-xs font-semibold border shrink-0 transition">' +
-          escapeHtml(prize) +
-          ' (' +
-          count +
-          ')</button>';
+      // เอาเฉพาะกลุ่มที่มีผู้โชคดีแล้ว หรืออยู่ในรายการกลุ่มรางวัลหลัก
+      const activeGroupSet = new Set(boardState.prizeGroups);
+      boardState.winners.forEach((w) => {
+        if (w.prizeGroup) activeGroupSet.add(w.prizeGroup);
       });
+      const allGroups = Array.from(activeGroupSet);
 
-      bar.innerHTML = html;
+      if (boardState.selectedGroup !== 'ALL' && !allGroups.includes(boardState.selectedGroup)) {
+        boardState.selectedGroup = 'ALL';
+      }
+
+      const chipsHtml = [
+        {
+          key: 'ALL',
+          label: 'ทั้งหมด (' + boardState.winners.length + ')'
+        }
+      ]
+        .concat(
+          allGroups.map((grp) => {
+            const count = boardState.winners.filter((w) => w.prizeGroup === grp).length;
+            return { key: grp, label: grp + ' (' + count + ')' };
+          })
+        )
+        .map((item) => {
+          const isSelected = boardState.selectedGroup === item.key;
+          const btnClass = isSelected
+            ? 'px-3.5 py-1.5 rounded-full text-xs font-bold gold-badge shrink-0 shadow'
+            : 'px-3.5 py-1.5 rounded-full text-xs font-medium bg-obsidian-900 border border-white/15 text-silver hover:text-white shrink-0 transition';
+          return (
+            '<button type="button" data-group="' +
+            escapeHtml(item.key) +
+            '" onclick="selectGroupFilter(this.dataset.group)" class="' +
+            btnClass +
+            '">' +
+            escapeHtml(item.label) +
+            '</button>'
+          );
+        })
+        .join('');
+
+      bar.innerHTML = chipsHtml;
     }
 
-    function selectPrizeFilter(prizeValue) {
-      boardState.selectedPrize = prizeValue || 'ALL';
-      renderPrizeFilterPills();
+    function selectGroupFilter(groupKey) {
+      boardState.selectedGroup = groupKey;
+      renderGroupFilterChips();
       renderFilteredWinners();
     }
 
-    function clearSearch() {
+    function clearSearchInput() {
       document.getElementById('searchInput').value = '';
       renderFilteredWinners();
     }
 
+    /**
+     * แสดงผลรายการผู้โชคดีแยกหมวดตามกลุ่มรางวัล และกรองตามคำค้นหาชื่อ/ทีม/รหัสพนักงาน
+     */
     function renderFilteredWinners() {
-      document.getElementById('totalWinnersBadge').textContent =
-        'ผู้โชคดี ' + boardState.winners.length.toLocaleString() + ' ท่าน';
-
       const query = document.getElementById('searchInput').value.trim().toLowerCase();
-      document.getElementById('btnClearSearch').classList.toggle('hidden', !query);
+      const clearBtn = document.getElementById('btnClearSearch');
+      if (query.length > 0) {
+        clearBtn.classList.remove('hidden');
+      } else {
+        clearBtn.classList.add('hidden');
+      }
 
-      const filtered = boardState.winners.filter((w) => {
-        const matchPrize =
-          boardState.selectedPrize === 'ALL' || w.prizeName === boardState.selectedPrize;
-        if (!matchPrize) return false;
-        if (!query) return true;
-        return (
-          w.empId.toLowerCase().includes(query) ||
-          w.fullName.toLowerCase().includes(query) ||
-          w.team.toLowerCase().includes(query) ||
-          w.prizeName.toLowerCase().includes(query)
-        );
-      });
-
-      const grid = document.getElementById('winnersGrid');
+      const container = document.getElementById('winnersContainer');
       const emptyBox = document.getElementById('emptyStateBox');
 
-      if (!filtered.length) {
-        grid.classList.add('hidden');
+      // กรองตามหมวดหมู่และคำค้นหา
+      const filtered = boardState.winners.filter((w) => {
+        const matchGroup =
+          boardState.selectedGroup === 'ALL' || w.prizeGroup === boardState.selectedGroup;
+        if (!matchGroup) return false;
+
+        if (!query) return true;
+        const haystack = [w.fullName, w.team, w.empId, w.prizeName, w.prizeGroup]
+          .join(' ')
+          .toLowerCase();
+        return haystack.includes(query);
+      });
+
+      if (filtered.length === 0) {
+        container.classList.add('hidden');
         emptyBox.classList.remove('hidden');
 
         if (boardState.winners.length === 0) {
           document.getElementById('emptyStateTitle').textContent =
-            'ยังไม่มีการประกาศผลรางวัลในขณะนี้';
-          document.getElementById('emptyStateSub').textContent =
-            'หน้าจอนี้จะอัปเดตรายชื่อผู้โชคดีอัตโนมัติทันทีที่มีการยืนยันรางวัลบนเวที';
+            'ยังไม่มีรายชื่อผู้ได้รับรางวัลในขณะนี้';
+          document.getElementById('emptyStateDesc').textContent =
+            'รายชื่อผู้โชคดีจะแสดงผลบนหน้านี้แบบ Real-time ทันทีที่มีการกดยืนยันรับรางวัลบนเวที';
         } else {
           document.getElementById('emptyStateTitle').textContent =
-            'ไม่พบรายชื่อที่ตรงกับคำค้นหา';
-          document.getElementById('emptyStateSub').textContent =
-            'กรุณาลองเปลี่ยนคำค้นหา หรือเลือกดู "ทุกรางวัล"';
+            'ไม่พบรายชื่อหรือทีมที่ตรงกับการค้นหา';
+          document.getElementById('emptyStateDesc').textContent =
+            'ลองเปลี่ยนคำค้นหา หรือกดเลือกหมวดหมู่ "ทั้งหมด" ด้านบน';
         }
         return;
       }
 
       emptyBox.classList.add('hidden');
-      grid.classList.remove('hidden');
+      container.classList.remove('hidden');
 
-      grid.innerHTML = filtered
-        .map((w) => {
-          const thumbHtml = w.imageUrl
-            ? '<img src="' +
-              escapeHtml(w.imageUrl) +
-              '" alt="Prize" onerror="this.style.display=\'none\'" class="w-14 h-14 rounded-xl object-cover border border-slate-200 shrink-0" />'
-            : '<div class="w-14 h-14 rounded-xl bg-gradient-to-br from-[#E60012] to-[#99000C] text-white flex items-center justify-center text-xl shrink-0 shadow-sm">🏆</div>';
+      // จัดกลุ่มตามลำดับ PrizeGroup
+      const orderedGroups = [];
+      const groupedMap = new Map();
 
-          const timeHtml = w.timestamp
-            ? '<p class="text-[10px] text-slate-400 mt-1">เวลาประกาศผล: ' +
-              escapeHtml(w.timestamp) +
-              '</p>'
-            : '';
+      boardState.prizeGroups.forEach((g) => {
+        groupedMap.set(g, []);
+        orderedGroups.push(g);
+      });
+
+      filtered.forEach((w) => {
+        const grp = w.prizeGroup || 'รางวัลทั่วไป';
+        if (!groupedMap.has(grp)) {
+          groupedMap.set(grp, []);
+          orderedGroups.push(grp);
+        }
+        groupedMap.get(grp).push(w);
+      });
+
+      const sectionsHtml = orderedGroups
+        .filter((grp) => groupedMap.get(grp) && groupedMap.get(grp).length > 0)
+        .map((grp) => {
+          const items = groupedMap.get(grp);
+
+          const cardsHtml = items
+            .map((w) => {
+              const imgUrl = w.prizeImageUrl || CONFIG.DEFAULT_PRIZE_IMAGE_URL;
+              return (
+                '<article class="glass-card rounded-2xl p-3.5 sm:p-4 flex items-center gap-3.5 hover:border-champagne transition">' +
+                '<div class="w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden border border-champagne/60 bg-obsidian-950 shrink-0">' +
+                '<img src="' +
+                escapeHtml(imgUrl) +
+                '" alt="' +
+                escapeHtml(w.prizeName) +
+                '" onerror="this.src=CONFIG.DEFAULT_PRIZE_IMAGE_URL" class="w-full h-full object-cover" />' +
+                '</div>' +
+                '<div class="min-w-0 flex-1 space-y-1">' +
+                '<div class="flex flex-wrap items-center gap-1.5">' +
+                '<span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-white/10 text-champagne-light">' +
+                escapeHtml(w.empId) +
+                '</span>' +
+                '<span class="text-[11px] text-silver truncate">ทีม: ' +
+                escapeHtml(w.team) +
+                '</span>' +
+                '</div>' +
+                '<h3 class="text-base sm:text-lg font-bold text-white truncate">' +
+                escapeHtml(w.fullName) +
+                '</h3>' +
+                '<p class="text-xs sm:text-sm font-semibold text-champagne-light truncate">🎁 ' +
+                escapeHtml(w.prizeName) +
+                '</p>' +
+                '</div>' +
+                '</article>'
+              );
+            })
+            .join('');
 
           return (
-            '<article class="metallic-card rounded-2xl p-1">' +
-            '<div class="bg-white text-slate-900 rounded-[14px] p-4 h-full flex flex-col justify-between gap-3 shadow">' +
-            '<div class="flex items-start justify-between gap-2.5">' +
-            '<div class="min-w-0 flex-1">' +
-            '<span class="inline-block text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-[#E60012] text-white tracking-wide max-w-full truncate">' +
-            escapeHtml(w.prizeName) +
-            '</span>' +
-            '<h2 class="text-base font-bold text-slate-900 leading-snug mt-2 truncate">' +
-            escapeHtml(w.fullName) +
+            '<section class="space-y-3">' +
+            '<div class="flex items-center justify-between border-l-4 border-truered pl-3 py-0.5">' +
+            '<h2 class="text-base sm:text-lg font-extrabold gold-text">' +
+            escapeHtml(grp) +
             '</h2>' +
-            '<p class="text-xs font-semibold text-[#E60012] mt-0.5 truncate">' +
-            escapeHtml(w.empId) +
-            ' • ทีม ' +
-            escapeHtml(w.team) +
-            '</p>' +
-            timeHtml +
+            '<span class="text-xs font-semibold text-silver">' +
+            items.length +
+            ' รางวัล</span>' +
             '</div>' +
-            thumbHtml +
+            '<div class="grid grid-cols-1 gap-3">' +
+            cardsHtml +
             '</div>' +
-            '</div>' +
-            '</article>'
+            '</section>'
           );
         })
         .join('');
-    }
 
-    function updateTimestampLabel() {
-      const now = new Date();
-      const timeStr = now.toLocaleTimeString('th-TH', {
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit'
-      });
-      document.getElementById('lastUpdatedLabel').textContent =
-        'ซิงค์ข้อมูลล่าสุดเมื่อเวลา ' + timeStr + ' น.';
-    }
-
-    async function callGasApi(payload) {
-      const response = await fetch(CONFIG.GAS_WEB_APP_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'text/plain;charset=utf-8'
-        },
-        body: JSON.stringify(payload),
-        redirect: 'follow'
-      });
-
-      if (!response.ok) {
-        throw new Error('HTTP ' + response.status);
-      }
-
-      return await response.json();
+      container.innerHTML = sectionsHtml;
     }
 
     function escapeHtml(str) {
