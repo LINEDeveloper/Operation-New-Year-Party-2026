@@ -16,7 +16,7 @@
   <!-- SweetAlert2 -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-  <!-- Canvas Confetti (เอฟเฟกต์พลุกระดาษสีแดง-ทอง) -->
+  <!-- Canvas Confetti (เอฟเฟกต์พลุกระดาษเฉลิมฉลองสีแดง-ทอง 24K) -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 
   <script>
@@ -27,20 +27,22 @@
             prompt: ['Prompt', 'sans-serif']
           },
           colors: {
-            obsidian: {
-              950: '#121216',
-              900: '#1C1C24',
-              800: '#262632'
+            velvet: {
+              950: '#110608',
+              900: '#1A080C',
+              800: '#260D13'
             },
             truered: {
               DEFAULT: '#E60012',
-              dark: '#7A000A'
+              dark: '#680008',
+              vivid: '#FF2A3A'
             },
             champagne: {
               DEFAULT: '#D4AF37',
-              light: '#F5D77F'
+              light: '#F5D77F',
+              bright: '#FFF2B2'
             },
-            silver: '#B8B8C5'
+            silver: '#D6CED2'
           }
         }
       }
@@ -48,42 +50,103 @@
   </script>
 
   <style>
+    /* ========================================================================
+       EXECUTIVE GALA แดง-ทอง 24K MASTER THEME
+       ======================================================================== */
     body {
       font-family: 'Prompt', sans-serif;
-      background-color: #121216;
+      -webkit-font-smoothing: antialiased;
+      background-color: #110608;
       background-image:
-        radial-gradient(ellipse at 50% -15%, rgba(230, 0, 18, 0.38) 0%, rgba(122, 0, 10, 0.14) 40%, rgba(18, 18, 22, 0) 70%),
-        radial-gradient(circle at 15% 85%, rgba(212, 175, 55, 0.14) 0%, rgba(18, 18, 22, 0) 45%),
-        radial-gradient(circle at 85% 85%, rgba(230, 0, 18, 0.15) 0%, rgba(18, 18, 22, 0) 45%);
+        radial-gradient(ellipse at 50% -10%, rgba(230, 0, 18, 0.32) 0%, rgba(104, 0, 8, 0.16) 42%, rgba(17, 6, 8, 0) 72%),
+        radial-gradient(circle at 14% 86%, rgba(212, 175, 55, 0.18) 0%, rgba(17, 6, 8, 0) 46%),
+        radial-gradient(circle at 86% 84%, rgba(230, 0, 18, 0.18) 0%, rgba(17, 6, 8, 0) 46%),
+        linear-gradient(180deg, #1A080C 0%, #110608 100%);
       color: #FFFFFF;
       min-height: 100vh;
       overflow-x: hidden;
     }
 
+    /* ซ่อนหน้าตั้งค่าหลักทั้งหมดเมื่อเข้าสู่โหมดหน้าสุ่มเต็มจอ (Focus Spin Stage) */
+    body.focus-mode-active {
+      overflow: hidden;
+    }
+    body.focus-mode-active #topExecutiveHeader,
+    body.focus-mode-active #mainDashboardView {
+      display: none !important;
+    }
+
+    /* แถบ Header ด้านบนสุด กำมะหยี่แดงตัดขอบทอง 24K */
+    .header-stage {
+      background: linear-gradient(90deg, #680008 0%, #C80010 50%, #680008 100%);
+      border-bottom: 2px solid #F5D77F;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.65), 0 4px 24px rgba(230, 0, 18, 0.28);
+    }
+
+    /* การ์ดกระจก Ruby-Obsidian ขอบทองแชมเปญ 24K */
     .glass-stage {
-      background: rgba(28, 28, 36, 0.84);
+      background: linear-gradient(160deg, rgba(36, 14, 20, 0.90) 0%, rgba(22, 9, 13, 0.94) 100%);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(212, 175, 55, 0.4);
-      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.72), inset 0 1px 0 rgba(245, 215, 127, 0.18);
+      border: 1px solid rgba(212, 175, 55, 0.45);
+      box-shadow:
+        0 24px 60px rgba(0, 0, 0, 0.72),
+        inset 0 1px 0 rgba(245, 215, 127, 0.22);
     }
 
-    .header-stage {
-      background: linear-gradient(90deg, #7A000A 0%, #E60012 50%, #7A000A 100%);
-      border-bottom: 2px solid #D4AF37;
-      box-shadow: 0 10px 35px rgba(230, 0, 18, 0.35);
-    }
-
-    .btn-true-stage {
-      background: linear-gradient(135deg, #E60012 0%, #7A000A 100%);
+    /* กรอบเน้นยอด Pool ผู้มีสิทธิ์ลุ้นรางวัล */
+    .pool-highlight-card {
+      background: linear-gradient(155deg, rgba(62, 16, 24, 0.92) 0%, rgba(26, 10, 14, 0.96) 100%);
       border: 2px solid #F5D77F;
-      box-shadow: 0 10px 35px rgba(230, 0, 18, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+      box-shadow:
+        0 18px 45px rgba(212, 175, 55, 0.18),
+        inset 0 1px 0 rgba(255, 242, 178, 0.35);
+    }
+
+    /* ป้ายแคปซูลทอง 24K */
+    .gold-pill {
+      background: linear-gradient(90deg, #D4AF37 0%, #F5D77F 50%, #D4AF37 100%);
+      color: #140709;
+      box-shadow: 0 4px 14px rgba(212, 175, 55, 0.35);
+    }
+
+    /* ตัวอักษรไล่เฉดทอง 24K */
+    .gold-text {
+      background: linear-gradient(90deg, #F5D77F 0%, #D4AF37 48%, #FFF2B2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* ปุ่มควบคุมบนแถบ Header อ่านชัดระยะไกล */
+    .top-action-btn {
+      background: rgba(17, 6, 8, 0.68);
+      border: 1px solid rgba(245, 215, 127, 0.45);
+      color: #FFFFFF;
       transition: all 0.2s ease;
+    }
+    .top-action-btn:hover {
+      background: rgba(26, 8, 12, 0.92);
+      border-color: #FFF2B2;
+      color: #F5D77F;
+      transform: translateY(-1px);
+    }
+
+    /* ปุ่มหลักสำหรับกดเริ่มสุ่มเปิดกล่องของขวัญ */
+    .btn-true-stage {
+      background: linear-gradient(135deg, #E60012 0%, #8A000B 100%);
+      border: 2px solid #F5D77F;
+      box-shadow:
+        0 12px 38px rgba(230, 0, 18, 0.55),
+        0 0 24px rgba(212, 175, 55, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.30);
+      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .btn-true-stage:hover:not(:disabled) {
       transform: translateY(-2px) scale(1.01);
-      box-shadow: 0 16px 45px rgba(230, 0, 18, 0.7);
-      filter: brightness(1.08);
+      box-shadow:
+        0 18px 46px rgba(230, 0, 18, 0.72),
+        0 0 32px rgba(245, 215, 127, 0.40);
+      filter: brightness(1.07);
     }
     .btn-true-stage:disabled {
       opacity: 0.45;
@@ -91,100 +154,231 @@
       box-shadow: none;
     }
 
+    /* ปุ่มยืนยันได้รับรางวัล ทองคำ 24K */
     .btn-gold-confirm {
-      background: linear-gradient(135deg, #D4AF37 0%, #F5D77F 50%, #D4AF37 100%);
-      color: #121216;
+      background: linear-gradient(135deg, #D4AF37 0%, #FFF2B2 50%, #D4AF37 100%);
+      color: #140709;
       border: 2px solid #FFFFFF;
-      box-shadow: 0 10px 35px rgba(212, 175, 55, 0.45);
+      box-shadow: 0 12px 38px rgba(212, 175, 55, 0.50);
       transition: all 0.2s ease;
     }
     .btn-gold-confirm:hover:not(:disabled) {
       transform: translateY(-2px);
-      box-shadow: 0 14px 40px rgba(245, 215, 127, 0.65);
-      filter: brightness(1.05);
+      box-shadow: 0 16px 44px rgba(245, 215, 127, 0.70);
+      filter: brightness(1.04);
     }
 
+    /* ปุ่มรอง สุ่มใหม่ / สละสิทธิ์ */
     .btn-dark-action {
-      background: linear-gradient(135deg, #262632 0%, #17171F 100%);
-      border: 1px solid rgba(184, 184, 197, 0.4);
+      background: linear-gradient(135deg, #2A1016 0%, #16070A 100%);
+      border: 1.5px solid rgba(245, 215, 127, 0.45);
+      color: #F5D77F;
       transition: all 0.2s ease;
     }
     .btn-dark-action:hover:not(:disabled) {
-      border-color: #F5D77F;
-      color: #F5D77F;
-    }
-
-    .gold-pill {
-      background: linear-gradient(90deg, #D4AF37 0%, #F5D77F 50%, #D4AF37 100%);
-      color: #121216;
-    }
-
-    .gold-text {
-      background: linear-gradient(90deg, #F5D77F 0%, #D4AF37 55%, #FFF2B2 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .winner-spotlight-card {
-      background: radial-gradient(circle at 50% 0%, rgba(230, 0, 18, 0.28) 0%, rgba(28, 28, 36, 0.96) 65%);
-      border: 2px solid #D4AF37;
-      box-shadow: 0 0 45px rgba(212, 175, 55, 0.28), inset 0 0 25px rgba(212, 175, 55, 0.1);
-    }
-
-    @keyframes pulseGlow {
-      0%, 100% { box-shadow: 0 0 25px rgba(212, 175, 55, 0.25); }
-      50% { box-shadow: 0 0 55px rgba(245, 215, 127, 0.55); }
-    }
-    .winner-glow {
-      animation: pulseGlow 2.2s infinite ease-in-out;
-    }
-
-    .luxury-select {
-      background-color: #121216;
-      border: 1px solid rgba(212, 175, 55, 0.45);
+      border-color: #FFF2B2;
       color: #FFFFFF;
+      background: linear-gradient(135deg, #3A151E 0%, #210B10 100%);
+    }
+
+    /* Dropdown เลือกรางวัล */
+    .luxury-select {
+      background-color: #130609;
+      border: 1px solid rgba(212, 175, 55, 0.50);
+      color: #FFFFFF;
+      transition: all 0.2s ease;
     }
     .luxury-select:focus {
       outline: none;
       border-color: #F5D77F;
-      box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+      box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.22);
     }
 
-    /* Custom Scrollbar สำหรับกรณีสุ่มพร้อมกันหลายรางวัล */
+    /* ========================================================================
+       3D GALA GIFT BOX & FULL-SCREEN FOCUS SPIN ARENA ANIMATIONS
+       ======================================================================== */
+    #focusSpinStage {
+      background:
+        radial-gradient(circle at 50% 24%, rgba(212, 175, 55, 0.22) 0%, rgba(230, 0, 18, 0.20) 32%, rgba(20, 7, 10, 0.98) 68%),
+        linear-gradient(180deg, #1B070B 0%, #0E0406 100%);
+    }
+
+    .focus-arena-frame {
+      background: radial-gradient(circle at 50% 65%, rgba(230, 0, 18, 0.20) 0%, rgba(22, 8, 12, 0.88) 65%);
+      border: 2px solid rgba(245, 215, 127, 0.55);
+      box-shadow:
+        0 28px 70px rgba(0, 0, 0, 0.80),
+        inset 0 0 50px rgba(212, 175, 55, 0.12);
+    }
+
+    /* ลำแสงทองพุ่งออกจากปากกล่องของขวัญขณะเขย่า */
+    .golden-beam-cone {
+      position: absolute;
+      bottom: 130px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 340px;
+      height: 300px;
+      background: radial-gradient(ellipse at 50% 88%, rgba(255, 242, 178, 0.58) 0%, rgba(212, 175, 55, 0.22) 42%, rgba(230, 0, 18, 0) 74%);
+      filter: blur(10px);
+      pointer-events: none;
+      animation: beamPulse 0.45s infinite alternate ease-in-out;
+    }
+
+    @keyframes beamPulse {
+      from { opacity: 0.72; transform: translateX(-50%) scaleX(0.94); }
+      to   { opacity: 1;    transform: translateX(-50%) scaleX(1.08); }
+    }
+
+    /* กล่องของขวัญลอยตัวนุ่มนวลในหน้าเตรียมพร้อม */
+    @keyframes floatGiftIdle {
+      0%, 100% { transform: translateY(0px); }
+      50%      { transform: translateY(-8px); }
+    }
+    .gift-idle-float {
+      animation: floatGiftIdle 3.2s ease-in-out infinite;
+    }
+
+    /* แอนิเมชันเขย่ากล่องของขวัญอย่างเร้าใจ */
+    @keyframes vigorousGiftShake {
+      0%   { transform: translate(0, 0) rotate(0deg) scale(1, 1); }
+      18%  { transform: translate(-8px, 3px) rotate(-4.5deg) scale(1.04, 0.96); }
+      36%  { transform: translate(8px, -7px) rotate(4.5deg) scale(0.96, 1.05); }
+      54%  { transform: translate(-9px, 2px) rotate(-5deg) scale(1.05, 0.95); }
+      72%  { transform: translate(7px, -6px) rotate(4deg) scale(0.97, 1.04); }
+      100% { transform: translate(0, 0) rotate(0deg) scale(1, 1); }
+    }
+    @keyframes rattleGiftLid {
+      0%, 100% { transform: translateY(-6px) rotate(-3deg); }
+      50%      { transform: translateY(-28px) rotate(5deg); }
+    }
+
+    .gift-box-shaking {
+      animation: vigorousGiftShake 0.32s infinite ease-in-out;
+    }
+    .gift-box-shaking .svg-gift-lid {
+      transform-origin: 120px 84px;
+      animation: rattleGiftLid 0.24s infinite ease-in-out;
+    }
+
+    /* จังหวะฝากล่องระเบิดเปิดออกก่อนโชว์การ์ดผู้โชคดี */
+    @keyframes burstGiftOpen {
+      0%   { transform: scale(1); opacity: 1; }
+      55%  { transform: scale(1.24); opacity: 0.92; }
+      100% { transform: scale(0.75); opacity: 0; }
+    }
+    .gift-box-burst {
+      animation: burstGiftOpen 0.26s ease-out forwards;
+    }
+    .gift-box-burst .svg-gift-lid {
+      transform: translateY(-75px) rotate(24deg);
+      opacity: 0;
+      transition: all 0.24s ease-out;
+    }
+
+    /* ป้ายแคปซูลรายชื่อที่พุ่งเด้งไปมาในกรอบเวที */
+    .bouncing-name-capsule {
+      position: absolute;
+      left: 0;
+      top: 0;
+      padding: 7px 18px;
+      border-radius: 9999px;
+      background: linear-gradient(135deg, rgba(46, 10, 16, 0.96) 0%, rgba(22, 6, 10, 0.98) 100%);
+      border: 1.5px solid #F5D77F;
+      color: #FFF2B2;
+      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.55), 0 0 16px rgba(212, 175, 55, 0.30);
+      font-weight: 700;
+      font-size: 0.9rem;
+      white-space: nowrap;
+      pointer-events: none;
+      z-index: 15;
+      will-change: transform, opacity;
+    }
+
+    /* การ์ดประกาศผลผู้โชคดี 24K Gold Spotlight */
+    .winner-spotlight-card {
+      background: radial-gradient(circle at 50% 0%, rgba(230, 0, 18, 0.34) 0%, rgba(30, 11, 16, 0.96) 68%);
+      border: 2px solid #F5D77F;
+      box-shadow:
+        0 26px 70px rgba(0, 0, 0, 0.78),
+        0 0 50px rgba(212, 175, 55, 0.32),
+        inset 0 0 28px rgba(245, 215, 127, 0.12);
+    }
+
+    @keyframes pulseGoldGlow {
+      0%, 100% { box-shadow: 0 26px 70px rgba(0, 0, 0, 0.75), 0 0 32px rgba(212, 175, 55, 0.28); }
+      50%      { box-shadow: 0 26px 70px rgba(0, 0, 0, 0.75), 0 0 65px rgba(245, 215, 127, 0.62); }
+    }
+    .winner-glow {
+      animation: pulseGoldGlow 2.2s infinite ease-in-out;
+    }
+
+    @keyframes winnerPopUp {
+      0% {
+        opacity: 0;
+        transform: translateY(42px) scale(0.88);
+      }
+      65% {
+        opacity: 1;
+        transform: translateY(-6px) scale(1.02);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+    .winner-pop-enter {
+      animation: winnerPopUp 0.50s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    /* ประกายดาวทองคำรอบกล่องของขวัญ */
+    @keyframes twinkleStar {
+      0%, 100% { opacity: 0.25; transform: scale(0.8); }
+      50%      { opacity: 1;    transform: scale(1.2); }
+    }
+    .gold-sparkle-1 { animation: twinkleStar 2.4s infinite ease-in-out; }
+    .gold-sparkle-2 { animation: twinkleStar 3.1s infinite ease-in-out 0.7s; }
+    .gold-sparkle-3 { animation: twinkleStar 2.7s infinite ease-in-out 1.3s; }
+
+    /* Custom Scrollbar ทองแชมเปญ */
     ::-webkit-scrollbar {
       width: 8px;
       height: 8px;
     }
     ::-webkit-scrollbar-track {
-      background: #121216;
+      background: #120608;
     }
     ::-webkit-scrollbar-thumb {
       background: #D4AF37;
       border-radius: 9999px;
     }
 
-    /* SweetAlert2 Luxury Stage Override */
+    /* SweetAlert2 Gala 24K Override */
     div:where(.swal2-container) div:where(.swal2-popup) {
-      background: #1C1C24 !important;
-      border: 1px solid #D4AF37 !important;
-      border-radius: 1.25rem !important;
+      background: linear-gradient(160deg, #260D13 0%, #140609 100%) !important;
+      border: 1.5px solid #D4AF37 !important;
+      border-radius: 1.5rem !important;
       color: #FFFFFF !important;
       font-family: 'Prompt', sans-serif !important;
+      box-shadow: 0 25px 65px rgba(0, 0, 0, 0.85) !important;
     }
     div:where(.swal2-container) .swal2-title {
       color: #F5D77F !important;
     }
     div:where(.swal2-container) .swal2-html-container {
-      color: #E2E2EC !important;
+      color: #EADFE2 !important;
     }
   </style>
 </head>
 
 <body class="antialiased selection:bg-truered selection:text-white flex flex-col min-h-screen">
-  <!-- Loading Overlay -->
-  <div id="stageLoading" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-obsidian-950/90 backdrop-blur-md">
+
+  <!-- ==================================================================== -->
+  <!-- LOADING OVERLAY (แสดงเหนือทุกหน้าจอเมื่อซิงก์ข้อมูลหรือบันทึกผลรางวัล)  -->
+  <!-- ==================================================================== -->
+  <div id="stageLoading" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-velvet-950/90 backdrop-blur-md">
     <div class="relative w-20 h-20 mb-4">
-      <div class="absolute inset-0 rounded-full border-4 border-champagne/20"></div>
+      <div class="absolute inset-0 rounded-full border-4 border-champagne/25"></div>
       <div class="absolute inset-0 rounded-full border-4 border-t-truered border-r-champagne-light border-b-transparent border-l-transparent animate-spin"></div>
     </div>
     <p id="stageLoadingText" class="text-base font-semibold text-champagne-light tracking-wide">
@@ -193,31 +387,43 @@
   </div>
 
   <!-- ==================================================================== -->
-  <!-- TOP EXECUTIVE STAGE BAR                                              -->
+  <!-- TOP EXECUTIVE HEADER BAR (Gala แดง-ทอง 24K คมชัดสูง)                  -->
   <!-- ==================================================================== -->
-  <header class="header-stage px-6 py-3.5 sticky top-0 z-30">
+  <header id="topExecutiveHeader" class="header-stage px-5 md:px-8 py-3.5 sticky top-0 z-30">
     <div class="max-w-[1600px] mx-auto flex flex-wrap items-center justify-between gap-4">
-      <div class="flex items-center gap-3.5">
-        <span class="gold-pill text-xs font-extrabold px-3.5 py-1 rounded-full tracking-wider uppercase shadow">
-          GRAND LUCKY DRAW
-        </span>
+      <!-- Left: โลโก้ True สีขาวไร้พื้นหลัง + ป้ายทอง 24K + ชื่องาน -->
+      <div class="flex items-center gap-4">
+        <img
+          src="https://img2.pic.in.th/True--W9082df0ce2da3b92.png"
+          alt="True"
+          onerror="this.onerror=null;this.src='https://placehold.co/184x60/680008/FFFFFF?text=true';"
+          class="w-[92px] h-auto object-contain shrink-0 drop-shadow-[0_2px_8px_rgba(0,0,0,0.45)]"
+        />
+
+        <div class="h-9 w-[1px] bg-champagne-light/35 hidden sm:block"></div>
+
         <div>
-          <h1 class="text-lg md:text-2xl font-extrabold text-white tracking-tight leading-none">
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="gold-pill text-[11px] font-extrabold px-3.5 py-0.5 rounded-full tracking-wider uppercase">
+              GRAND LUCKY DRAW
+            </span>
+            <span class="text-[11px] font-semibold text-champagne-light tracking-widest uppercase hidden md:inline">
+              EXECUTIVE GALA 24K • LIVE STAGE
+            </span>
+          </div>
+          <h1 class="text-lg md:text-2xl font-extrabold text-white tracking-tight leading-snug mt-0.5">
             Operation New Year Party 2026
           </h1>
-          <p class="text-[11px] md:text-xs text-champagne-light font-medium mt-0.5">
-            EXECUTIVE GALA NIGHT • LIVE STAGE SYSTEM
-          </p>
         </div>
       </div>
 
-      <!-- Top Control Buttons & Admin Actions -->
+      <!-- Right: ปุ่มควบคุมสำหรับทีมงานหน้าเวที -->
       <div class="flex flex-wrap items-center gap-2.5">
         <button
           type="button"
           id="btnSoundToggle"
           onclick="toggleStageSound()"
-          class="px-3 py-2 rounded-xl bg-obsidian-950/60 border border-champagne/40 text-xs font-semibold text-champagne-light hover:bg-obsidian-950 transition"
+          class="top-action-btn px-3.5 py-2 rounded-xl text-xs font-semibold text-champagne-light"
         >
           🔊 เอฟเฟกต์เสียง: เปิด
         </button>
@@ -225,7 +431,7 @@
         <button
           type="button"
           onclick="loadLuckyDrawData(true)"
-          class="px-3 py-2 rounded-xl bg-obsidian-950/60 border border-white/25 text-xs font-semibold text-white hover:border-champagne-light transition"
+          class="top-action-btn px-3.5 py-2 rounded-xl text-xs font-semibold"
         >
           ↻ ซิงก์ข้อมูลล่าสุด
         </button>
@@ -234,17 +440,16 @@
           id="linkWinnersBoard"
           href="winners.html"
           target="_blank"
-          rel="noopener"
-          class="px-3 py-2 rounded-xl bg-obsidian-950/60 border border-white/25 text-xs font-semibold text-silver hover:text-white transition"
+          rel="noopener noreferrer"
+          class="top-action-btn px-3.5 py-2 rounded-xl text-xs font-semibold"
         >
           🏆 หน้าประกาศผลรางวัล
         </a>
 
-        <!-- ปุ่มแอดมิน: ส่ง Flex ขอบคุณผู้พลาดรางวัลทั้งหมด -->
         <button
           type="button"
           onclick="promptSendConsolationFlex()"
-          class="px-3.5 py-2 rounded-xl bg-obsidian-950/85 border border-champagne text-xs font-bold text-champagne-light hover:bg-obsidian-900 transition shadow"
+          class="gold-pill px-4 py-2 rounded-xl text-xs font-extrabold hover:brightness-105 transition"
         >
           💌 ส่ง Flex ขอบคุณผู้พลาดรางวัลทั้งหมด
         </button>
@@ -252,7 +457,7 @@
         <button
           type="button"
           onclick="toggleFullScreen()"
-          class="px-3 py-2 rounded-xl bg-obsidian-950/60 border border-white/25 text-xs font-semibold text-white hover:border-champagne-light transition"
+          class="top-action-btn px-3 py-2 rounded-xl text-xs font-semibold"
           title="ขยายเต็มจอโปรเจกเตอร์"
         >
           ⛶ เต็มจอ
@@ -262,277 +467,500 @@
   </header>
 
   <!-- ==================================================================== -->
-  <!-- MAIN STAGE WORKSPACE                                                 -->
+  <!-- MAIN DASHBOARD VIEW (หน้าหลักก่อนกดสุ่ม)                              -->
   <!-- ==================================================================== -->
-  <main class="flex-1 max-w-[1600px] w-full mx-auto px-4 md:px-6 py-5 grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-    <!-- ================================================================== -->
-    <!-- LEFT COLUMN (4 COLS): เลือกกลุ่มรางวัล + ภาพรางวัล + รูปแบบการสุ่ม     -->
-    <!-- ================================================================== -->
-    <aside class="lg:col-span-4 flex flex-col gap-5">
-      <div class="glass-stage rounded-3xl p-5 space-y-4 flex-1 flex flex-col justify-between">
-        <div class="space-y-4">
-          <div class="flex items-center justify-between border-b border-white/10 pb-3">
-            <h2 class="text-sm font-bold uppercase tracking-wider text-champagne-light">
-              1. เลือกรายการของรางวัล
-            </h2>
-            <span id="prizeRemainingBadge" class="gold-pill text-xs font-extrabold px-3 py-0.5 rounded-full">
-              คงเหลือ 0 / 0
-            </span>
-          </div>
-
-          <!-- Dropdown 1: กลุ่มรางวัล (PrizeGroup) -->
-          <div>
-            <label for="prizeGroupSelect" class="block text-xs font-medium text-silver mb-1.5">
-              กลุ่มรางวัล (Prize Group)
-            </label>
-            <select
-              id="prizeGroupSelect"
-              onchange="onPrizeGroupChange()"
-              class="luxury-select w-full rounded-xl px-3.5 py-2.5 text-sm font-semibold"
-            >
-              <option value="">กำลังโหลดกลุ่มรางวัล...</option>
-            </select>
-          </div>
-
-          <!-- Dropdown 2: รายการของรางวัลในกลุ่ม -->
-          <div>
-            <label for="prizeItemSelect" class="block text-xs font-medium text-silver mb-1.5">
-              ของรางวัล (Prize Item)
-            </label>
-            <select
-              id="prizeItemSelect"
-              onchange="onPrizeItemChange()"
-              class="luxury-select w-full rounded-xl px-3.5 py-2.5 text-sm font-semibold"
-            >
-              <option value="">กำลังโหลดของรางวัล...</option>
-            </select>
-          </div>
-
-          <!-- กรอบแสดงภาพของรางวัลขนาดใหญ่ -->
-          <div class="bg-obsidian-950/90 border-2 border-champagne/60 rounded-2xl p-3 space-y-3 shadow-xl">
-            <div class="relative aspect-video w-full rounded-xl overflow-hidden bg-obsidian-900 flex items-center justify-center">
-              <img
-                id="prizePreviewImg"
-                src="https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&w=800&q=80"
-                alt="Prize Image"
-                onerror="this.src=CONFIG.DEFAULT_PRIZE_IMAGE_URL"
-                class="w-full h-full object-cover transition-all duration-500"
-              />
-              <div class="absolute top-2.5 right-2.5 bg-obsidian-950/85 backdrop-blur-md border border-champagne px-3 py-1 rounded-full">
-                <span id="prizeQtyOverlayText" class="text-xs font-bold text-champagne-light">0 / 0 รางวัล</span>
-              </div>
-            </div>
-            <div class="text-center px-2 pb-1">
-              <p id="prizeGroupLabel" class="text-[11px] font-semibold uppercase tracking-widest text-silver">
-                PRIZE CATEGORY
-              </p>
-              <h3 id="prizeTitleLabel" class="text-lg md:text-xl font-extrabold gold-text leading-snug mt-0.5">
-                กรุณาเลือกรายการของรางวัล
-              </h3>
-            </div>
-          </div>
-        </div>
-
-        <!-- ตั้งค่ารูปแบบการกดสุ่ม (ทีละ 1 รางวัล หรือ พร้อมกันหลายรางวัล) -->
-        <div class="pt-3 border-t border-white/10 space-y-3">
-          <label class="block text-xs font-bold uppercase tracking-wider text-champagne-light">
-            2. รูปแบบการกดสุ่มในรอบนี้
-          </label>
-
-          <div class="grid grid-cols-2 gap-2.5">
-            <button
-              type="button"
-              id="modeSingleBtn"
-              onclick="setDrawMode('SINGLE')"
-              class="py-2.5 px-3 rounded-xl text-xs font-bold border transition"
-            >
-              สุ่มทีละ 1 รางวัล
-            </button>
-            <button
-              type="button"
-              id="modeBatchBtn"
-              onclick="setDrawMode('BATCH')"
-              class="py-2.5 px-3 rounded-xl text-xs font-bold border transition"
-            >
-              สุ่มพร้อมกันหลายรางวัล
-            </button>
-          </div>
-
-          <!-- กล่องระบุจำนวนรางวัลเมื่อเลือกโหมดสุ่มพร้อมกันหลายรางวัล -->
-          <div id="batchCountBox" class="hidden bg-obsidian-950/80 border border-champagne/35 rounded-xl p-3 space-y-2">
-            <div class="flex items-center justify-between gap-2">
-              <label for="batchCountInput" class="text-xs text-silver font-medium">
-                จำนวนรางวัลที่ต้องการสุ่มพร้อมกัน:
-              </label>
-              <input
-                type="number"
-                id="batchCountInput"
-                min="1"
-                max="50"
-                value="2"
-                onchange="clampBatchInput()"
-                class="w-20 bg-obsidian-900 border border-champagne rounded-lg px-2.5 py-1.5 text-center text-sm font-bold text-champagne-light focus:outline-none"
-              />
-            </div>
-            <div class="flex items-center justify-between text-[11px]">
-              <span class="text-silver">สุ่มสูงสุดไม่เกินจำนวนคงเหลือและคนใน Pool</span>
-              <button
-                type="button"
-                onclick="fillMaxRemainingBatch()"
-                class="text-champagne-light underline hover:text-white font-semibold"
-              >
-                สุ่มครบจำนวนคงเหลือ
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </aside>
+  <main id="mainDashboardView" class="flex-1 max-w-[1600px] w-full mx-auto px-4 md:px-8 py-6 flex flex-col gap-6">
 
     <!-- ================================================================== -->
-    <!-- RIGHT COLUMN (8 COLS): เวทีสุ่มรายชื่อ Rolling Slot & ยืนยันสิทธิ์      -->
+    <!-- HIGH-VISIBILITY TOP SCOREBOARD (3 การ์ดขนาดใหญ่เต็มความกว้าง)       -->
     <!-- ================================================================== -->
-    <section class="lg:col-span-8 flex flex-col gap-5">
-      <!-- แถบสถิติผู้มีสิทธิ์ลุ้นรางวัล Real-time -->
-      <div class="grid grid-cols-3 gap-3.5">
-        <div class="glass-stage rounded-2xl px-4 py-3.5 flex items-center justify-between">
-          <div>
-            <p class="text-xs text-silver">เช็คอินเข้างานทั้งหมด</p>
-            <p id="statTotalCheckedIn" class="text-2xl md:text-3xl font-extrabold text-white mt-0.5">0</p>
-          </div>
-          <span class="text-xs px-2.5 py-1 rounded-lg bg-white/5 text-silver">Checked-In</span>
+    <section class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <!-- Card 1: เช็คอินเข้างานทั้งหมด -->
+      <div class="glass-stage rounded-2xl px-6 py-4 flex items-center justify-between">
+        <div>
+          <p class="text-xs md:text-sm font-semibold text-silver">เช็คอินเข้างานทั้งหมด</p>
+          <p id="statTotalCheckedIn" class="text-3xl md:text-4xl font-extrabold text-white leading-none mt-1.5">
+            0
+          </p>
         </div>
-
-        <div class="glass-stage rounded-2xl px-4 py-3.5 flex items-center justify-between border-champagne/60">
-          <div>
-            <p class="text-xs text-champagne-light font-semibold">มีสิทธิ์ลุ้นรางวัลคงเหลือ (Pool)</p>
-            <p id="statEligiblePool" class="text-2xl md:text-3xl font-extrabold text-champagne-light mt-0.5">0</p>
-          </div>
-          <span class="gold-pill text-[11px] font-bold px-2.5 py-1 rounded-lg">Eligible</span>
-        </div>
-
-        <div class="glass-stage rounded-2xl px-4 py-3.5 flex items-center justify-between">
-          <div>
-            <p class="text-xs text-silver">ได้รับรางวัลไปแล้ว</p>
-            <p id="statWinnersCount" class="text-2xl md:text-3xl font-extrabold text-emerald-400 mt-0.5">0</p>
-          </div>
-          <span class="text-xs px-2.5 py-1 rounded-lg bg-emerald-500/15 text-emerald-300">Winners</span>
-        </div>
+        <span class="text-xs font-bold px-3 py-1.5 rounded-xl bg-white/10 border border-white/15 text-silver uppercase tracking-wider">
+          Checked-In
+        </span>
       </div>
 
-      <!-- เวทีแสดงผลหลัก (Grand Draw Arena) -->
-      <div class="glass-stage rounded-3xl p-6 md:p-8 flex-1 flex flex-col justify-between relative overflow-hidden">
-        <!-- แถบหัวเวที -->
-        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-4">
-          <div>
-            <span id="stageStatusLabel" class="text-xs font-bold uppercase tracking-[0.2em] text-champagne-light">
-              READY FOR LUCKY DRAW
-            </span>
-            <h2 id="stageActivePrizeHeader" class="text-xl md:text-2xl font-extrabold text-white mt-0.5">
-              พร้อมสุ่มผู้โชคดี
-            </h2>
-          </div>
-
-          <!-- แจ้งจำนวนรายชื่อที่ถูกพักสิทธิ์กรณีไม่อยู่ในงาน (ถ้ามี) -->
-          <button
-            type="button"
-            id="btnRestoreSkipped"
-            onclick="restoreSkippedCandidates()"
-            class="hidden text-xs px-3 py-1.5 rounded-xl bg-amber-950/70 border border-champagne/50 text-champagne-light hover:bg-amber-900/60 transition"
-          >
-            พักชื่อผู้สละสิทธิ์ชั่วคราว 0 คน (คลิกเพื่อคืนสิทธิ์เข้า Pool)
-          </button>
+      <!-- Card 2: มีสิทธิ์ลุ้นรางวัลคงเหลือ (Pool) เน้นขอบทอง 24K -->
+      <div class="pool-highlight-card rounded-2xl px-6 py-4 flex items-center justify-between">
+        <div>
+          <p class="text-xs md:text-sm font-bold text-champagne-light">มีสิทธิ์ลุ้นรางวัลคงเหลือ (Pool)</p>
+          <p id="statEligiblePool" class="text-3xl md:text-4xl font-extrabold text-champagne-light drop-shadow-[0_0_16px_rgba(245,215,127,0.45)] leading-none mt-1.5">
+            0
+          </p>
         </div>
+        <span class="gold-pill text-xs font-extrabold px-3 py-1.5 rounded-xl uppercase tracking-wider">
+          Eligible Pool
+        </span>
+      </div>
 
-        <!-- ============================================================== -->
-        <!-- พื้นที่กลางเวที: สลับระหว่าง Single Spotlight / Rolling / Multi Grid -->
-        <!-- ============================================================== -->
-        <div class="my-6 flex-1 flex flex-col items-center justify-center min-h-[320px]">
-          <!-- โหมดแสดงการ์ดใหญ่เดี่ยว (Idle / Rolling / 1 Winner) -->
-          <div
-            id="singleStageDisplay"
-            class="winner-spotlight-card w-full max-w-3xl rounded-3xl p-8 md:p-10 text-center space-y-4 transition-all duration-300"
-          >
-            <div class="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-obsidian-950/80 border border-champagne/50">
-              <span id="slotTopTag" class="text-xs font-bold tracking-widest text-champagne-light uppercase">
-                VIP LUCKY DRAW STAGE
+      <!-- Card 3: ได้รับรางวัลไปแล้ว -->
+      <div class="glass-stage rounded-2xl px-6 py-4 flex items-center justify-between">
+        <div>
+          <p class="text-xs md:text-sm font-semibold text-silver">ได้รับรางวัลไปแล้ว</p>
+          <p id="statWinnersCount" class="text-3xl md:text-4xl font-extrabold text-emerald-400 leading-none mt-1.5">
+            0
+          </p>
+        </div>
+        <span class="text-xs font-bold px-3 py-1.5 rounded-xl bg-emerald-500/15 border border-emerald-400/30 text-emerald-300 uppercase tracking-wider">
+          Winners
+        </span>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- GALA 24K TWO-COLUMN WORKSPACE (ซ้ายเวที 8 Cols | ขวาแท่นรางวัล 4 Cols) -->
+    <!-- ================================================================== -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch flex-1">
+
+      <!-- ================================================================ -->
+      <!-- LEFT COLUMN (8 COLS): GRAND GIFT BOX STAGE                       -->
+      <!-- ================================================================ -->
+      <section class="lg:col-span-8 flex flex-col">
+        <div class="glass-stage rounded-3xl p-6 md:p-9 flex-1 flex flex-col justify-between relative overflow-hidden">
+          <!-- แสงสปอตไลท์ทองคำพื้นหลังเวที -->
+          <div class="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 w-[520px] h-[300px] rounded-full bg-champagne/10 blur-3xl"></div>
+
+          <!-- แถบหัวเวที -->
+          <div class="relative z-10 flex flex-wrap items-center justify-between gap-3 border-b border-champagne/25 pb-4">
+            <div>
+              <span id="stageStatusLabel" class="text-xs font-bold uppercase tracking-[0.22em] text-champagne-light">
+                READY FOR LUCKY DRAW
               </span>
+              <h2 id="stageActivePrizeHeader" class="text-xl md:text-3xl font-extrabold text-white mt-1">
+                พร้อมสุ่มผู้โชคดี
+              </h2>
             </div>
 
-            <div class="py-3 space-y-3">
-              <p
-                id="slotEmpId"
-                class="text-2xl md:text-4xl font-mono font-extrabold text-champagne-light tracking-widest"
-              >
-                • • • • • •
+            <!-- ปุ่มคืนสิทธิ์ผู้สละสิทธิ์ชั่วคราว (แสดงเมื่อมีรายชื่อใน skippedEmpIds) -->
+            <button
+              type="button"
+              id="btnRestoreSkipped"
+              onclick="restoreSkippedCandidates()"
+              class="hidden text-xs font-semibold px-3.5 py-2 rounded-xl bg-amber-950/80 border border-champagne/60 text-champagne-light hover:bg-amber-900/70 transition"
+            >
+              พักชื่อผู้สละสิทธิ์ชั่วคราว 0 คน (คลิกเพื่อคืนสิทธิ์เข้า Pool)
+            </button>
+          </div>
+
+          <!-- จุดศูนย์กลางเวที: กล่องของขวัญกำมะหยี่แดงผูกโบว์ทอง 24K -->
+          <div class="relative z-10 my-6 flex-1 flex flex-col items-center justify-center text-center py-4">
+            <div
+              onclick="triggerGiftBoxClick()"
+              class="gift-idle-float cursor-pointer group relative flex items-center justify-center"
+              title="คลิกที่กล่องของขวัญเพื่อเริ่มสุ่มผู้โชคดี"
+            >
+              <!-- รัศมีแสงทอง 24K หลังกล่องของขวัญ -->
+              <div class="absolute -inset-8 rounded-full bg-gradient-to-tr from-truered/35 via-champagne/30 to-champagne-light/25 blur-2xl group-hover:scale-110 transition-transform duration-500"></div>
+
+              <!-- Sculptural 3D Red Velvet & 24K Gold Ribbon Gift Box SVG -->
+              <svg class="w-48 h-48 md:w-56 md:h-56 relative z-10 drop-shadow-[0_24px_38px_rgba(0,0,0,0.75)] group-hover:scale-105 transition-transform duration-300" viewBox="0 0 260 240" fill="none">
+                <defs>
+                  <linearGradient id="galaVelvetBody" x1="45" y1="90" x2="215" y2="215" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#E60012" />
+                    <stop offset="52%" stop-color="#9E000C" />
+                    <stop offset="100%" stop-color="#4D0005" />
+                  </linearGradient>
+                  <linearGradient id="galaVelvetLid" x1="35" y1="58" x2="225" y2="98" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#FF2E3D" />
+                    <stop offset="55%" stop-color="#B8000E" />
+                    <stop offset="100%" stop-color="#680008" />
+                  </linearGradient>
+                  <linearGradient id="gold24kRibbon" x1="90" y1="18" x2="170" y2="215" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#FFF2B2" />
+                    <stop offset="35%" stop-color="#F5D77F" />
+                    <stop offset="70%" stop-color="#D4AF37" />
+                    <stop offset="100%" stop-color="#9A7611" />
+                  </linearGradient>
+                </defs>
+
+                <!-- ประกายดาวทองคำ 24K รอบกล่อง -->
+                <path class="gold-sparkle-1" d="M36 52 L40 62 L50 66 L40 70 L36 80 L32 70 L22 66 L32 62 Z" fill="#FFF2B2" />
+                <path class="gold-sparkle-2" d="M224 44 L227 52 L235 55 L227 58 L224 66 L221 58 L213 55 L221 52 Z" fill="#F5D77F" />
+                <path class="gold-sparkle-3" d="M230 148 L233 154 L239 157 L233 160 L230 166 L227 160 L221 157 L227 154 Z" fill="#FFF2B2" />
+
+                <!-- เงาฐานกล่องบนพื้นเวที -->
+                <ellipse cx="130" cy="222" rx="86" ry="12" fill="rgba(0,0,0,0.55)" />
+
+                <!-- ตัวกล่องกำมะหยี่แดงขอบทอง -->
+                <rect x="48" y="92" width="164" height="122" rx="16" fill="url(#galaVelvetBody)" stroke="#F5D77F" stroke-width="2" />
+                <!-- แถบริบบิ้นทอง 24K แนวตั้งและแนวนอน -->
+                <rect x="113" y="92" width="34" height="122" fill="url(#gold24kRibbon)" />
+                <rect x="48" y="142" width="164" height="24" fill="url(#gold24kRibbon)" opacity="0.95" />
+
+                <!-- ฝากล่องและโบว์ทองคำ 24K -->
+                <g>
+                  <path d="M130 60 C96 18, 58 32, 74 62 C86 68, 114 64, 130 60 Z" fill="url(#gold24kRibbon)" stroke="#FFF2B2" stroke-width="1" />
+                  <path d="M130 60 C164 18, 202 32, 186 62 C174 68, 146 64, 130 60 Z" fill="url(#gold24kRibbon)" stroke="#FFF2B2" stroke-width="1" />
+                  <rect x="38" y="60" width="184" height="36" rx="10" fill="url(#galaVelvetLid)" stroke="#FFF2B2" stroke-width="2" />
+                  <rect x="111" y="60" width="38" height="36" fill="url(#gold24kRibbon)" />
+                  <rect x="116" y="48" width="28" height="18" rx="7" fill="#FFF2B2" stroke="#D4AF37" stroke-width="1.5" />
+                </g>
+              </svg>
+            </div>
+
+            <div class="mt-4 space-y-1.5 max-w-xl">
+              <p class="text-xs font-bold uppercase tracking-[0.25em] text-champagne-light">
+                24K GOLDEN MYSTERY GIFT BOX
               </p>
-              <h3
-                id="slotFullName"
-                class="text-3xl md:text-5xl font-extrabold text-white leading-tight tracking-tight break-words"
-              >
-                เตรียมพร้อมลุ้นผู้โชคดี
+              <h3 class="text-2xl md:text-3xl font-extrabold gold-text">
+                คลิกปุ่มด้านล่างเพื่อเปิดเวทีเขย่ากล่องของขวัญเต็มจอ
               </h3>
-              <p id="slotTeam" class="text-lg md:text-2xl font-semibold text-silver">
-                เฉพาะผู้ลงทะเบียนร่วมงานและสแกน Checked-In แล้วเท่านั้น
+              <p id="idlePoolSubText" class="text-sm text-silver">
+                เฉพาะผู้ลงทะเบียนร่วมงานและสแกน Checked-In หน้างานแล้วเท่านั้น
               </p>
             </div>
           </div>
 
-          <!-- โหมดแสดงการ์ดหลายคนพร้อมกัน (Batch Multi-Draw Result Grid) -->
-          <div
-            id="multiStageDisplay"
-            class="hidden w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3.5 max-h-[410px] overflow-y-auto pr-1"
-          ></div>
-        </div>
-
-        <!-- ============================================================== -->
-        <!-- แถบปุ่มควบคุมหลักหน้าเวที (Spin / ได้รับรางวัล / สุ่มใหม่-สละสิทธิ์)   -->
-        <!-- ============================================================== -->
-        <div class="pt-4 border-t border-white/10">
-          <!-- ปุ่มกดเริ่มสุ่ม (แสดงเมื่ออยู่ในสถานะพร้อมสุ่ม) -->
-          <div id="spinActionGroup" class="flex flex-col items-center gap-2">
+          <!-- ปุ่มกดเริ่มสุ่มหลัก -->
+          <div class="relative z-10 pt-5 border-t border-champagne/25 flex flex-col items-center gap-2.5">
             <button
               type="button"
               id="btnStartSpin"
               onclick="startLuckyDrawSpin()"
-              class="btn-true-stage w-full max-w-xl py-5 px-8 rounded-2xl text-xl md:text-2xl font-extrabold text-white tracking-wide uppercase"
+              class="btn-true-stage w-full max-w-xl py-5 px-8 rounded-2xl text-xl md:text-2xl font-extrabold text-white tracking-wide"
             >
-              🎰 กดสุ่มผู้โชคดี (SPIN NOW)
+              🎁 กดสุ่มเปิดกล่องของขวัญ (SPIN NOW)
             </button>
-            <p class="text-[11px] text-silver">
-              เคล็ดลับสำหรับทีมงานเวที: สามารถกดปุ่ม <kbd class="px-2 py-0.5 rounded bg-white/10 text-champagne-light font-mono">Spacebar</kbd> เพื่อเริ่มหมุนสุ่มได้ทันที
+            <p class="text-xs text-silver text-center">
+              เคล็ดลับสำหรับทีมงานเวที: สามารถกดปุ่ม <kbd class="px-2 py-0.5 rounded bg-white/10 border border-champagne/40 text-champagne-light font-mono">Spacebar</kbd> เพื่อตัดเข้าสู่หน้าสุ่มเต็มจอได้ทันที
             </p>
           </div>
+        </div>
+      </section>
 
-          <!-- ปุ่มตัดสินผลการขานชื่อบนเวที: [ได้รับรางวัล] vs [สุ่มใหม่ / สละสิทธิ์] -->
-          <div id="decisionActionGroup" class="hidden flex flex-col sm:flex-row items-center justify-center gap-4">
-            <button
-              type="button"
-              id="btnConfirmWinner"
-              onclick="confirmCurrentWinners()"
-              class="btn-gold-confirm w-full sm:flex-1 max-w-md py-4 px-6 rounded-2xl text-lg md:text-xl font-extrabold tracking-wide"
-            >
-              ✓ ได้รับรางวัล (ยืนยันรับสิทธิ์ & ส่ง LINE)
-            </button>
+      <!-- ================================================================ -->
+      <!-- RIGHT COLUMN (4 COLS): 24K GOLD PRIZE PEDESTAL & DRAW CONTROLS   -->
+      <!-- ================================================================ -->
+      <aside class="lg:col-span-4 flex flex-col">
+        <div class="glass-stage rounded-3xl p-5 md:p-6 space-y-5 flex-1 flex flex-col justify-between">
+          <div class="space-y-4">
+            <div class="flex items-center justify-between border-b border-champagne/25 pb-3">
+              <h2 class="text-sm font-bold uppercase tracking-wider text-champagne-light">
+                1. เลือกรายการของรางวัล
+              </h2>
+              <span id="prizeRemainingBadge" class="gold-pill text-xs font-extrabold px-3 py-0.5 rounded-full">
+                คงเหลือ 0 / 0
+              </span>
+            </div>
 
-            <button
-              type="button"
-              id="btnRedrawForfeit"
-              onclick="forfeitAndRedrawAll()"
-              class="btn-dark-action w-full sm:w-auto py-4 px-7 rounded-2xl text-base md:text-lg font-bold text-silver"
-            >
-              ↻ สุ่มใหม่ / สละสิทธิ์
-            </button>
+            <!-- Dropdown 1: กลุ่มรางวัล (PrizeGroup) -->
+            <div>
+              <label for="prizeGroupSelect" class="block text-xs font-medium text-silver mb-1.5">
+                กลุ่มรางวัล (Prize Group)
+              </label>
+              <select
+                id="prizeGroupSelect"
+                onchange="onPrizeGroupChange()"
+                class="luxury-select w-full rounded-xl px-3.5 py-2.5 text-sm font-semibold"
+              >
+                <option value="">กำลังโหลดกลุ่มรางวัล...</option>
+              </select>
+            </div>
+
+            <!-- Dropdown 2: รายการของรางวัลในกลุ่ม -->
+            <div>
+              <label for="prizeItemSelect" class="block text-xs font-medium text-silver mb-1.5">
+                ของรางวัล (Prize Item)
+              </label>
+              <select
+                id="prizeItemSelect"
+                onchange="onPrizeItemChange()"
+                class="luxury-select w-full rounded-xl px-3.5 py-2.5 text-sm font-semibold"
+              >
+                <option value="">กำลังโหลดของรางวัล...</option>
+              </select>
+            </div>
+
+            <!-- กรอบแท่นโชว์ภาพของรางวัล 16:9 ขอบทอง 24K -->
+            <div class="bg-velvet-950/90 border-2 border-champagne rounded-2xl p-3 space-y-3 shadow-2xl">
+              <div class="relative aspect-video w-full rounded-xl overflow-hidden bg-velvet-900 flex items-center justify-center">
+                <img
+                  id="prizePreviewImg"
+                  src="https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&w=800&q=80"
+                  alt="Prize Image"
+                  onerror="this.onerror=null;this.src=CONFIG.DEFAULT_PRIZE_IMAGE_URL;"
+                  class="w-full h-full object-cover transition-all duration-500"
+                />
+                <div class="absolute top-2.5 right-2.5 bg-velvet-950/85 backdrop-blur-md border border-champagne px-3 py-1 rounded-full">
+                  <span id="prizeQtyOverlayText" class="text-xs font-bold text-champagne-light">0 / 0 รางวัล</span>
+                </div>
+              </div>
+              <div class="text-center px-2 pb-1">
+                <p id="prizeGroupLabel" class="text-[11px] font-semibold uppercase tracking-widest text-silver">
+                  PRIZE CATEGORY
+                </p>
+                <h3 id="prizeTitleLabel" class="text-lg md:text-xl font-extrabold gold-text leading-snug mt-0.5">
+                  กรุณาเลือกรายการของรางวัล
+                </h3>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. รูปแบบการกดสุ่มในรอบนี้ -->
+          <div class="pt-4 border-t border-champagne/25 space-y-3">
+            <label class="block text-xs font-bold uppercase tracking-wider text-champagne-light">
+              2. รูปแบบการกดสุ่มในรอบนี้
+            </label>
+
+            <div class="grid grid-cols-2 gap-2.5">
+              <button
+                type="button"
+                id="modeSingleBtn"
+                onclick="setDrawMode('SINGLE')"
+                class="py-2.5 px-3 rounded-xl text-xs font-bold border transition"
+              >
+                สุ่มทีละ 1 รางวัล
+              </button>
+              <button
+                type="button"
+                id="modeBatchBtn"
+                onclick="setDrawMode('BATCH')"
+                class="py-2.5 px-3 rounded-xl text-xs font-bold border transition"
+              >
+                สุ่มพร้อมกันหลายรางวัล
+              </button>
+            </div>
+
+            <!-- กล่องระบุจำนวนรางวัลเมื่อเลือกโหมดสุ่มพร้อมกันหลายรางวัล -->
+            <div id="batchCountBox" class="hidden bg-velvet-950/85 border border-champagne/40 rounded-xl p-3 space-y-2">
+              <div class="flex items-center justify-between gap-2">
+                <label for="batchCountInput" class="text-xs text-silver font-medium">
+                  จำนวนรางวัลที่ต้องการสุ่มพร้อมกัน:
+                </label>
+                <input
+                  type="number"
+                  id="batchCountInput"
+                  min="1"
+                  max="50"
+                  value="2"
+                  oninput="clampBatchInput()"
+                  onchange="clampBatchInput()"
+                  class="w-20 bg-velvet-900 border border-champagne rounded-lg px-2.5 py-1.5 text-center text-sm font-bold text-champagne-light focus:outline-none"
+                />
+              </div>
+              <div class="flex items-center justify-between text-[11px]">
+                <span class="text-silver">สุ่มสูงสุดไม่เกินของคงเหลือและคนใน Pool</span>
+                <button
+                  type="button"
+                  onclick="fillMaxRemainingBatch()"
+                  class="text-champagne-light underline hover:text-white font-semibold"
+                >
+                  สุ่มครบจำนวนคงเหลือ
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <!-- ==================================================================== -->
+  <!-- DEDICATED FULL-SCREEN FOCUS SPIN STAGE ("เวลากดสุ่ม แสดงเฉพาะหน้าสุ่ม") -->
+  <!-- ==================================================================== -->
+  <section
+    id="focusSpinStage"
+    class="hidden fixed inset-0 z-40 flex flex-col justify-between px-4 py-5 md:px-10 md:py-7 select-none overflow-hidden"
+  >
+    <!-- Focus Stage Top Header: โลโก้ True สีขาวตรงกลาง + ชื่อรางวัลที่กำลังชิงโชค -->
+    <header class="relative z-30 max-w-6xl w-full mx-auto flex flex-col items-center text-center">
+      <!-- ปุ่มกลับหน้าหลักมุมขวาบน (แสดงเฉพาะหลังหยุดหมุน เผื่อต้องการยกเลิกรอบโดยไม่ตัดสิทธิ์ใคร) -->
+      <button
+        type="button"
+        id="btnBackToDashboard"
+        onclick="cancelAndReturnToDashboard()"
+        class="hidden absolute right-0 top-0 px-4 py-2 rounded-xl bg-velvet-900/90 border border-champagne/50 text-xs md:text-sm font-semibold text-champagne-light hover:border-white hover:text-white transition"
+      >
+        ← กลับหน้าหลัก
+      </button>
+
+      <img
+        src="https://img2.pic.in.th/True--W9082df0ce2da3b92.png"
+        alt="True"
+        onerror="this.onerror=null;this.src='https://placehold.co/180x58/1A080C/FFFFFF?text=true';"
+        class="w-[84px] md:w-[98px] h-auto object-contain mb-2.5 drop-shadow-[0_2px_10px_rgba(0,0,0,0.6)]"
+      />
+
+      <div class="inline-flex flex-wrap items-center justify-center gap-2">
+        <span id="focusPrizeGroupPill" class="gold-pill text-[11px] md:text-xs font-extrabold px-3.5 py-0.5 rounded-full uppercase tracking-wider">
+          GRAND PRIZE
+        </span>
+        <span id="focusDrawTargetBadge" class="px-3 py-0.5 rounded-full bg-truered/90 border border-champagne-light/60 text-[11px] md:text-xs font-bold text-white">
+          สุ่มผู้โชคดี 1 รางวัล
+        </span>
+      </div>
+
+      <h2 id="focusPrizeTitle" class="text-2xl md:text-4xl font-extrabold gold-text tracking-tight mt-1.5 max-w-4xl truncate">
+        รางวัลพิเศษประจำงาน
+      </h2>
+    </header>
+
+    <!-- Focus Stage Center Workspace -->
+    <div class="relative z-20 flex-1 max-w-6xl w-full mx-auto my-4 flex flex-col items-center justify-center min-h-0">
+
+      <!-- ================================================================ -->
+      <!-- PHASE A: SHAKING 24K GIFT BOX & BOUNCING EMPLOYEE NAMES ARENA    -->
+      <!-- ================================================================ -->
+      <div
+        id="phaseShakingArena"
+        class="focus-arena-frame relative w-full h-full min-h-[380px] max-h-[640px] rounded-[32px] overflow-hidden flex flex-col items-center justify-between p-6 md:p-8"
+      >
+        <!-- Layer สำหรับแคปซูลรายชื่อที่พุ่งออกจากกล่องและเด้งชนขอบเวที -->
+        <div id="bouncingCapsulesLayer" class="absolute inset-0 pointer-events-none overflow-hidden z-10"></div>
+
+        <!-- จออ่านรายชื่อความเร็วสูงเหนือกล่องของขวัญ -->
+        <div
+          id="rollingTickerCard"
+          class="relative z-20 mt-1 bg-velvet-950/90 backdrop-blur-md border-2 border-champagne rounded-3xl px-7 py-4 md:px-12 md:py-5 text-center max-w-2xl w-full shadow-[0_18px_45px_rgba(0,0,0,0.75)] transition-transform duration-75"
+        >
+          <p class="text-[11px] font-bold uppercase tracking-[0.25em] text-champagne-light">
+            OPENING 24K GOLDEN GIFT BOX...
+          </p>
+          <p id="rollingEmpId" class="text-2xl md:text-4xl font-mono font-extrabold text-champagne-light tracking-widest mt-1">
+            • • • • • •
+          </p>
+          <h3 id="rollingFullName" class="text-3xl md:text-5xl font-extrabold text-white leading-tight mt-1 truncate">
+            กำลังเขย่ากล่องสุ่มรายชื่อ...
+          </h3>
+          <p id="rollingTeam" class="text-base md:text-xl font-semibold text-silver mt-1 truncate">
+            ทีมปฏิบัติการ
+          </p>
+        </div>
+
+        <!-- ลำแสงทองคำพุ่งจากในกล่อง + ตัวกล่องของขวัญกำมะหยี่แดงเขย่าเปิดฝา -->
+        <div class="relative z-20 flex flex-col items-center justify-end pb-1">
+          <div class="golden-beam-cone"></div>
+
+          <div id="focusGiftBoxWrapper" class="gift-box-shaking relative w-44 h-44 md:w-52 md:h-52">
+            <svg class="w-full h-full drop-shadow-[0_24px_40px_rgba(0,0,0,0.85)]" viewBox="0 0 240 220" fill="none">
+              <defs>
+                <linearGradient id="spinVelvetBody" x1="40" y1="88" x2="200" y2="205" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#FF1F30" />
+                  <stop offset="55%" stop-color="#9E000C" />
+                  <stop offset="100%" stop-color="#4A0005" />
+                </linearGradient>
+                <linearGradient id="spinVelvetLid" x1="30" y1="55" x2="210" y2="92" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#FF3B4A" />
+                  <stop offset="55%" stop-color="#C20010" />
+                  <stop offset="100%" stop-color="#680008" />
+                </linearGradient>
+                <linearGradient id="spinGoldRibbon" x1="95" y1="20" x2="145" y2="205" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#FFF2B2" />
+                  <stop offset="48%" stop-color="#F5D77F" />
+                  <stop offset="100%" stop-color="#B88A14" />
+                </linearGradient>
+                <radialGradient id="boxMouthGlow" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#FFFBEB" stop-opacity="1" />
+                  <stop offset="55%" stop-color="#F5D77F" stop-opacity="0.65" />
+                  <stop offset="100%" stop-color="#E60012" stop-opacity="0" />
+                </radialGradient>
+              </defs>
+
+              <!-- แสงทองสว่างเรืองรองปากกล่อง -->
+              <ellipse cx="120" cy="88" rx="88" ry="32" fill="url(#boxMouthGlow)" />
+
+              <!-- ตัวกล่องกำมะหยี่แดง -->
+              <rect x="44" y="88" width="152" height="114" rx="16" fill="url(#spinVelvetBody)" stroke="#F5D77F" stroke-width="2.2" />
+              <rect x="105" y="88" width="30" height="114" fill="url(#spinGoldRibbon)" />
+              <rect x="44" y="135" width="152" height="22" fill="url(#spinGoldRibbon)" opacity="0.95" />
+
+              <!-- ฝากล่องกระเพื่อมเปิดแง้มปล่อยป้ายชื่อเด้งออกมา -->
+              <g class="svg-gift-lid">
+                <path d="M120 56 C90 18, 56 32, 72 58 C84 64, 108 60, 120 56 Z" fill="url(#spinGoldRibbon)" stroke="#FFF2B2" stroke-width="1" />
+                <path d="M120 56 C150 18, 184 32, 168 58 C156 64, 132 60, 120 56 Z" fill="url(#spinGoldRibbon)" stroke="#FFF2B2" stroke-width="1" />
+                <rect x="34" y="56" width="172" height="34" rx="10" fill="url(#spinVelvetLid)" stroke="#FFF2B2" stroke-width="2" />
+                <rect x="103" y="56" width="34" height="34" fill="url(#spinGoldRibbon)" />
+                <rect x="108" y="45" width="24" height="16" rx="6" fill="#FFF2B2" />
+              </g>
+            </svg>
           </div>
         </div>
       </div>
-    </section>
-  </main>
+
+      <!-- ================================================================ -->
+      <!-- PHASE B: WINNER SPOTLIGHT REVEAL (แสดงผลผู้โชคดีกลางเวทีคลีนเต็มตา) -->
+      <!-- ================================================================ -->
+      <div id="phaseWinnerReveal" class="hidden w-full flex flex-col items-center justify-center">
+        <!-- โหมดผู้โชคดีเดี่ยว 1 ท่าน -->
+        <div
+          id="singleStageDisplay"
+          class="winner-spotlight-card winner-glow w-full max-w-4xl rounded-[32px] p-8 md:p-12 text-center space-y-5"
+        >
+          <div class="inline-flex items-center gap-2 px-5 py-1.5 rounded-full bg-velvet-950/90 border border-champagne">
+            <span id="slotTopTag" class="text-xs md:text-sm font-extrabold tracking-widest text-champagne-light uppercase">
+              👑 CONGRATULATIONS • ผู้โชคดี 👑
+            </span>
+          </div>
+
+          <div class="py-2 space-y-3">
+            <p
+              id="slotEmpId"
+              class="text-3xl md:text-5xl font-mono font-extrabold text-champagne-light tracking-widest"
+            >
+              EMP001
+            </p>
+            <h3
+              id="slotFullName"
+              class="text-4xl md:text-6xl font-extrabold text-white leading-tight tracking-tight break-words"
+            >
+              ชื่อ-นามสกุลผู้โชคดี
+            </h3>
+            <p id="slotTeam" class="text-xl md:text-3xl font-semibold text-silver">
+              ทีม: -
+            </p>
+          </div>
+        </div>
+
+        <!-- โหมดผู้โชคดีพร้อมกันหลายท่าน (Batch Grid) -->
+        <div
+          id="multiStageDisplay"
+          class="hidden w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 max-h-[58vh] overflow-y-auto px-2 py-1"
+        ></div>
+      </div>
+    </div>
+
+    <!-- Focus Stage Bottom Decision Bar -->
+    <footer class="relative z-30 max-w-4xl w-full mx-auto min-h-[72px] flex items-center justify-center">
+      <!-- ข้อความสถานะระหว่างกำลังเขย่ากล่อง -->
+      <p id="spinningFooterHint" class="text-sm font-semibold text-champagne-light/90 tracking-wider animate-pulse">
+        ✨ กำลังเขย่ากล่องของขวัญค้นหาผู้โชคดี กรุณารอสักครู่... ✨
+      </p>
+
+      <!-- ปุ่มตัดสินผลหลังเปิดกล่อง: [ได้รับรางวัล] vs [สุ่มใหม่ / สละสิทธิ์] -->
+      <div id="decisionActionGroup" class="hidden w-full flex flex-col sm:flex-row items-center justify-center gap-4">
+        <button
+          type="button"
+          id="btnConfirmWinner"
+          onclick="confirmCurrentWinners()"
+          class="btn-gold-confirm w-full sm:flex-1 max-w-lg py-4 px-6 rounded-2xl text-lg md:text-xl font-extrabold tracking-wide"
+        >
+          ✓ ได้รับรางวัล (ยืนยันรับสิทธิ์ &amp; ส่ง LINE)
+        </button>
+
+        <button
+          type="button"
+          id="btnRedrawForfeit"
+          onclick="forfeitAndRedrawAll()"
+          class="btn-dark-action w-full sm:w-auto py-4 px-7 rounded-2xl text-base md:text-lg font-bold"
+        >
+          ↻ สุ่มใหม่ / สละสิทธิ์
+        </button>
+      </div>
+    </footer>
+  </section>
 
   <script>
     /**
      * ========================================================================
-     * CONFIG: ตั้งค่าระบบจุดเดียวด้านบนสุดของไฟล์
+     * CONFIG: ตั้งค่าระบบจุดเดียวด้านบนสุดของไฟล์ (ตรงตามโครงสร้างระบบจริง 100%)
      * ========================================================================
      */
     const CONFIG = {
@@ -544,7 +972,7 @@
       MAP_URL: 'https://maps.google.com/?q=True+Digital+Park+Bangkok',
       STAFF_PIN: '2026',
 
-      // ตั้งค่าความเร้าใจของการหมุนสล็อตบนเวที (มิลลิวินาที)
+      // ระยะเวลาเขย่ากล่องของขวัญและเด้งรายชื่อบนเวที (มิลลิวินาที)
       SPIN_DURATION_MS: 3200
     };
 
@@ -559,6 +987,7 @@
       selectedGroup: '',
       selectedPrizeId: '',
       drawMode: 'SINGLE', // 'SINGLE' | 'BATCH'
+      isFocusStageOpen: false,
       isSpinning: false,
       isConfirming: false,
       drawnCandidates: [], // ผู้โชคดีที่เพิ่งสุ่มขึ้นมา รอกดยืนยัน [ได้รับรางวัล]
@@ -567,7 +996,9 @@
         totalWinners: 0
       },
       soundEnabled: true,
-      audioCtx: null
+      audioCtx: null,
+      bouncingCapsules: [],
+      bounceRafId: null
     };
 
     /**
@@ -580,13 +1011,18 @@
 
       setDrawMode('SINGLE');
 
-      // รองรับปุ่มลัด Spacebar สำหรับกดเริ่มหมุนสล็อตบนเวที
+      // รองรับปุ่มลัด Spacebar สำหรับกดเริ่มหมุนสุ่มจากหน้าตั้งค่าหลัก
       document.addEventListener('keydown', (e) => {
         const tag = (e.target && e.target.tagName) ? e.target.tagName.toUpperCase() : '';
         if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA') return;
         if (Swal.isVisible()) return;
 
-        if (e.code === 'Space' && !stageState.isSpinning && stageState.drawnCandidates.length === 0) {
+        if (
+          e.code === 'Space' &&
+          !stageState.isFocusStageOpen &&
+          !stageState.isSpinning &&
+          stageState.drawnCandidates.length === 0
+        ) {
           e.preventDefault();
           startLuckyDrawSpin();
         }
@@ -594,6 +1030,12 @@
 
       await loadLuckyDrawData(false);
     });
+
+    function triggerGiftBoxClick() {
+      if (!stageState.isSpinning && stageState.drawnCandidates.length === 0) {
+        startLuckyDrawSpin();
+      }
+    }
 
     /**
      * ========================================================================
@@ -621,12 +1063,13 @@
         const gain = ctx.createGain();
         osc.type = 'triangle';
         osc.frequency.setValueAtTime(freq, now);
+        osc.frequency.exponentialRampToValueAtTime(freq * 1.15, now + 0.04);
         gain.gain.setValueAtTime(0.11, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.045);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.048);
         osc.connect(gain);
         gain.connect(ctx.destination);
         osc.start(now);
-        osc.stop(now + 0.045);
+        osc.stop(now + 0.048);
       } catch (_) {}
     }
 
@@ -645,12 +1088,12 @@
           osc.type = 'sine';
           const startAt = now + idx * 0.09;
           osc.frequency.setValueAtTime(freq, startAt);
-          gain.gain.setValueAtTime(0.2, startAt);
-          gain.gain.exponentialRampToValueAtTime(0.001, startAt + 0.55);
+          gain.gain.setValueAtTime(0.22, startAt);
+          gain.gain.exponentialRampToValueAtTime(0.001, startAt + 0.58);
           osc.connect(gain);
           gain.connect(ctx.destination);
           osc.start(startAt);
-          osc.stop(startAt + 0.55);
+          osc.stop(startAt + 0.58);
         });
       } catch (_) {}
     }
@@ -664,23 +1107,23 @@
     }
 
     /**
-     * พลุกระดาษสีแดงทรู-ทองแชมเปญ (Confetti Cannon)
+     * พลุกระดาษสีแดงทรู-ทองแชมเปญ 24K (Dual Confetti Cannons)
      */
     function launchLuxuryConfetti() {
       if (typeof confetti !== 'function') return;
       const colors = ['#E60012', '#D4AF37', '#F5D77F', '#FFFFFF'];
 
       confetti({
-        particleCount: 95,
+        particleCount: 100,
         angle: 60,
-        spread: 65,
+        spread: 68,
         origin: { x: 0, y: 0.65 },
         colors: colors
       });
       confetti({
-        particleCount: 95,
+        particleCount: 100,
         angle: 120,
-        spread: 65,
+        spread: 68,
         origin: { x: 1, y: 0.65 },
         colors: colors
       });
@@ -769,9 +1212,7 @@
     }
 
     function getSelectedPrize() {
-      return (
-        stageState.prizes.find((p) => p.prizeId === stageState.selectedPrizeId) || null
-      );
+      return stageState.prizes.find((p) => p.prizeId === stageState.selectedPrizeId) || null;
     }
 
     /**
@@ -805,14 +1246,7 @@
 
     function onPrizeGroupChange() {
       if (stageState.isSpinning || stageState.drawnCandidates.length > 0) {
-        // ป้องกันการเปลี่ยนรางวัลขณะยังไม่ได้กดยืนยันผู้โชคดีบนหน้าจอ
         document.getElementById('prizeGroupSelect').value = stageState.selectedGroup;
-        Swal.fire({
-          icon: 'warning',
-          title: 'มีรายชื่อผู้โชคดีรอกดยืนยันอยู่',
-          text: 'กรุณากดยืนยัน [ได้รับรางวัล] หรือกด [สุ่มใหม่ / สละสิทธิ์] ให้เสร็จก่อนเปลี่ยนหมวดรางวัล',
-          confirmButtonColor: '#E60012'
-        });
         return;
       }
       stageState.selectedGroup = document.getElementById('prizeGroupSelect').value;
@@ -843,7 +1277,6 @@
       if (keepPreviousPrize && filtered.some((p) => p.prizeId === prevPrizeId)) {
         stageState.selectedPrizeId = prevPrizeId;
       } else {
-        // เลือกรางวัลแรกในหมวดที่ยังมีของเหลืออยู่เป็นลำดับแรก
         const firstAvailable = filtered.find((p) => p.remainingQty > 0);
         stageState.selectedPrizeId = firstAvailable
           ? firstAvailable.prizeId
@@ -857,12 +1290,6 @@
     function onPrizeItemChange() {
       if (stageState.isSpinning || stageState.drawnCandidates.length > 0) {
         document.getElementById('prizeItemSelect').value = stageState.selectedPrizeId;
-        Swal.fire({
-          icon: 'warning',
-          title: 'มีรายชื่อผู้โชคดีรอกดยืนยันอยู่',
-          text: 'กรุณากดยืนยัน [ได้รับรางวัล] หรือกด [สุ่มใหม่ / สละสิทธิ์] ก่อนเปลี่ยนของรางวัล',
-          confirmButtonColor: '#E60012'
-        });
         return;
       }
       stageState.selectedPrizeId = document.getElementById('prizeItemSelect').value;
@@ -910,12 +1337,12 @@
       const batchBox = document.getElementById('batchCountBox');
 
       if (mode === 'SINGLE') {
-        singleBtn.className = 'py-2.5 px-3 rounded-xl text-xs font-bold border gold-pill border-white shadow';
-        batchBtn.className = 'py-2.5 px-3 rounded-xl text-xs font-bold border border-white/20 bg-obsidian-950/60 text-silver hover:text-white';
+        singleBtn.className = 'py-2.5 px-3 rounded-xl text-xs font-extrabold border gold-pill border-white shadow';
+        batchBtn.className = 'py-2.5 px-3 rounded-xl text-xs font-bold border border-champagne/35 bg-velvet-950/75 text-silver hover:text-white';
         batchBox.classList.add('hidden');
       } else {
-        batchBtn.className = 'py-2.5 px-3 rounded-xl text-xs font-bold border gold-pill border-white shadow';
-        singleBtn.className = 'py-2.5 px-3 rounded-xl text-xs font-bold border border-white/20 bg-obsidian-950/60 text-silver hover:text-white';
+        batchBtn.className = 'py-2.5 px-3 rounded-xl text-xs font-extrabold border gold-pill border-white shadow';
+        singleBtn.className = 'py-2.5 px-3 rounded-xl text-xs font-bold border border-champagne/35 bg-velvet-950/75 text-silver hover:text-white';
         batchBox.classList.remove('hidden');
         clampBatchInput();
       }
@@ -933,6 +1360,7 @@
       if (isNaN(val) || val < 1) val = 1;
       if (val > maxAllowed) val = maxAllowed;
       input.value = val;
+      updateSpinButtonState();
     }
 
     function fillMaxRemainingBatch() {
@@ -940,6 +1368,7 @@
       if (!prize) return;
       const maxAllowed = Math.max(1, Math.min(prize.remainingQty, getActivePool().length));
       document.getElementById('batchCountInput').value = maxAllowed;
+      updateSpinButtonState();
     }
 
     function refreshAllCountersUI() {
@@ -950,6 +1379,9 @@
         activePoolCount.toLocaleString();
       document.getElementById('statWinnersCount').textContent =
         stageState.stats.totalWinners.toLocaleString();
+
+      document.getElementById('idlePoolSubText').textContent =
+        'ผู้มีสิทธิ์ลุ้นรางวัลในกล่องของขวัญขณะนี้ ' + activePoolCount.toLocaleString() + ' ท่าน (Checked-In แล้ว)';
 
       const skippedBtn = document.getElementById('btnRestoreSkipped');
       if (stageState.skippedEmpIds.size > 0) {
@@ -984,22 +1416,50 @@
 
       spinBtn.disabled = false;
       if (stageState.drawMode === 'SINGLE') {
-        spinBtn.textContent = '🎰 กดสุ่มผู้โชคดี 1 รางวัล (SPIN NOW)';
+        spinBtn.textContent = '🎁 กดสุ่มเปิดกล่องของขวัญ 1 รางวัล (SPIN NOW)';
       } else {
         const count = Math.min(
           parseInt(document.getElementById('batchCountInput').value || '1', 10),
           prize.remainingQty,
           activePool.length
         );
-        spinBtn.textContent = '🎰 กดสุ่มพร้อมกัน ' + count + ' รางวัล (SPIN NOW)';
+        spinBtn.textContent = '🎁 กดสุ่มเปิดกล่องพร้อมกัน ' + count + ' รางวัล (SPIN NOW)';
       }
     }
 
     /**
      * ========================================================================
-     * 4. CRYPTOGRAPHIC FAIR SHUFFLE & ROLLING SLOT ANIMATION
+     * 4. FULL-SCREEN FOCUS SPIN STAGE & BOUNCING GIFT BOX PHYSICS
      * ========================================================================
      */
+    function openFocusSpinStage(prize, targetDrawCount) {
+      stageState.isFocusStageOpen = true;
+      document.getElementById('focusPrizeGroupPill').textContent = prize.prizeGroup || 'LUCKY DRAW';
+      document.getElementById('focusPrizeTitle').textContent = prize.prizeName;
+      document.getElementById('focusDrawTargetBadge').textContent =
+        targetDrawCount === 1
+          ? 'สุ่มผู้โชคดี 1 รางวัล'
+          : 'สุ่มพร้อมกัน ' + targetDrawCount + ' รางวัล';
+
+      const focusEl = document.getElementById('focusSpinStage');
+      document.body.classList.add('focus-mode-active');
+      focusEl.classList.remove('hidden');
+      // บังคับคำนวณขนาดกรอบเวทีทันทีเพื่อให้ฟิสิกส์การเด้งแม่นยำตั้งแต่วินาทีแรก
+      void focusEl.offsetWidth;
+    }
+
+    function closeFocusSpinStage() {
+      stopBouncingCapsules();
+      stageState.isFocusStageOpen = false;
+      document.getElementById('focusSpinStage').classList.add('hidden');
+      document.body.classList.remove('focus-mode-active');
+    }
+
+    function cancelAndReturnToDashboard() {
+      if (stageState.isSpinning || stageState.isConfirming) return;
+      resetStageToIdle();
+    }
+
     function pickRandomUniqueCandidates(pool, count) {
       const copy = pool.slice();
       const randBuf = new Uint32Array(copy.length);
@@ -1021,6 +1481,123 @@
       return copy.slice(0, count);
     }
 
+    /**
+     * ปล่อยป้ายแคปซูลรายชื่อพนักงานพุ่งออกจากปากกล่องของขวัญแล้วเด้งชนขอบเวที
+     */
+    function spawnBouncingCapsule(person) {
+      const layer = document.getElementById('bouncingCapsulesLayer');
+      const arena = document.getElementById('phaseShakingArena');
+      if (!layer || !arena) return;
+
+      // จำกัดไม่ให้เกิน 10 ป้ายพร้อมกันเพื่อความลื่นไหล 60fps บนโปรเจกเตอร์
+      if (stageState.bouncingCapsules.length >= 10) {
+        const oldest = stageState.bouncingCapsules.shift();
+        if (oldest && oldest.el && oldest.el.parentNode) {
+          oldest.el.parentNode.removeChild(oldest.el);
+        }
+      }
+
+      const boundsW = arena.clientWidth || window.innerWidth * 0.85;
+      const boundsH = arena.clientHeight || 480;
+
+      const el = document.createElement('div');
+      el.className = 'bouncing-name-capsule';
+      el.textContent = '✨ ' + person.empId + ' • ' + person.fullName;
+      layer.appendChild(el);
+
+      const pillW = el.offsetWidth || 210;
+      const pillH = el.offsetHeight || 38;
+
+      // จุดปล่อยออกจากปากกล่องของขวัญด้านล่างกึ่งกลาง
+      const startX = Math.max(16, Math.min(boundsW - pillW - 16, (boundsW - pillW) / 2 + (Math.random() - 0.5) * 50));
+      const startY = Math.max(140, boundsH - 175);
+
+      const dir = Math.random() < 0.5 ? -1 : 1;
+      const vx = dir * (4.0 + Math.random() * 5.2);
+      const vy = -(9.0 + Math.random() * 5.5);
+
+      stageState.bouncingCapsules.push({
+        el: el,
+        x: startX,
+        y: startY,
+        vx: vx,
+        vy: vy,
+        w: pillW,
+        h: pillH,
+        rot: (Math.random() - 0.5) * 18,
+        vRot: (Math.random() - 0.5) * 2.2,
+        bornAt: performance.now()
+      });
+    }
+
+    function startBouncingCapsulesLoop() {
+      const arena = document.getElementById('phaseShakingArena');
+
+      function stepPhysics(now) {
+        if (!stageState.isSpinning) return;
+        const boundsW = (arena && arena.clientWidth) || window.innerWidth * 0.85;
+        const boundsH = (arena && arena.clientHeight) || 480;
+
+        for (let i = stageState.bouncingCapsules.length - 1; i >= 0; i--) {
+          const item = stageState.bouncingCapsules[i];
+          const age = now - item.bornAt;
+
+          item.vy += 0.34; // แรงโน้มถ่วงจำลอง
+          item.x += item.vx;
+          item.y += item.vy;
+          item.rot += item.vRot;
+
+          // เด้งชนขอบซ้าย-ขวาของเวที
+          if (item.x <= 14) {
+            item.x = 14;
+            item.vx = Math.abs(item.vx) * 0.90;
+          } else if (item.x + item.w >= boundsW - 14) {
+            item.x = Math.max(14, boundsW - item.w - 14);
+            item.vx = -Math.abs(item.vx) * 0.90;
+          }
+
+          // เด้งชนขอบบน-ล่างของเวที
+          if (item.y <= 14) {
+            item.y = 14;
+            item.vy = Math.abs(item.vy) * 0.82;
+          } else if (item.y + item.h >= boundsH - 16) {
+            item.y = boundsH - item.h - 16;
+            item.vy = -Math.abs(item.vy) * 0.80;
+          }
+
+          const opacity = age > 1750 ? Math.max(0, 1 - (age - 1750) / 350) : 1;
+          item.el.style.opacity = opacity.toFixed(2);
+          item.el.style.transform =
+            'translate3d(' +
+            item.x.toFixed(1) +
+            'px,' +
+            item.y.toFixed(1) +
+            'px,0) rotate(' +
+            item.rot.toFixed(1) +
+            'deg)';
+
+          if (age > 2100) {
+            if (item.el.parentNode) item.el.parentNode.removeChild(item.el);
+            stageState.bouncingCapsules.splice(i, 1);
+          }
+        }
+
+        stageState.bounceRafId = requestAnimationFrame(stepPhysics);
+      }
+
+      stageState.bounceRafId = requestAnimationFrame(stepPhysics);
+    }
+
+    function stopBouncingCapsules() {
+      if (stageState.bounceRafId) {
+        cancelAnimationFrame(stageState.bounceRafId);
+        stageState.bounceRafId = null;
+      }
+      stageState.bouncingCapsules = [];
+      const layer = document.getElementById('bouncingCapsulesLayer');
+      if (layer) layer.innerHTML = '';
+    }
+
     async function startLuckyDrawSpin() {
       if (stageState.isSpinning || stageState.isConfirming) return;
 
@@ -1031,7 +1608,7 @@
         Swal.fire({
           icon: 'warning',
           title: 'ของรางวัลรายการนี้แจกครบแล้ว',
-          text: 'กรุณาเลือกรายการของรางวัลถัดไปจากเมนูซ้ายมือ',
+          text: 'กรุณาเลือกรายการของรางวัลถัดไปจากแท่นของรางวัลด้านขวามือ',
           confirmButtonColor: '#E60012'
         });
         return;
@@ -1056,35 +1633,51 @@
       }
       targetDrawCount = Math.min(targetDrawCount, prize.remainingQty, activePool.length);
 
-      // สุ่มผู้โชคดีล่วงหน้าด้วย Fisher-Yates Cryptographic Random
+      // สุ่มผู้โชคดีล่วงหน้าอย่างโปร่งใสด้วย Cryptographic Fisher-Yates Shuffle
       const selectedWinners = pickRandomUniqueCandidates(activePool, targetDrawCount);
 
       stageState.isSpinning = true;
       stageState.drawnCandidates = [];
 
-      // เตรียมหน้าจอเข้าสู่โหมด Rolling Slot
-      const singleBox = document.getElementById('singleStageDisplay');
-      const multiBox = document.getElementById('multiStageDisplay');
-      singleBox.classList.remove('hidden', 'winner-glow');
-      multiBox.classList.add('hidden');
+      // ตัดเข้าสู่หน้าสุ่มเต็มจอทันที (แสดงเฉพาะหน้าสุ่ม)
+      openFocusSpinStage(prize, targetDrawCount);
 
-      document.getElementById('spinActionGroup').classList.add('hidden');
-      document.getElementById('decisionActionGroup').classList.add('hidden');
-      document.getElementById('stageStatusLabel').textContent = 'ROLLING LUCKY DRAW...';
-      document.getElementById('slotTopTag').textContent =
-        targetDrawCount === 1
-          ? 'กำลังสุ่มผู้โชคดี 1 รางวัล...'
-          : 'กำลังสุ่มผู้โชคดีพร้อมกัน ' + targetDrawCount + ' รางวัล...';
+      const shakingArena = document.getElementById('phaseShakingArena');
+      const winnerReveal = document.getElementById('phaseWinnerReveal');
+      const giftBoxWrapper = document.getElementById('focusGiftBoxWrapper');
+      const backBtn = document.getElementById('btnBackToDashboard');
+      const spinningHint = document.getElementById('spinningFooterHint');
+      const decisionGroup = document.getElementById('decisionActionGroup');
 
-      // เอฟเฟกต์ Rolling Slot ชะลอความเร็วอย่างตื่นเต้น
+      backBtn.classList.add('hidden');
+      winnerReveal.classList.add('hidden');
+      decisionGroup.classList.add('hidden');
+      spinningHint.classList.remove('hidden');
+      shakingArena.classList.remove('hidden');
+
+      giftBoxWrapper.classList.remove('gift-box-burst');
+      giftBoxWrapper.classList.add('gift-box-shaking');
+
+      startBouncingCapsulesLoop();
+
+      // รันแอนิเมชันเขย่ากล่อง เด้งรายชื่อ และชะลอความเร็วเหมือนสล็อต 3.2 วินาที
       await runRollingSlotAnimation(activePool, CONFIG.SPIN_DURATION_MS);
 
-      // แสดงผลผู้โชคดีพร้อมพลุสีแดง-ทองและเสียง Fanfare
+      // ระเบิดเปิดฝากล่องของขวัญพร้อมเสียง Fanfare และพลุสีแดง-ทอง 24K
       stageState.isSpinning = false;
-      stageState.drawnCandidates = selectedWinners;
+      stopBouncingCapsules();
+
+      giftBoxWrapper.classList.remove('gift-box-shaking');
+      giftBoxWrapper.classList.add('gift-box-burst');
 
       playWinnerFanfare();
       launchLuxuryConfetti();
+
+      await new Promise((resolve) => setTimeout(resolve, 250));
+
+      stageState.drawnCandidates = selectedWinners;
+      shakingArena.classList.add('hidden');
+      spinningHint.classList.add('hidden');
 
       renderDrawnWinnersOnStage();
     }
@@ -1093,16 +1686,18 @@
       return new Promise((resolve) => {
         const startTime = performance.now();
         let lastTickAt = 0;
+        let lastSpawnAt = 0;
 
-        const idEl = document.getElementById('slotEmpId');
-        const nameEl = document.getElementById('slotFullName');
-        const teamEl = document.getElementById('slotTeam');
+        const idEl = document.getElementById('rollingEmpId');
+        const nameEl = document.getElementById('rollingFullName');
+        const teamEl = document.getElementById('rollingTeam');
+        const tickerCard = document.getElementById('rollingTickerCard');
 
         function step(now) {
           const elapsed = now - startTime;
           const progress = Math.min(1, elapsed / totalDurationMs);
 
-          // ค่อยๆ ชะลอจังหวะเปลี่ยนรายชื่อช่วงท้ายเหมือนวงล้อสล็อตจริง
+          // ค่อยๆ ชะลอความเร็วการเปลี่ยนชื่อช่วงท้ายอย่างตื่นเต้น
           const dynamicInterval = 42 + Math.pow(progress, 2.6) * 240;
 
           if (now - lastTickAt >= dynamicInterval) {
@@ -1111,7 +1706,20 @@
             idEl.textContent = randomPerson.empId;
             nameEl.textContent = randomPerson.fullName;
             teamEl.textContent = 'ทีม: ' + randomPerson.team;
+
+            tickerCard.style.transform = 'translateY(-4px) scale(1.015)';
+            setTimeout(() => {
+              tickerCard.style.transform = 'translateY(0) scale(1)';
+            }, 38);
+
             playSlotTick(560 + Math.floor((1 - progress) * 320));
+          }
+
+          // ปล่อยแคปซูลรายชื่อพุ่งเด้งออกจากกล่องต่อเนื่อง
+          if (now - lastSpawnAt >= 135 && progress < 0.90) {
+            lastSpawnAt = now;
+            const p = pool[Math.floor(Math.random() * pool.length)];
+            spawnBouncingCapsule(p);
           }
 
           if (progress < 1) {
@@ -1126,21 +1734,23 @@
     }
 
     /**
-     * แสดงรายชื่อผู้โชคดีที่สุ่มได้บนเวที (รอกดยืนยัน [ได้รับรางวัล] หรือ [สุ่มใหม่ / สละสิทธิ์])
+     * แสดงการ์ดผู้โชคดีกลางหน้า Focus Stage รอขานชื่อและกดยืนยันสิทธิ์
      */
     function renderDrawnWinnersOnStage() {
       const winners = stageState.drawnCandidates;
+      const revealSection = document.getElementById('phaseWinnerReveal');
       const singleBox = document.getElementById('singleStageDisplay');
       const multiBox = document.getElementById('multiStageDisplay');
 
-      document.getElementById('stageStatusLabel').textContent =
-        'CONGRATULATIONS • กรุณาขานชื่อและกดยืนยันสิทธิ์';
+      revealSection.classList.remove('hidden');
+      document.getElementById('btnBackToDashboard').classList.remove('hidden');
 
       if (winners.length === 1) {
         const w = winners[0];
         multiBox.classList.add('hidden');
-        singleBox.classList.remove('hidden');
-        singleBox.classList.add('winner-glow');
+        singleBox.classList.remove('hidden', 'winner-pop-enter');
+        void singleBox.offsetWidth;
+        singleBox.classList.add('winner-pop-enter');
 
         document.getElementById('slotTopTag').textContent = '👑 CONGRATULATIONS • ผู้โชคดี 👑';
         document.getElementById('slotEmpId').textContent = w.empId;
@@ -1152,23 +1762,26 @@
 
         multiBox.innerHTML = winners
           .map((w, idx) => {
+            const delayMs = idx * 55;
             return (
-              '<div class="winner-spotlight-card rounded-2xl p-4 flex flex-col justify-between gap-3 relative">' +
-              '<div class="flex items-center justify-between">' +
-              '<span class="gold-pill text-[11px] font-extrabold px-2.5 py-0.5 rounded-full">#' +
+              '<div style="animation-delay:' +
+              delayMs +
+              'ms" class="winner-spotlight-card winner-pop-enter rounded-2xl p-5 flex flex-col justify-between gap-3 relative opacity-0">' +
+              '<div class="flex items-center justify-between gap-2">' +
+              '<span class="gold-pill text-xs font-extrabold px-3 py-0.5 rounded-full">#' +
               (idx + 1) +
               ' • ' +
               escapeHtml(w.empId) +
               '</span>' +
               '<button type="button" onclick="redrawSingleSlotInBatch(' +
               idx +
-              ')" class="text-[11px] px-2.5 py-1 rounded-lg bg-obsidian-950/90 border border-white/20 text-silver hover:border-champagne-light hover:text-champagne-light transition" title="สุ่มเปลี่ยนเฉพาะคนนี้กรณีไม่อยู่ในงาน">↻ สุ่มเปลี่ยนคนนี้</button>' +
+              ')" class="text-xs px-3 py-1 rounded-lg bg-velvet-950/90 border border-champagne/40 text-champagne-light hover:border-white hover:text-white transition" title="สุ่มเปลี่ยนเฉพาะคนนี้กรณีไม่อยู่ในงาน">↻ สุ่มเปลี่ยนคนนี้</button>' +
               '</div>' +
               '<div>' +
-              '<p class="text-lg font-extrabold text-white leading-snug">' +
+              '<p class="text-xl font-extrabold text-white leading-snug">' +
               escapeHtml(w.fullName) +
               '</p>' +
-              '<p class="text-xs font-medium text-champagne-light mt-0.5">ทีม: ' +
+              '<p class="text-xs font-semibold text-champagne-light mt-1">ทีม: ' +
               escapeHtml(w.team) +
               '</p>' +
               '</div>' +
@@ -1183,12 +1796,11 @@
           ? '✓ ได้รับรางวัล (ยืนยันรับสิทธิ์ & ส่ง LINE)'
           : '✓ ได้รับรางวัลทั้งหมด ' + winners.length + ' ท่าน (ยืนยัน & ส่ง LINE)';
 
-      document.getElementById('spinActionGroup').classList.add('hidden');
       document.getElementById('decisionActionGroup').classList.remove('hidden');
     }
 
     /**
-     * สุ่มเปลี่ยนเฉพาะรายบุคคลในโหมดสุ่มหลายคน (กรณีมี 1 คนไม่อยู่ในห้องจัดงาน)
+     * สุ่มเปลี่ยนเฉพาะรายบุคคลในโหมดสุ่มหลายคน (กรณีมีบางคนไม่อยู่ในห้องจัดงาน)
      */
     function redrawSingleSlotInBatch(slotIndex) {
       const forfeitedPerson = stageState.drawnCandidates[slotIndex];
@@ -1228,7 +1840,7 @@
     }
 
     /**
-     * กดปุ่ม [สุ่มใหม่ / สละสิทธิ์]: พักชื่อคนที่ไม่อยู่ในงานไว้ แล้วหมุนสุ่มใหม่ทันที
+     * กดปุ่ม [สุ่มใหม่ / สละสิทธิ์]: พักชื่อคนที่ไม่อยู่ในงานไว้ แล้วเขย่ากล่องสุ่มใหม่ทันทีในหน้า Focus Stage
      */
     async function forfeitAndRedrawAll() {
       if (stageState.drawnCandidates.length === 0) return;
@@ -1244,7 +1856,7 @@
         Swal.fire({
           icon: 'info',
           title: 'ไม่มีรายชื่อคงเหลือในกองสุ่ม',
-          text: 'หากต้องการนำรายชื่อผู้สละสิทธิ์กลับมาสุ่มใหม่ สามารถกดปุ่มคืนสิทธิ์ด้านบนเวทีได้',
+          text: 'หากต้องการนำรายชื่อผู้สละสิทธิ์กลับมาสุ่มใหม่ สามารถกดปุ่มคืนสิทธิ์ด้านบนเวทีหลักได้',
           confirmButtonColor: '#E60012'
         });
         return;
@@ -1267,28 +1879,18 @@
     }
 
     function resetStageToIdle() {
+      stageState.isSpinning = false;
       stageState.drawnCandidates = [];
-      const singleBox = document.getElementById('singleStageDisplay');
-      const multiBox = document.getElementById('multiStageDisplay');
-
-      multiBox.classList.add('hidden');
-      singleBox.classList.remove('hidden', 'winner-glow');
+      closeFocusSpinStage();
 
       document.getElementById('stageStatusLabel').textContent = 'READY FOR LUCKY DRAW';
-      document.getElementById('slotTopTag').textContent = 'VIP LUCKY DRAW STAGE';
-      document.getElementById('slotEmpId').textContent = '• • • • • •';
-      document.getElementById('slotFullName').textContent = 'พร้อมสุ่มรางวัลถัดไป';
-      document.getElementById('slotTeam').textContent =
-        'ผู้มีสิทธิ์ลุ้นรางวัลคงเหลือใน Pool ' + getActivePool().length + ' ท่าน';
-
-      document.getElementById('decisionActionGroup').classList.add('hidden');
-      document.getElementById('spinActionGroup').classList.remove('hidden');
-      updateSpinButtonState();
+      refreshAllCountersUI();
+      updatePrizeShowcaseUI();
     }
 
     /**
      * ========================================================================
-     * 5. กดปุ่ม [ได้รับรางวัล] -> บันทึก Winners + หัก RemainingQty + ยิง Flex #3
+     * 5. กดปุ่ม [ได้รับรางวัล] -> บันทึก Winners + หักสต็อก + ส่ง LINE + กลับหน้าหลักอัตโนมัติ
      * ========================================================================
      */
     async function confirmCurrentWinners() {
@@ -1321,7 +1923,7 @@
           return;
         }
 
-        // 1. ตัดรายชื่อผู้โชคดีออกจาก Eligible Pool บนหน้าเว็บทันที 100%
+        // 1. ตัดรายชื่อผู้โชคดีออกจาก Eligible Pool ทันที 100%
         const confirmedSet = new Set(winnerEmpIds.map((id) => normalizeId(id)));
         stageState.eligiblePool = stageState.eligiblePool.filter(
           (p) => !confirmedSet.has(normalizeId(p.empId))
@@ -1334,9 +1936,8 @@
         }
         stageState.stats.totalWinners += winnerEmpIds.length;
 
-        // 3. รีเฟรช Dropdown และหน้าจอเตรียมสุ่มรอบต่อไป
+        // 3. สลับกลับสู่หน้าตั้งค่าหลักอัตโนมัติเพื่อเตรียมเลือกรางวัลรอบถัดไป
         populatePrizeItemsByGroup(true);
-        refreshAllCountersUI();
         resetStageToIdle();
 
         Swal.fire({
@@ -1372,7 +1973,7 @@
         html:
           '<div class="text-left text-sm space-y-2.5">' +
           '<p>ระบบจะคัดกรองเฉพาะพนักงานที่ <b>สแกน Checked-In เข้างานแล้ว</b> แต่ <b>ไม่มีรายชื่อได้รับรางวัลในชีท Winners</b></p>' +
-          '<div class="p-3 rounded-xl bg-obsidian-950 border border-champagne/40 text-center">' +
+          '<div class="p-3 rounded-xl bg-velvet-950 border border-champagne/45 text-center">' +
           '<span class="text-xs text-silver block">จำนวนผู้เช็คอินที่พลาดรางวัลในขณะนี้</span>' +
           '<span class="text-2xl font-extrabold text-champagne-light">' +
           nonWinnerCount.toLocaleString() +
@@ -1389,7 +1990,7 @@
         },
         showCancelButton: true,
         confirmButtonColor: '#E60012',
-        cancelButtonColor: '#262632',
+        cancelButtonColor: '#260D13',
         confirmButtonText: 'ยืนยันส่ง Flex ทันที',
         cancelButtonText: 'ยกเลิก',
         preConfirm: (pinVal) => {
