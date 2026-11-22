@@ -482,10 +482,10 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
               </svg>
             </div>
-            <h2 class="text-2xl font-bold text-white text-center tracking-tight">
+            <h2 id="attendStatusTitle" class="text-2xl font-bold text-white text-center tracking-tight">
               ลงทะเบียนสำเร็จ
             </h2>
-            <p class="text-xs text-[#C5CBD6] text-center mt-0.5">
+            <p id="attendStatusSub" class="text-xs text-[#C5CBD6] text-center mt-0.5">
               ส่งบัตรเข้าห้องแชท LINE เรียบร้อยแล้ว
             </p>
           </div>
@@ -549,14 +549,24 @@
             </div>
           </div>
 
-          <!-- ปุ่มปิดหน้าต่าง (ไม่มีปุ่มแผนที่เดินทางตามที่กำหนด) -->
-          <button
-            type="button"
-            onclick="closeLiffWindow()"
-            class="w-full py-3.5 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/20 text-sm font-semibold text-white transition"
-          >
-            ปิดหน้าต่าง
-          </button>
+          <!-- ปุ่มปิดหน้าต่าง + ปุ่มเปลี่ยนสถานะ (ซ่อนอัตโนมัติทันทีเมื่อเช็คอินเข้างานแล้ว) -->
+          <div class="space-y-2">
+            <button
+              type="button"
+              onclick="closeLiffWindow()"
+              class="w-full py-3.5 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/20 text-sm font-semibold text-white transition"
+            >
+              ปิดหน้าต่าง
+            </button>
+            <button
+              type="button"
+              id="btnChangeAttendStatus"
+              onclick="backToIntentSelection()"
+              class="w-full py-1.5 text-xs font-medium text-[#C5CBD6] hover:text-white underline underline-offset-2 transition"
+            >
+              เปลี่ยนสถานะการเข้าร่วมงาน
+            </button>
+          </div>
         </section>
 
         <!-- ============================================================== -->
@@ -654,7 +664,7 @@
       await initializeLiff();
     });
 
-    /* เชื่อมต่อ LINE LIFF SDK v2 และดึงรูป + ชื่อโปรไฟล์จริง */
+    /* เชื่อมต่อ LINE LIFF SDK v2 และดึงรูป + ชื่อโปรไฟล์จริง พร้อมเช็กบัตรเข้างานอัตโนมัติ */
     async function initializeLiff() {
       showLoading('กำลังเชื่อมต่อ LINE LIFF...');
       try {
@@ -678,6 +688,9 @@
         document.getElementById('profileAvatar').src = state.lineProfile.pictureUrl;
         document.getElementById('liffStatusDot').className =
           'absolute bottom-1.5 right-1.5 w-5 h-5 rounded-full bg-emerald-400 border-[3px] border-[#262B35]';
+
+        /* เช็กประวัติการลงทะเบียนทันที หากเคยลงทะเบียนแล้วจะเปิดหน้า QR เลยโดยไม่ส่ง Flex ซ้ำ */
+        await checkExistingRegistrationByLineId();
       } catch (err) {
         console.error('LIFF Init Error:', err);
         document.getElementById('profileName').textContent = 'ผู้ใช้งานผ่านเบราว์เซอร์';
@@ -685,6 +698,76 @@
           'absolute bottom-1.5 right-1.5 w-5 h-5 rounded-full bg-amber-400 border-[3px] border-[#262B35]';
       } finally {
         hideLoading();
+      }
+    }
+
+    /* เช็กประวัติการลงทะเบียนจาก LINE User ID แบบ Read-Only (ไม่เขียนทับชีทและไม่ส่ง Flex ซ้ำ) */
+    async function checkExistingRegistrationByLineId() {
+      if (!state.lineProfile.userId) return;
+
+      showLoading('กำลังตรวจสอบบัตรเข้างานของคุณ...');
+      try {
+        const res = await callGasApi({
+          action: 'getMyRegistration',
+          lineUserId: state.lineProfile.userId
+        });
+
+        if (!res || !res.success || !res.found || !res.registration) {
+          return;
+        }
+
+        const reg = res.registration;
+        state.verifiedEmployee = {
+          empId: reg.empId,
+          fullName: reg.fullName,
+          team: reg.team
+        };
+
+        if (reg.regStatus === 'ร่วมงาน') {
+          renderAttendPassUI(reg, true);
+          switchSection('stepSuccessAttend');
+        } else if (reg.regStatus === 'ไม่ร่วมงาน') {
+          document.getElementById('successDeclineName').textContent = reg.fullName;
+          document.getElementById('successDeclineMeta').textContent =
+            reg.empId + ' • ทีม ' + reg.team;
+          switchSection('stepSuccessDecline');
+        }
+      } catch (err) {
+        console.warn('Auto-check registration skipped:', err);
+      }
+    }
+
+    /* อัปเดตข้อมูลหน้าบัตร QR ตามสถานะจริง (ลงทะเบียนใหม่ / เปิดดูบัตรซ้ำ / เช็คอินแล้วล็อกสถานะ) */
+    function renderAttendPassUI(empOrReg, isReturningView) {
+      const qrUrl =
+        'https://quickchart.io/qr?size=300&margin=2&text=' +
+        encodeURIComponent(empOrReg.empId);
+      document.getElementById('successQrImg').src = qrUrl;
+      document.getElementById('successAttendName').textContent = empOrReg.fullName;
+      document.getElementById('successAttendMeta').textContent =
+        empOrReg.empId + ' • ' + empOrReg.team;
+
+      const titleEl = document.getElementById('attendStatusTitle');
+      const subEl = document.getElementById('attendStatusSub');
+      const changeBtn = document.getElementById('btnChangeAttendStatus');
+      const isCheckedIn = empOrReg.checkInStatus === 'Checked-In';
+
+      if (titleEl && subEl) {
+        if (isCheckedIn) {
+          titleEl.textContent = 'เช็คอินเข้างานแล้ว';
+          subEl.textContent =
+            'เวลาเข้างาน: ' + (empOrReg.checkInTime || '-') + ' • มีสิทธิ์ลุ้นรางวัลแล้ว';
+        } else if (isReturningView) {
+          titleEl.textContent = 'บัตรเข้างานของคุณ';
+          subEl.textContent = 'คุณลงทะเบียนเรียบร้อยแล้ว แสดง QR นี้หน้างานได้ทันที';
+        } else {
+          titleEl.textContent = 'ลงทะเบียนสำเร็จ';
+          subEl.textContent = 'ส่งบัตรเข้าห้องแชท LINE เรียบร้อยแล้ว';
+        }
+      }
+
+      if (changeBtn) {
+        changeBtn.classList.toggle('hidden', isCheckedIn);
       }
     }
 
@@ -785,6 +868,21 @@
         document.getElementById('empTeamDisplay').textContent = 'ทีม ' + res.employee.team;
 
         const noticeEl = document.getElementById('existingRegNotice');
+        const isAlreadyCheckedIn =
+          Boolean(res.existingRegistration) &&
+          res.existingRegistration.checkInStatus === 'Checked-In';
+
+        /* ล็อกป้องกันการเปลี่ยนสถานะเป็นไม่ร่วมงาน หากสแกนเข้างานไปแล้ว */
+        if (isAlreadyCheckedIn && state.selectedIntent === 'ไม่ร่วมงาน') {
+          noticeEl.textContent =
+            'รหัสนี้เช็คอินเข้างานเรียบร้อยแล้ว ไม่สามารถเปลี่ยนสถานะเป็น "ไม่ร่วมงาน" ได้';
+          noticeEl.classList.remove('hidden');
+          document.getElementById('btnConfirmAttend').classList.add('hidden');
+          document.getElementById('btnConfirmDecline').classList.add('hidden');
+          document.getElementById('employeeResultBox').classList.remove('hidden');
+          return;
+        }
+
         if (res.existingRegistration && res.existingRegistration.regStatus) {
           noticeEl.textContent =
             'รหัสนี้เคยแจ้ง "' +
@@ -875,14 +973,7 @@
         }
 
         if (regStatus === 'ร่วมงาน') {
-          const qrUrl =
-            'https://quickchart.io/qr?size=300&margin=2&text=' +
-            encodeURIComponent(state.verifiedEmployee.empId);
-          document.getElementById('successQrImg').src = qrUrl;
-          document.getElementById('successAttendName').textContent = state.verifiedEmployee.fullName;
-          document.getElementById('successAttendMeta').textContent =
-            state.verifiedEmployee.empId + ' • ' + state.verifiedEmployee.team;
-
+          renderAttendPassUI(state.verifiedEmployee, false);
           switchSection('stepSuccessAttend');
         } else {
           document.getElementById('successDeclineName').textContent = state.verifiedEmployee.fullName;
