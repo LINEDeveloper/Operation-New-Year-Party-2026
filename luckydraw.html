@@ -1,0 +1,1480 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Grand Lucky Draw Stage | Operation New Year Party 2026</title>
+
+  <!-- Google Fonts: Prompt -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <!-- Canvas Confetti (เอฟเฟกต์พลุกระดาษสีแดง-ทอง) -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            prompt: ['Prompt', 'sans-serif']
+          },
+          colors: {
+            obsidian: {
+              950: '#121216',
+              900: '#1C1C24',
+              800: '#262632'
+            },
+            truered: {
+              DEFAULT: '#E60012',
+              dark: '#7A000A'
+            },
+            champagne: {
+              DEFAULT: '#D4AF37',
+              light: '#F5D77F'
+            },
+            silver: '#B8B8C5'
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    body {
+      font-family: 'Prompt', sans-serif;
+      background-color: #121216;
+      background-image:
+        radial-gradient(ellipse at 50% -15%, rgba(230, 0, 18, 0.38) 0%, rgba(122, 0, 10, 0.14) 40%, rgba(18, 18, 22, 0) 70%),
+        radial-gradient(circle at 15% 85%, rgba(212, 175, 55, 0.14) 0%, rgba(18, 18, 22, 0) 45%),
+        radial-gradient(circle at 85% 85%, rgba(230, 0, 18, 0.15) 0%, rgba(18, 18, 22, 0) 45%);
+      color: #FFFFFF;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .glass-stage {
+      background: rgba(28, 28, 36, 0.84);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.72), inset 0 1px 0 rgba(245, 215, 127, 0.18);
+    }
+
+    .header-stage {
+      background: linear-gradient(90deg, #7A000A 0%, #E60012 50%, #7A000A 100%);
+      border-bottom: 2px solid #D4AF37;
+      box-shadow: 0 10px 35px rgba(230, 0, 18, 0.35);
+    }
+
+    .btn-true-stage {
+      background: linear-gradient(135deg, #E60012 0%, #7A000A 100%);
+      border: 2px solid #F5D77F;
+      box-shadow: 0 10px 35px rgba(230, 0, 18, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+      transition: all 0.2s ease;
+    }
+    .btn-true-stage:hover:not(:disabled) {
+      transform: translateY(-2px) scale(1.01);
+      box-shadow: 0 16px 45px rgba(230, 0, 18, 0.7);
+      filter: brightness(1.08);
+    }
+    .btn-true-stage:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .btn-gold-confirm {
+      background: linear-gradient(135deg, #D4AF37 0%, #F5D77F 50%, #D4AF37 100%);
+      color: #121216;
+      border: 2px solid #FFFFFF;
+      box-shadow: 0 10px 35px rgba(212, 175, 55, 0.45);
+      transition: all 0.2s ease;
+    }
+    .btn-gold-confirm:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 40px rgba(245, 215, 127, 0.65);
+      filter: brightness(1.05);
+    }
+
+    .btn-dark-action {
+      background: linear-gradient(135deg, #262632 0%, #17171F 100%);
+      border: 1px solid rgba(184, 184, 197, 0.4);
+      transition: all 0.2s ease;
+    }
+    .btn-dark-action:hover:not(:disabled) {
+      border-color: #F5D77F;
+      color: #F5D77F;
+    }
+
+    .gold-pill {
+      background: linear-gradient(90deg, #D4AF37 0%, #F5D77F 50%, #D4AF37 100%);
+      color: #121216;
+    }
+
+    .gold-text {
+      background: linear-gradient(90deg, #F5D77F 0%, #D4AF37 55%, #FFF2B2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .winner-spotlight-card {
+      background: radial-gradient(circle at 50% 0%, rgba(230, 0, 18, 0.28) 0%, rgba(28, 28, 36, 0.96) 65%);
+      border: 2px solid #D4AF37;
+      box-shadow: 0 0 45px rgba(212, 175, 55, 0.28), inset 0 0 25px rgba(212, 175, 55, 0.1);
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 25px rgba(212, 175, 55, 0.25); }
+      50% { box-shadow: 0 0 55px rgba(245, 215, 127, 0.55); }
+    }
+    .winner-glow {
+      animation: pulseGlow 2.2s infinite ease-in-out;
+    }
+
+    .luxury-select {
+      background-color: #121216;
+      border: 1px solid rgba(212, 175, 55, 0.45);
+      color: #FFFFFF;
+    }
+    .luxury-select:focus {
+      outline: none;
+      border-color: #F5D77F;
+      box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+    }
+
+    /* Custom Scrollbar สำหรับกรณีสุ่มพร้อมกันหลายรางวัล */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #121216;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #D4AF37;
+      border-radius: 9999px;
+    }
+
+    /* SweetAlert2 Luxury Stage Override */
+    div:where(.swal2-container) div:where(.swal2-popup) {
+      background: #1C1C24 !important;
+      border: 1px solid #D4AF37 !important;
+      border-radius: 1.25rem !important;
+      color: #FFFFFF !important;
+      font-family: 'Prompt', sans-serif !important;
+    }
+    div:where(.swal2-container) .swal2-title {
+      color: #F5D77F !important;
+    }
+    div:where(.swal2-container) .swal2-html-container {
+      color: #E2E2EC !important;
+    }
+  </style>
+</head>
+
+<body class="antialiased selection:bg-truered selection:text-white flex flex-col min-h-screen">
+  <!-- Loading Overlay -->
+  <div id="stageLoading" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-obsidian-950/90 backdrop-blur-md">
+    <div class="relative w-20 h-20 mb-4">
+      <div class="absolute inset-0 rounded-full border-4 border-champagne/20"></div>
+      <div class="absolute inset-0 rounded-full border-4 border-t-truered border-r-champagne-light border-b-transparent border-l-transparent animate-spin"></div>
+    </div>
+    <p id="stageLoadingText" class="text-base font-semibold text-champagne-light tracking-wide">
+      กำลังซิงก์ข้อมูลผู้มีสิทธิ์ลุ้นรางวัล...
+    </p>
+  </div>
+
+  <!-- ==================================================================== -->
+  <!-- TOP EXECUTIVE STAGE BAR                                              -->
+  <!-- ==================================================================== -->
+  <header class="header-stage px-6 py-3.5 sticky top-0 z-30">
+    <div class="max-w-[1600px] mx-auto flex flex-wrap items-center justify-between gap-4">
+      <div class="flex items-center gap-3.5">
+        <span class="gold-pill text-xs font-extrabold px-3.5 py-1 rounded-full tracking-wider uppercase shadow">
+          GRAND LUCKY DRAW
+        </span>
+        <div>
+          <h1 class="text-lg md:text-2xl font-extrabold text-white tracking-tight leading-none">
+            Operation New Year Party 2026
+          </h1>
+          <p class="text-[11px] md:text-xs text-champagne-light font-medium mt-0.5">
+            EXECUTIVE GALA NIGHT • LIVE STAGE SYSTEM
+          </p>
+        </div>
+      </div>
+
+      <!-- Top Control Buttons & Admin Actions -->
+      <div class="flex flex-wrap items-center gap-2.5">
+        <button
+          type="button"
+          id="btnSoundToggle"
+          onclick="toggleStageSound()"
+          class="px-3 py-2 rounded-xl bg-obsidian-950/60 border border-champagne/40 text-xs font-semibold text-champagne-light hover:bg-obsidian-950 transition"
+        >
+          🔊 เอฟเฟกต์เสียง: เปิด
+        </button>
+
+        <button
+          type="button"
+          onclick="loadLuckyDrawData(true)"
+          class="px-3 py-2 rounded-xl bg-obsidian-950/60 border border-white/25 text-xs font-semibold text-white hover:border-champagne-light transition"
+        >
+          ↻ ซิงก์ข้อมูลล่าสุด
+        </button>
+
+        <a
+          id="linkWinnersBoard"
+          href="winners.html"
+          target="_blank"
+          rel="noopener"
+          class="px-3 py-2 rounded-xl bg-obsidian-950/60 border border-white/25 text-xs font-semibold text-silver hover:text-white transition"
+        >
+          🏆 หน้าประกาศผลรางวัล
+        </a>
+
+        <!-- ปุ่มแอดมิน: ส่ง Flex ขอบคุณผู้พลาดรางวัลทั้งหมด -->
+        <button
+          type="button"
+          onclick="promptSendConsolationFlex()"
+          class="px-3.5 py-2 rounded-xl bg-obsidian-950/85 border border-champagne text-xs font-bold text-champagne-light hover:bg-obsidian-900 transition shadow"
+        >
+          💌 ส่ง Flex ขอบคุณผู้พลาดรางวัลทั้งหมด
+        </button>
+
+        <button
+          type="button"
+          onclick="toggleFullScreen()"
+          class="px-3 py-2 rounded-xl bg-obsidian-950/60 border border-white/25 text-xs font-semibold text-white hover:border-champagne-light transition"
+          title="ขยายเต็มจอโปรเจกเตอร์"
+        >
+          ⛶ เต็มจอ
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================================================================== -->
+  <!-- MAIN STAGE WORKSPACE                                                 -->
+  <!-- ==================================================================== -->
+  <main class="flex-1 max-w-[1600px] w-full mx-auto px-4 md:px-6 py-5 grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+    <!-- ================================================================== -->
+    <!-- LEFT COLUMN (4 COLS): เลือกกลุ่มรางวัล + ภาพรางวัล + รูปแบบการสุ่ม     -->
+    <!-- ================================================================== -->
+    <aside class="lg:col-span-4 flex flex-col gap-5">
+      <div class="glass-stage rounded-3xl p-5 space-y-4 flex-1 flex flex-col justify-between">
+        <div class="space-y-4">
+          <div class="flex items-center justify-between border-b border-white/10 pb-3">
+            <h2 class="text-sm font-bold uppercase tracking-wider text-champagne-light">
+              1. เลือกรายการของรางวัล
+            </h2>
+            <span id="prizeRemainingBadge" class="gold-pill text-xs font-extrabold px-3 py-0.5 rounded-full">
+              คงเหลือ 0 / 0
+            </span>
+          </div>
+
+          <!-- Dropdown 1: กลุ่มรางวัล (PrizeGroup) -->
+          <div>
+            <label for="prizeGroupSelect" class="block text-xs font-medium text-silver mb-1.5">
+              กลุ่มรางวัล (Prize Group)
+            </label>
+            <select
+              id="prizeGroupSelect"
+              onchange="onPrizeGroupChange()"
+              class="luxury-select w-full rounded-xl px-3.5 py-2.5 text-sm font-semibold"
+            >
+              <option value="">กำลังโหลดกลุ่มรางวัล...</option>
+            </select>
+          </div>
+
+          <!-- Dropdown 2: รายการของรางวัลในกลุ่ม -->
+          <div>
+            <label for="prizeItemSelect" class="block text-xs font-medium text-silver mb-1.5">
+              ของรางวัล (Prize Item)
+            </label>
+            <select
+              id="prizeItemSelect"
+              onchange="onPrizeItemChange()"
+              class="luxury-select w-full rounded-xl px-3.5 py-2.5 text-sm font-semibold"
+            >
+              <option value="">กำลังโหลดของรางวัล...</option>
+            </select>
+          </div>
+
+          <!-- กรอบแสดงภาพของรางวัลขนาดใหญ่ -->
+          <div class="bg-obsidian-950/90 border-2 border-champagne/60 rounded-2xl p-3 space-y-3 shadow-xl">
+            <div class="relative aspect-video w-full rounded-xl overflow-hidden bg-obsidian-900 flex items-center justify-center">
+              <img
+                id="prizePreviewImg"
+                src="https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&w=800&q=80"
+                alt="Prize Image"
+                onerror="this.src=CONFIG.DEFAULT_PRIZE_IMAGE_URL"
+                class="w-full h-full object-cover transition-all duration-500"
+              />
+              <div class="absolute top-2.5 right-2.5 bg-obsidian-950/85 backdrop-blur-md border border-champagne px-3 py-1 rounded-full">
+                <span id="prizeQtyOverlayText" class="text-xs font-bold text-champagne-light">0 / 0 รางวัล</span>
+              </div>
+            </div>
+            <div class="text-center px-2 pb-1">
+              <p id="prizeGroupLabel" class="text-[11px] font-semibold uppercase tracking-widest text-silver">
+                PRIZE CATEGORY
+              </p>
+              <h3 id="prizeTitleLabel" class="text-lg md:text-xl font-extrabold gold-text leading-snug mt-0.5">
+                กรุณาเลือกรายการของรางวัล
+              </h3>
+            </div>
+          </div>
+        </div>
+
+        <!-- ตั้งค่ารูปแบบการกดสุ่ม (ทีละ 1 รางวัล หรือ พร้อมกันหลายรางวัล) -->
+        <div class="pt-3 border-t border-white/10 space-y-3">
+          <label class="block text-xs font-bold uppercase tracking-wider text-champagne-light">
+            2. รูปแบบการกดสุ่มในรอบนี้
+          </label>
+
+          <div class="grid grid-cols-2 gap-2.5">
+            <button
+              type="button"
+              id="modeSingleBtn"
+              onclick="setDrawMode('SINGLE')"
+              class="py-2.5 px-3 rounded-xl text-xs font-bold border transition"
+            >
+              สุ่มทีละ 1 รางวัล
+            </button>
+            <button
+              type="button"
+              id="modeBatchBtn"
+              onclick="setDrawMode('BATCH')"
+              class="py-2.5 px-3 rounded-xl text-xs font-bold border transition"
+            >
+              สุ่มพร้อมกันหลายรางวัล
+            </button>
+          </div>
+
+          <!-- กล่องระบุจำนวนรางวัลเมื่อเลือกโหมดสุ่มพร้อมกันหลายรางวัล -->
+          <div id="batchCountBox" class="hidden bg-obsidian-950/80 border border-champagne/35 rounded-xl p-3 space-y-2">
+            <div class="flex items-center justify-between gap-2">
+              <label for="batchCountInput" class="text-xs text-silver font-medium">
+                จำนวนรางวัลที่ต้องการสุ่มพร้อมกัน:
+              </label>
+              <input
+                type="number"
+                id="batchCountInput"
+                min="1"
+                max="50"
+                value="2"
+                onchange="clampBatchInput()"
+                class="w-20 bg-obsidian-900 border border-champagne rounded-lg px-2.5 py-1.5 text-center text-sm font-bold text-champagne-light focus:outline-none"
+              />
+            </div>
+            <div class="flex items-center justify-between text-[11px]">
+              <span class="text-silver">สุ่มสูงสุดไม่เกินจำนวนคงเหลือและคนใน Pool</span>
+              <button
+                type="button"
+                onclick="fillMaxRemainingBatch()"
+                class="text-champagne-light underline hover:text-white font-semibold"
+              >
+                สุ่มครบจำนวนคงเหลือ
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ================================================================== -->
+    <!-- RIGHT COLUMN (8 COLS): เวทีสุ่มรายชื่อ Rolling Slot & ยืนยันสิทธิ์      -->
+    <!-- ================================================================== -->
+    <section class="lg:col-span-8 flex flex-col gap-5">
+      <!-- แถบสถิติผู้มีสิทธิ์ลุ้นรางวัล Real-time -->
+      <div class="grid grid-cols-3 gap-3.5">
+        <div class="glass-stage rounded-2xl px-4 py-3.5 flex items-center justify-between">
+          <div>
+            <p class="text-xs text-silver">เช็คอินเข้างานทั้งหมด</p>
+            <p id="statTotalCheckedIn" class="text-2xl md:text-3xl font-extrabold text-white mt-0.5">0</p>
+          </div>
+          <span class="text-xs px-2.5 py-1 rounded-lg bg-white/5 text-silver">Checked-In</span>
+        </div>
+
+        <div class="glass-stage rounded-2xl px-4 py-3.5 flex items-center justify-between border-champagne/60">
+          <div>
+            <p class="text-xs text-champagne-light font-semibold">มีสิทธิ์ลุ้นรางวัลคงเหลือ (Pool)</p>
+            <p id="statEligiblePool" class="text-2xl md:text-3xl font-extrabold text-champagne-light mt-0.5">0</p>
+          </div>
+          <span class="gold-pill text-[11px] font-bold px-2.5 py-1 rounded-lg">Eligible</span>
+        </div>
+
+        <div class="glass-stage rounded-2xl px-4 py-3.5 flex items-center justify-between">
+          <div>
+            <p class="text-xs text-silver">ได้รับรางวัลไปแล้ว</p>
+            <p id="statWinnersCount" class="text-2xl md:text-3xl font-extrabold text-emerald-400 mt-0.5">0</p>
+          </div>
+          <span class="text-xs px-2.5 py-1 rounded-lg bg-emerald-500/15 text-emerald-300">Winners</span>
+        </div>
+      </div>
+
+      <!-- เวทีแสดงผลหลัก (Grand Draw Arena) -->
+      <div class="glass-stage rounded-3xl p-6 md:p-8 flex-1 flex flex-col justify-between relative overflow-hidden">
+        <!-- แถบหัวเวที -->
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-4">
+          <div>
+            <span id="stageStatusLabel" class="text-xs font-bold uppercase tracking-[0.2em] text-champagne-light">
+              READY FOR LUCKY DRAW
+            </span>
+            <h2 id="stageActivePrizeHeader" class="text-xl md:text-2xl font-extrabold text-white mt-0.5">
+              พร้อมสุ่มผู้โชคดี
+            </h2>
+          </div>
+
+          <!-- แจ้งจำนวนรายชื่อที่ถูกพักสิทธิ์กรณีไม่อยู่ในงาน (ถ้ามี) -->
+          <button
+            type="button"
+            id="btnRestoreSkipped"
+            onclick="restoreSkippedCandidates()"
+            class="hidden text-xs px-3 py-1.5 rounded-xl bg-amber-950/70 border border-champagne/50 text-champagne-light hover:bg-amber-900/60 transition"
+          >
+            พักชื่อผู้สละสิทธิ์ชั่วคราว 0 คน (คลิกเพื่อคืนสิทธิ์เข้า Pool)
+          </button>
+        </div>
+
+        <!-- ============================================================== -->
+        <!-- พื้นที่กลางเวที: สลับระหว่าง Single Spotlight / Rolling / Multi Grid -->
+        <!-- ============================================================== -->
+        <div class="my-6 flex-1 flex flex-col items-center justify-center min-h-[320px]">
+          <!-- โหมดแสดงการ์ดใหญ่เดี่ยว (Idle / Rolling / 1 Winner) -->
+          <div
+            id="singleStageDisplay"
+            class="winner-spotlight-card w-full max-w-3xl rounded-3xl p-8 md:p-10 text-center space-y-4 transition-all duration-300"
+          >
+            <div class="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-obsidian-950/80 border border-champagne/50">
+              <span id="slotTopTag" class="text-xs font-bold tracking-widest text-champagne-light uppercase">
+                VIP LUCKY DRAW STAGE
+              </span>
+            </div>
+
+            <div class="py-3 space-y-3">
+              <p
+                id="slotEmpId"
+                class="text-2xl md:text-4xl font-mono font-extrabold text-champagne-light tracking-widest"
+              >
+                • • • • • •
+              </p>
+              <h3
+                id="slotFullName"
+                class="text-3xl md:text-5xl font-extrabold text-white leading-tight tracking-tight break-words"
+              >
+                เตรียมพร้อมลุ้นผู้โชคดี
+              </h3>
+              <p id="slotTeam" class="text-lg md:text-2xl font-semibold text-silver">
+                เฉพาะผู้ลงทะเบียนร่วมงานและสแกน Checked-In แล้วเท่านั้น
+              </p>
+            </div>
+          </div>
+
+          <!-- โหมดแสดงการ์ดหลายคนพร้อมกัน (Batch Multi-Draw Result Grid) -->
+          <div
+            id="multiStageDisplay"
+            class="hidden w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3.5 max-h-[410px] overflow-y-auto pr-1"
+          ></div>
+        </div>
+
+        <!-- ============================================================== -->
+        <!-- แถบปุ่มควบคุมหลักหน้าเวที (Spin / ได้รับรางวัล / สุ่มใหม่-สละสิทธิ์)   -->
+        <!-- ============================================================== -->
+        <div class="pt-4 border-t border-white/10">
+          <!-- ปุ่มกดเริ่มสุ่ม (แสดงเมื่ออยู่ในสถานะพร้อมสุ่ม) -->
+          <div id="spinActionGroup" class="flex flex-col items-center gap-2">
+            <button
+              type="button"
+              id="btnStartSpin"
+              onclick="startLuckyDrawSpin()"
+              class="btn-true-stage w-full max-w-xl py-5 px-8 rounded-2xl text-xl md:text-2xl font-extrabold text-white tracking-wide uppercase"
+            >
+              🎰 กดสุ่มผู้โชคดี (SPIN NOW)
+            </button>
+            <p class="text-[11px] text-silver">
+              เคล็ดลับสำหรับทีมงานเวที: สามารถกดปุ่ม <kbd class="px-2 py-0.5 rounded bg-white/10 text-champagne-light font-mono">Spacebar</kbd> เพื่อเริ่มหมุนสุ่มได้ทันที
+            </p>
+          </div>
+
+          <!-- ปุ่มตัดสินผลการขานชื่อบนเวที: [ได้รับรางวัล] vs [สุ่มใหม่ / สละสิทธิ์] -->
+          <div id="decisionActionGroup" class="hidden flex flex-col sm:flex-row items-center justify-center gap-4">
+            <button
+              type="button"
+              id="btnConfirmWinner"
+              onclick="confirmCurrentWinners()"
+              class="btn-gold-confirm w-full sm:flex-1 max-w-md py-4 px-6 rounded-2xl text-lg md:text-xl font-extrabold tracking-wide"
+            >
+              ✓ ได้รับรางวัล (ยืนยันรับสิทธิ์ & ส่ง LINE)
+            </button>
+
+            <button
+              type="button"
+              id="btnRedrawForfeit"
+              onclick="forfeitAndRedrawAll()"
+              class="btn-dark-action w-full sm:w-auto py-4 px-7 rounded-2xl text-base md:text-lg font-bold text-silver"
+            >
+              ↻ สุ่มใหม่ / สละสิทธิ์
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    /**
+     * ========================================================================
+     * CONFIG: ตั้งค่าระบบจุดเดียวด้านบนสุดของไฟล์
+     * ========================================================================
+     */
+    const CONFIG = {
+      LIFF_ID: 'PUT_YOUR_LIFF_ID_HERE',
+      GAS_WEB_APP_URL: 'https://script.google.com/macros/s/PUT_YOUR_DEPLOYMENT_ID/exec',
+      WINNERS_PAGE_URL: 'https://your-org.github.io/newyear2026/winners.html',
+      SOUVENIR_IMAGE_URL: 'https://images.unsplash.com/photo-1513885535751-8b9238bd345a?auto=format&fit=crop&w=1000&q=80',
+      DEFAULT_PRIZE_IMAGE_URL: 'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&w=800&q=80',
+      MAP_URL: 'https://maps.google.com/?q=True+Digital+Park+Bangkok',
+      STAFF_PIN: '2026',
+
+      // ตั้งค่าความเร้าใจของการหมุนสล็อตบนเวที (มิลลิวินาที)
+      SPIN_DURATION_MS: 3200
+    };
+
+    /**
+     * Application State
+     */
+    const stageState = {
+      eligiblePool: [], // รายชื่อผู้มีสิทธิ์จาก Backend (ร่วมงาน + Checked-In + ยังไม่เคยได้รางวัล)
+      skippedEmpIds: new Set(), // พักชื่อคนที่ขานชื่อแล้วไม่อยู่ในงานชั่วคราวไม่ให้เด้งซ้ำทันที
+      prizes: [],
+      prizeGroups: [],
+      selectedGroup: '',
+      selectedPrizeId: '',
+      drawMode: 'SINGLE', // 'SINGLE' | 'BATCH'
+      isSpinning: false,
+      isConfirming: false,
+      drawnCandidates: [], // ผู้โชคดีที่เพิ่งสุ่มขึ้นมา รอกดยืนยัน [ได้รับรางวัล]
+      stats: {
+        totalCheckedIn: 0,
+        totalWinners: 0
+      },
+      soundEnabled: true,
+      audioCtx: null
+    };
+
+    /**
+     * เริ่มต้นโหลดข้อมูลเมื่อเปิดหน้าจอเวที
+     */
+    document.addEventListener('DOMContentLoaded', async () => {
+      if (CONFIG.WINNERS_PAGE_URL && !CONFIG.WINNERS_PAGE_URL.includes('your-org.github.io')) {
+        document.getElementById('linkWinnersBoard').href = CONFIG.WINNERS_PAGE_URL;
+      }
+
+      setDrawMode('SINGLE');
+
+      // รองรับปุ่มลัด Spacebar สำหรับกดเริ่มหมุนสล็อตบนเวที
+      document.addEventListener('keydown', (e) => {
+        const tag = (e.target && e.target.tagName) ? e.target.tagName.toUpperCase() : '';
+        if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA') return;
+        if (Swal.isVisible()) return;
+
+        if (e.code === 'Space' && !stageState.isSpinning && stageState.drawnCandidates.length === 0) {
+          e.preventDefault();
+          startLuckyDrawSpin();
+        }
+      });
+
+      await loadLuckyDrawData(false);
+    });
+
+    /**
+     * ========================================================================
+     * 1. STAGE SOUND ENGINE (Web Audio API - ไม่ต้องพึ่งไฟล์เสียงภายนอก)
+     * ========================================================================
+     */
+    function ensureAudio() {
+      if (!stageState.audioCtx) {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (AudioCtx) stageState.audioCtx = new AudioCtx();
+      }
+      if (stageState.audioCtx && stageState.audioCtx.state === 'suspended') {
+        stageState.audioCtx.resume();
+      }
+    }
+
+    function playSlotTick(freq = 680) {
+      if (!stageState.soundEnabled) return;
+      try {
+        ensureAudio();
+        const ctx = stageState.audioCtx;
+        if (!ctx) return;
+        const now = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(freq, now);
+        gain.gain.setValueAtTime(0.11, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.045);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.045);
+      } catch (_) {}
+    }
+
+    function playWinnerFanfare() {
+      if (!stageState.soundEnabled) return;
+      try {
+        ensureAudio();
+        const ctx = stageState.audioCtx;
+        if (!ctx) return;
+        const now = ctx.currentTime;
+        // คอร์ดเฉลิมฉลอง C Major Arpeggio (C5 - E5 - G5 - C6)
+        const notes = [523.25, 659.25, 783.99, 1046.5];
+        notes.forEach((freq, idx) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          const startAt = now + idx * 0.09;
+          osc.frequency.setValueAtTime(freq, startAt);
+          gain.gain.setValueAtTime(0.2, startAt);
+          gain.gain.exponentialRampToValueAtTime(0.001, startAt + 0.55);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(startAt);
+          osc.stop(startAt + 0.55);
+        });
+      } catch (_) {}
+    }
+
+    function toggleStageSound() {
+      ensureAudio();
+      stageState.soundEnabled = !stageState.soundEnabled;
+      document.getElementById('btnSoundToggle').textContent = stageState.soundEnabled
+        ? '🔊 เอฟเฟกต์เสียง: เปิด'
+        : '🔇 เอฟเฟกต์เสียง: ปิด';
+    }
+
+    /**
+     * พลุกระดาษสีแดงทรู-ทองแชมเปญ (Confetti Cannon)
+     */
+    function launchLuxuryConfetti() {
+      if (typeof confetti !== 'function') return;
+      const colors = ['#E60012', '#D4AF37', '#F5D77F', '#FFFFFF'];
+
+      confetti({
+        particleCount: 95,
+        angle: 60,
+        spread: 65,
+        origin: { x: 0, y: 0.65 },
+        colors: colors
+      });
+      confetti({
+        particleCount: 95,
+        angle: 120,
+        spread: 65,
+        origin: { x: 1, y: 0.65 },
+        colors: colors
+      });
+    }
+
+    /**
+     * ========================================================================
+     * 2. API COMMUNICATION & DATA SYNC
+     * ========================================================================
+     */
+    async function callGasApi(payload) {
+      if (
+        !CONFIG.GAS_WEB_APP_URL ||
+        CONFIG.GAS_WEB_APP_URL.includes('PUT_YOUR_DEPLOYMENT_ID')
+      ) {
+        throw new Error('กรุณาตั้งค่า GAS_WEB_APP_URL ในส่วน CONFIG ของไฟล์ luckydraw.html ก่อนใช้งาน');
+      }
+
+      const response = await fetch(CONFIG.GAS_WEB_APP_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'text/plain;charset=utf-8'
+        },
+        body: JSON.stringify(payload),
+        redirect: 'follow'
+      });
+
+      if (!response.ok) {
+        throw new Error('การเชื่อมต่อเซิร์ฟเวอร์ขัดข้อง (HTTP ' + response.status + ')');
+      }
+
+      return await response.json();
+    }
+
+    async function loadLuckyDrawData(showToastAfter = false) {
+      if (stageState.isSpinning) return;
+      showStageLoading('กำลังซิงก์รายชื่อผู้เช็คอินและสต็อกของรางวัลล่าสุด...');
+
+      try {
+        const res = await callGasApi({ action: 'getLuckyDrawData' });
+        hideStageLoading();
+
+        if (!res.success) {
+          throw new Error(res.message || 'ไม่สามารถดึงข้อมูลระบบสุ่มรางวัลได้');
+        }
+
+        stageState.eligiblePool = Array.isArray(res.eligiblePool) ? res.eligiblePool : [];
+        stageState.prizes = Array.isArray(res.prizes) ? res.prizes : [];
+        stageState.prizeGroups = Array.isArray(res.prizeGroups) ? res.prizeGroups : [];
+        stageState.stats = {
+          totalCheckedIn: Number((res.stats && res.stats.totalCheckedIn) || 0),
+          totalWinners: Number((res.stats && res.stats.totalWinners) || 0)
+        };
+
+        populatePrizeSelectors();
+        refreshAllCountersUI();
+
+        if (showToastAfter) {
+          Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: 'success',
+            title: 'ซิงก์ข้อมูลล่าสุดเรียบร้อย (Pool: ' + getActivePool().length + ' คน)',
+            showConfirmButton: false,
+            timer: 2000
+          });
+        }
+      } catch (err) {
+        hideStageLoading();
+        Swal.fire({
+          icon: 'error',
+          title: 'โหลดข้อมูลไม่สำเร็จ',
+          text: err.message,
+          confirmButtonColor: '#E60012'
+        });
+      }
+    }
+
+    /**
+     * คืนค่ารายชื่อผู้มีสิทธิ์สุ่มจริงในขณะนั้น (หักคนที่สละสิทธิ์ชั่วคราวออก)
+     */
+    function getActivePool() {
+      return stageState.eligiblePool.filter(
+        (person) => !stageState.skippedEmpIds.has(normalizeId(person.empId))
+      );
+    }
+
+    function getSelectedPrize() {
+      return (
+        stageState.prizes.find((p) => p.prizeId === stageState.selectedPrizeId) || null
+      );
+    }
+
+    /**
+     * ========================================================================
+     * 3. PRIZE DROPDOWNS & DRAW MODE CONTROLS
+     * ========================================================================
+     */
+    function populatePrizeSelectors() {
+      const groupSelect = document.getElementById('prizeGroupSelect');
+      if (stageState.prizeGroups.length === 0) {
+        groupSelect.innerHTML = '<option value="">ไม่มีข้อมูลของรางวัลในชีท Prizes</option>';
+        document.getElementById('prizeItemSelect').innerHTML = '<option value="">-</option>';
+        updatePrizeShowcaseUI();
+        return;
+      }
+
+      const prevGroup = stageState.selectedGroup;
+      groupSelect.innerHTML = stageState.prizeGroups
+        .map((grp) => '<option value="' + escapeHtml(grp) + '">' + escapeHtml(grp) + '</option>')
+        .join('');
+
+      if (prevGroup && stageState.prizeGroups.includes(prevGroup)) {
+        stageState.selectedGroup = prevGroup;
+      } else {
+        stageState.selectedGroup = stageState.prizeGroups[0];
+      }
+      groupSelect.value = stageState.selectedGroup;
+
+      populatePrizeItemsByGroup(true);
+    }
+
+    function onPrizeGroupChange() {
+      if (stageState.isSpinning || stageState.drawnCandidates.length > 0) {
+        // ป้องกันการเปลี่ยนรางวัลขณะยังไม่ได้กดยืนยันผู้โชคดีบนหน้าจอ
+        document.getElementById('prizeGroupSelect').value = stageState.selectedGroup;
+        Swal.fire({
+          icon: 'warning',
+          title: 'มีรายชื่อผู้โชคดีรอกดยืนยันอยู่',
+          text: 'กรุณากดยืนยัน [ได้รับรางวัล] หรือกด [สุ่มใหม่ / สละสิทธิ์] ให้เสร็จก่อนเปลี่ยนหมวดรางวัล',
+          confirmButtonColor: '#E60012'
+        });
+        return;
+      }
+      stageState.selectedGroup = document.getElementById('prizeGroupSelect').value;
+      populatePrizeItemsByGroup(false);
+    }
+
+    function populatePrizeItemsByGroup(keepPreviousPrize) {
+      const itemSelect = document.getElementById('prizeItemSelect');
+      const filtered = stageState.prizes.filter((p) => p.prizeGroup === stageState.selectedGroup);
+
+      const prevPrizeId = stageState.selectedPrizeId;
+      itemSelect.innerHTML = filtered
+        .map((p) => {
+          const statusSuffix =
+            p.remainingQty > 0
+              ? ' (คงเหลือ ' + p.remainingQty + '/' + p.totalQty + ')'
+              : ' [แจกครบแล้ว]';
+          return (
+            '<option value="' +
+            escapeHtml(p.prizeId) +
+            '">' +
+            escapeHtml(p.prizeName + statusSuffix) +
+            '</option>'
+          );
+        })
+        .join('');
+
+      if (keepPreviousPrize && filtered.some((p) => p.prizeId === prevPrizeId)) {
+        stageState.selectedPrizeId = prevPrizeId;
+      } else {
+        // เลือกรางวัลแรกในหมวดที่ยังมีของเหลืออยู่เป็นลำดับแรก
+        const firstAvailable = filtered.find((p) => p.remainingQty > 0);
+        stageState.selectedPrizeId = firstAvailable
+          ? firstAvailable.prizeId
+          : (filtered[0] ? filtered[0].prizeId : '');
+      }
+
+      itemSelect.value = stageState.selectedPrizeId;
+      updatePrizeShowcaseUI();
+    }
+
+    function onPrizeItemChange() {
+      if (stageState.isSpinning || stageState.drawnCandidates.length > 0) {
+        document.getElementById('prizeItemSelect').value = stageState.selectedPrizeId;
+        Swal.fire({
+          icon: 'warning',
+          title: 'มีรายชื่อผู้โชคดีรอกดยืนยันอยู่',
+          text: 'กรุณากดยืนยัน [ได้รับรางวัล] หรือกด [สุ่มใหม่ / สละสิทธิ์] ก่อนเปลี่ยนของรางวัล',
+          confirmButtonColor: '#E60012'
+        });
+        return;
+      }
+      stageState.selectedPrizeId = document.getElementById('prizeItemSelect').value;
+      updatePrizeShowcaseUI();
+    }
+
+    function updatePrizeShowcaseUI() {
+      const prize = getSelectedPrize();
+      const badgeEl = document.getElementById('prizeRemainingBadge');
+      const overlayQtyEl = document.getElementById('prizeQtyOverlayText');
+      const imgEl = document.getElementById('prizePreviewImg');
+      const grpEl = document.getElementById('prizeGroupLabel');
+      const titleEl = document.getElementById('prizeTitleLabel');
+      const stageHeaderEl = document.getElementById('stageActivePrizeHeader');
+      const spinBtn = document.getElementById('btnStartSpin');
+
+      if (!prize) {
+        badgeEl.textContent = 'คงเหลือ 0 / 0';
+        overlayQtyEl.textContent = '0 / 0 รางวัล';
+        grpEl.textContent = '-';
+        titleEl.textContent = 'ไม่พบรายการของรางวัล';
+        stageHeaderEl.textContent = 'กรุณาเพิ่มข้อมูลของรางวัลในชีท Prizes';
+        spinBtn.disabled = true;
+        return;
+      }
+
+      const remText = 'คงเหลือ ' + prize.remainingQty + ' / ' + prize.totalQty;
+      badgeEl.textContent = remText;
+      overlayQtyEl.textContent = prize.remainingQty + ' / ' + prize.totalQty + ' รางวัล';
+      imgEl.src = prize.prizeImageUrl || CONFIG.DEFAULT_PRIZE_IMAGE_URL;
+      grpEl.textContent = prize.prizeGroup;
+      titleEl.textContent = prize.prizeName;
+      stageHeaderEl.textContent = prize.prizeName + ' (' + remText + ')';
+
+      clampBatchInput();
+      updateSpinButtonState();
+    }
+
+    function setDrawMode(mode) {
+      if (stageState.isSpinning || stageState.drawnCandidates.length > 0) return;
+      stageState.drawMode = mode;
+
+      const singleBtn = document.getElementById('modeSingleBtn');
+      const batchBtn = document.getElementById('modeBatchBtn');
+      const batchBox = document.getElementById('batchCountBox');
+
+      if (mode === 'SINGLE') {
+        singleBtn.className = 'py-2.5 px-3 rounded-xl text-xs font-bold border gold-pill border-white shadow';
+        batchBtn.className = 'py-2.5 px-3 rounded-xl text-xs font-bold border border-white/20 bg-obsidian-950/60 text-silver hover:text-white';
+        batchBox.classList.add('hidden');
+      } else {
+        batchBtn.className = 'py-2.5 px-3 rounded-xl text-xs font-bold border gold-pill border-white shadow';
+        singleBtn.className = 'py-2.5 px-3 rounded-xl text-xs font-bold border border-white/20 bg-obsidian-950/60 text-silver hover:text-white';
+        batchBox.classList.remove('hidden');
+        clampBatchInput();
+      }
+      updateSpinButtonState();
+    }
+
+    function clampBatchInput() {
+      const input = document.getElementById('batchCountInput');
+      const prize = getSelectedPrize();
+      const maxByPrize = prize ? Math.max(1, prize.remainingQty) : 1;
+      const maxByPool = Math.max(1, getActivePool().length);
+      const maxAllowed = Math.min(maxByPrize, maxByPool);
+
+      let val = parseInt(input.value, 10);
+      if (isNaN(val) || val < 1) val = 1;
+      if (val > maxAllowed) val = maxAllowed;
+      input.value = val;
+    }
+
+    function fillMaxRemainingBatch() {
+      const prize = getSelectedPrize();
+      if (!prize) return;
+      const maxAllowed = Math.max(1, Math.min(prize.remainingQty, getActivePool().length));
+      document.getElementById('batchCountInput').value = maxAllowed;
+    }
+
+    function refreshAllCountersUI() {
+      const activePoolCount = getActivePool().length;
+      document.getElementById('statTotalCheckedIn').textContent =
+        stageState.stats.totalCheckedIn.toLocaleString();
+      document.getElementById('statEligiblePool').textContent =
+        activePoolCount.toLocaleString();
+      document.getElementById('statWinnersCount').textContent =
+        stageState.stats.totalWinners.toLocaleString();
+
+      const skippedBtn = document.getElementById('btnRestoreSkipped');
+      if (stageState.skippedEmpIds.size > 0) {
+        skippedBtn.textContent =
+          'พักชื่อผู้สละสิทธิ์ชั่วคราว ' +
+          stageState.skippedEmpIds.size +
+          ' คน (คลิกเพื่อคืนสิทธิ์เข้า Pool)';
+        skippedBtn.classList.remove('hidden');
+      } else {
+        skippedBtn.classList.add('hidden');
+      }
+
+      updateSpinButtonState();
+    }
+
+    function updateSpinButtonState() {
+      const prize = getSelectedPrize();
+      const activePool = getActivePool();
+      const spinBtn = document.getElementById('btnStartSpin');
+
+      if (!prize || prize.remainingQty <= 0 || activePool.length === 0) {
+        spinBtn.disabled = true;
+        if (prize && prize.remainingQty <= 0) {
+          spinBtn.textContent = 'แจกรางวัลรายการนี้ครบจำนวนแล้ว';
+        } else if (activePool.length === 0) {
+          spinBtn.textContent = 'ไม่มีรายชื่อผู้มีสิทธิ์คงเหลือใน Pool';
+        } else {
+          spinBtn.textContent = 'กรุณาเลือกรายการของรางวัล';
+        }
+        return;
+      }
+
+      spinBtn.disabled = false;
+      if (stageState.drawMode === 'SINGLE') {
+        spinBtn.textContent = '🎰 กดสุ่มผู้โชคดี 1 รางวัล (SPIN NOW)';
+      } else {
+        const count = Math.min(
+          parseInt(document.getElementById('batchCountInput').value || '1', 10),
+          prize.remainingQty,
+          activePool.length
+        );
+        spinBtn.textContent = '🎰 กดสุ่มพร้อมกัน ' + count + ' รางวัล (SPIN NOW)';
+      }
+    }
+
+    /**
+     * ========================================================================
+     * 4. CRYPTOGRAPHIC FAIR SHUFFLE & ROLLING SLOT ANIMATION
+     * ========================================================================
+     */
+    function pickRandomUniqueCandidates(pool, count) {
+      const copy = pool.slice();
+      const randBuf = new Uint32Array(copy.length);
+      if (window.crypto && window.crypto.getRandomValues) {
+        window.crypto.getRandomValues(randBuf);
+      } else {
+        for (let i = 0; i < copy.length; i++) {
+          randBuf[i] = Math.floor(Math.random() * 0xffffffff);
+        }
+      }
+
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = randBuf[i] % (i + 1);
+        const temp = copy[i];
+        copy[i] = copy[j];
+        copy[j] = temp;
+      }
+
+      return copy.slice(0, count);
+    }
+
+    async function startLuckyDrawSpin() {
+      if (stageState.isSpinning || stageState.isConfirming) return;
+
+      const prize = getSelectedPrize();
+      const activePool = getActivePool();
+
+      if (!prize || prize.remainingQty <= 0) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'ของรางวัลรายการนี้แจกครบแล้ว',
+          text: 'กรุณาเลือกรายการของรางวัลถัดไปจากเมนูซ้ายมือ',
+          confirmButtonColor: '#E60012'
+        });
+        return;
+      }
+
+      if (activePool.length === 0) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'ไม่มีผู้มีสิทธิ์เหลืออยู่ในกองสุ่ม',
+          text: 'ตรวจสอบว่ามีพนักงานสแกน Checked-In เข้างานแล้ว หรือคืนสิทธิ์ผู้สละสิทธิ์ชั่วคราว',
+          confirmButtonColor: '#E60012'
+        });
+        return;
+      }
+
+      ensureAudio();
+
+      let targetDrawCount = 1;
+      if (stageState.drawMode === 'BATCH') {
+        clampBatchInput();
+        targetDrawCount = parseInt(document.getElementById('batchCountInput').value || '1', 10);
+      }
+      targetDrawCount = Math.min(targetDrawCount, prize.remainingQty, activePool.length);
+
+      // สุ่มผู้โชคดีล่วงหน้าด้วย Fisher-Yates Cryptographic Random
+      const selectedWinners = pickRandomUniqueCandidates(activePool, targetDrawCount);
+
+      stageState.isSpinning = true;
+      stageState.drawnCandidates = [];
+
+      // เตรียมหน้าจอเข้าสู่โหมด Rolling Slot
+      const singleBox = document.getElementById('singleStageDisplay');
+      const multiBox = document.getElementById('multiStageDisplay');
+      singleBox.classList.remove('hidden', 'winner-glow');
+      multiBox.classList.add('hidden');
+
+      document.getElementById('spinActionGroup').classList.add('hidden');
+      document.getElementById('decisionActionGroup').classList.add('hidden');
+      document.getElementById('stageStatusLabel').textContent = 'ROLLING LUCKY DRAW...';
+      document.getElementById('slotTopTag').textContent =
+        targetDrawCount === 1
+          ? 'กำลังสุ่มผู้โชคดี 1 รางวัล...'
+          : 'กำลังสุ่มผู้โชคดีพร้อมกัน ' + targetDrawCount + ' รางวัล...';
+
+      // เอฟเฟกต์ Rolling Slot ชะลอความเร็วอย่างตื่นเต้น
+      await runRollingSlotAnimation(activePool, CONFIG.SPIN_DURATION_MS);
+
+      // แสดงผลผู้โชคดีพร้อมพลุสีแดง-ทองและเสียง Fanfare
+      stageState.isSpinning = false;
+      stageState.drawnCandidates = selectedWinners;
+
+      playWinnerFanfare();
+      launchLuxuryConfetti();
+
+      renderDrawnWinnersOnStage();
+    }
+
+    function runRollingSlotAnimation(pool, totalDurationMs) {
+      return new Promise((resolve) => {
+        const startTime = performance.now();
+        let lastTickAt = 0;
+
+        const idEl = document.getElementById('slotEmpId');
+        const nameEl = document.getElementById('slotFullName');
+        const teamEl = document.getElementById('slotTeam');
+
+        function step(now) {
+          const elapsed = now - startTime;
+          const progress = Math.min(1, elapsed / totalDurationMs);
+
+          // ค่อยๆ ชะลอจังหวะเปลี่ยนรายชื่อช่วงท้ายเหมือนวงล้อสล็อตจริง
+          const dynamicInterval = 42 + Math.pow(progress, 2.6) * 240;
+
+          if (now - lastTickAt >= dynamicInterval) {
+            lastTickAt = now;
+            const randomPerson = pool[Math.floor(Math.random() * pool.length)];
+            idEl.textContent = randomPerson.empId;
+            nameEl.textContent = randomPerson.fullName;
+            teamEl.textContent = 'ทีม: ' + randomPerson.team;
+            playSlotTick(560 + Math.floor((1 - progress) * 320));
+          }
+
+          if (progress < 1) {
+            requestAnimationFrame(step);
+          } else {
+            resolve();
+          }
+        }
+
+        requestAnimationFrame(step);
+      });
+    }
+
+    /**
+     * แสดงรายชื่อผู้โชคดีที่สุ่มได้บนเวที (รอกดยืนยัน [ได้รับรางวัล] หรือ [สุ่มใหม่ / สละสิทธิ์])
+     */
+    function renderDrawnWinnersOnStage() {
+      const winners = stageState.drawnCandidates;
+      const singleBox = document.getElementById('singleStageDisplay');
+      const multiBox = document.getElementById('multiStageDisplay');
+
+      document.getElementById('stageStatusLabel').textContent =
+        'CONGRATULATIONS • กรุณาขานชื่อและกดยืนยันสิทธิ์';
+
+      if (winners.length === 1) {
+        const w = winners[0];
+        multiBox.classList.add('hidden');
+        singleBox.classList.remove('hidden');
+        singleBox.classList.add('winner-glow');
+
+        document.getElementById('slotTopTag').textContent = '👑 CONGRATULATIONS • ผู้โชคดี 👑';
+        document.getElementById('slotEmpId').textContent = w.empId;
+        document.getElementById('slotFullName').textContent = w.fullName;
+        document.getElementById('slotTeam').textContent = 'ทีม: ' + w.team;
+      } else {
+        singleBox.classList.add('hidden');
+        multiBox.classList.remove('hidden');
+
+        multiBox.innerHTML = winners
+          .map((w, idx) => {
+            return (
+              '<div class="winner-spotlight-card rounded-2xl p-4 flex flex-col justify-between gap-3 relative">' +
+              '<div class="flex items-center justify-between">' +
+              '<span class="gold-pill text-[11px] font-extrabold px-2.5 py-0.5 rounded-full">#' +
+              (idx + 1) +
+              ' • ' +
+              escapeHtml(w.empId) +
+              '</span>' +
+              '<button type="button" onclick="redrawSingleSlotInBatch(' +
+              idx +
+              ')" class="text-[11px] px-2.5 py-1 rounded-lg bg-obsidian-950/90 border border-white/20 text-silver hover:border-champagne-light hover:text-champagne-light transition" title="สุ่มเปลี่ยนเฉพาะคนนี้กรณีไม่อยู่ในงาน">↻ สุ่มเปลี่ยนคนนี้</button>' +
+              '</div>' +
+              '<div>' +
+              '<p class="text-lg font-extrabold text-white leading-snug">' +
+              escapeHtml(w.fullName) +
+              '</p>' +
+              '<p class="text-xs font-medium text-champagne-light mt-0.5">ทีม: ' +
+              escapeHtml(w.team) +
+              '</p>' +
+              '</div>' +
+              '</div>'
+            );
+          })
+          .join('');
+      }
+
+      document.getElementById('btnConfirmWinner').textContent =
+        winners.length === 1
+          ? '✓ ได้รับรางวัล (ยืนยันรับสิทธิ์ & ส่ง LINE)'
+          : '✓ ได้รับรางวัลทั้งหมด ' + winners.length + ' ท่าน (ยืนยัน & ส่ง LINE)';
+
+      document.getElementById('spinActionGroup').classList.add('hidden');
+      document.getElementById('decisionActionGroup').classList.remove('hidden');
+    }
+
+    /**
+     * สุ่มเปลี่ยนเฉพาะรายบุคคลในโหมดสุ่มหลายคน (กรณีมี 1 คนไม่อยู่ในห้องจัดงาน)
+     */
+    function redrawSingleSlotInBatch(slotIndex) {
+      const forfeitedPerson = stageState.drawnCandidates[slotIndex];
+      if (!forfeitedPerson) return;
+
+      stageState.skippedEmpIds.add(normalizeId(forfeitedPerson.empId));
+
+      const currentlyDisplayedIds = new Set(
+        stageState.drawnCandidates.map((c) => normalizeId(c.empId))
+      );
+      const replacementPool = getActivePool().filter(
+        (p) => !currentlyDisplayedIds.has(normalizeId(p.empId))
+      );
+
+      if (replacementPool.length === 0) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'ไม่มีรายชื่ออื่นเหลือใน Pool สำหรับเปลี่ยนตัว',
+          text: 'ระบบจะตัดรายการที่สละสิทธิ์นี้ออกจากการยืนยันรอบนี้',
+          confirmButtonColor: '#E60012'
+        });
+        stageState.drawnCandidates.splice(slotIndex, 1);
+        refreshAllCountersUI();
+        if (stageState.drawnCandidates.length === 0) {
+          resetStageToIdle();
+        } else {
+          renderDrawnWinnersOnStage();
+        }
+        return;
+      }
+
+      const [newCandidate] = pickRandomUniqueCandidates(replacementPool, 1);
+      stageState.drawnCandidates[slotIndex] = newCandidate;
+      playWinnerFanfare();
+      refreshAllCountersUI();
+      renderDrawnWinnersOnStage();
+    }
+
+    /**
+     * กดปุ่ม [สุ่มใหม่ / สละสิทธิ์]: พักชื่อคนที่ไม่อยู่ในงานไว้ แล้วหมุนสุ่มใหม่ทันที
+     */
+    async function forfeitAndRedrawAll() {
+      if (stageState.drawnCandidates.length === 0) return;
+
+      stageState.drawnCandidates.forEach((person) => {
+        stageState.skippedEmpIds.add(normalizeId(person.empId));
+      });
+      stageState.drawnCandidates = [];
+      refreshAllCountersUI();
+
+      if (getActivePool().length === 0) {
+        resetStageToIdle();
+        Swal.fire({
+          icon: 'info',
+          title: 'ไม่มีรายชื่อคงเหลือในกองสุ่ม',
+          text: 'หากต้องการนำรายชื่อผู้สละสิทธิ์กลับมาสุ่มใหม่ สามารถกดปุ่มคืนสิทธิ์ด้านบนเวทีได้',
+          confirmButtonColor: '#E60012'
+        });
+        return;
+      }
+
+      await startLuckyDrawSpin();
+    }
+
+    function restoreSkippedCandidates() {
+      stageState.skippedEmpIds.clear();
+      refreshAllCountersUI();
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: 'success',
+        title: 'คืนสิทธิ์รายชื่อที่พักไว้กลับเข้าสู่ Pool เรียบร้อยแล้ว',
+        showConfirmButton: false,
+        timer: 2000
+      });
+    }
+
+    function resetStageToIdle() {
+      stageState.drawnCandidates = [];
+      const singleBox = document.getElementById('singleStageDisplay');
+      const multiBox = document.getElementById('multiStageDisplay');
+
+      multiBox.classList.add('hidden');
+      singleBox.classList.remove('hidden', 'winner-glow');
+
+      document.getElementById('stageStatusLabel').textContent = 'READY FOR LUCKY DRAW';
+      document.getElementById('slotTopTag').textContent = 'VIP LUCKY DRAW STAGE';
+      document.getElementById('slotEmpId').textContent = '• • • • • •';
+      document.getElementById('slotFullName').textContent = 'พร้อมสุ่มรางวัลถัดไป';
+      document.getElementById('slotTeam').textContent =
+        'ผู้มีสิทธิ์ลุ้นรางวัลคงเหลือใน Pool ' + getActivePool().length + ' ท่าน';
+
+      document.getElementById('decisionActionGroup').classList.add('hidden');
+      document.getElementById('spinActionGroup').classList.remove('hidden');
+      updateSpinButtonState();
+    }
+
+    /**
+     * ========================================================================
+     * 5. กดปุ่ม [ได้รับรางวัล] -> บันทึก Winners + หัก RemainingQty + ยิง Flex #3
+     * ========================================================================
+     */
+    async function confirmCurrentWinners() {
+      if (stageState.isConfirming || stageState.drawnCandidates.length === 0) return;
+
+      const prize = getSelectedPrize();
+      if (!prize) return;
+
+      const winnerEmpIds = stageState.drawnCandidates.map((w) => w.empId);
+      stageState.isConfirming = true;
+      showStageLoading('กำลังบันทึกสิทธิ์ผู้โชคดีและส่งการ์ดแจ้งเตือนทาง LINE...');
+
+      try {
+        const res = await callGasApi({
+          action: 'confirmWinners',
+          prizeId: prize.prizeId,
+          empIds: winnerEmpIds
+        });
+
+        hideStageLoading();
+        stageState.isConfirming = false;
+
+        if (!res.success) {
+          Swal.fire({
+            icon: 'error',
+            title: 'บันทึกผู้โชคดีไม่สำเร็จ',
+            text: res.message || 'กรุณาซิงก์ข้อมูลล่าสุดแล้วลองอีกครั้ง',
+            confirmButtonColor: '#E60012'
+          });
+          return;
+        }
+
+        // 1. ตัดรายชื่อผู้โชคดีออกจาก Eligible Pool บนหน้าเว็บทันที 100%
+        const confirmedSet = new Set(winnerEmpIds.map((id) => normalizeId(id)));
+        stageState.eligiblePool = stageState.eligiblePool.filter(
+          (p) => !confirmedSet.has(normalizeId(p.empId))
+        );
+
+        // 2. อัปเดตยอดคงเหลือของรางวัลในหน้าเว็บทันที
+        const targetPrizeObj = stageState.prizes.find((p) => p.prizeId === prize.prizeId);
+        if (targetPrizeObj && res.prize) {
+          targetPrizeObj.remainingQty = res.prize.remainingQty;
+        }
+        stageState.stats.totalWinners += winnerEmpIds.length;
+
+        // 3. รีเฟรช Dropdown และหน้าจอเตรียมสุ่มรอบต่อไป
+        populatePrizeItemsByGroup(true);
+        refreshAllCountersUI();
+        resetStageToIdle();
+
+        Swal.fire({
+          icon: 'success',
+          title: 'ยืนยันสิทธิ์และส่ง LINE สำเร็จ!',
+          text: res.message,
+          timer: 2200,
+          showConfirmButton: false
+        });
+      } catch (err) {
+        hideStageLoading();
+        stageState.isConfirming = false;
+        Swal.fire({
+          icon: 'error',
+          title: 'การเชื่อมต่อขัดข้อง',
+          text: err.message || 'ไม่สามารถบันทึกผลรางวัลได้',
+          confirmButtonColor: '#E60012'
+        });
+      }
+    }
+
+    /**
+     * ========================================================================
+     * 6. ปุ่มแอดมิน: ส่ง Flex แบบที่ 4 ขอบคุณผู้พลาดรางวัลทั้งหมด (Multicast API)
+     * ========================================================================
+     */
+    async function promptSendConsolationFlex() {
+      const nonWinnerCount = stageState.eligiblePool.length;
+
+      const confirmStep = await Swal.fire({
+        icon: 'question',
+        title: 'ส่ง Flex ขอบคุณผู้พลาดรางวัลทั้งหมด?',
+        html:
+          '<div class="text-left text-sm space-y-2.5">' +
+          '<p>ระบบจะคัดกรองเฉพาะพนักงานที่ <b>สแกน Checked-In เข้างานแล้ว</b> แต่ <b>ไม่มีรายชื่อได้รับรางวัลในชีท Winners</b></p>' +
+          '<div class="p-3 rounded-xl bg-obsidian-950 border border-champagne/40 text-center">' +
+          '<span class="text-xs text-silver block">จำนวนผู้เช็คอินที่พลาดรางวัลในขณะนี้</span>' +
+          '<span class="text-2xl font-extrabold text-champagne-light">' +
+          nonWinnerCount.toLocaleString() +
+          ' ท่าน</span>' +
+          '</div>' +
+          '<p class="text-xs text-silver">กรุณากรอกรหัส <b>Staff PIN</b> เพื่อยืนยันการส่ง LINE Multicast ทันที:</p>' +
+          '</div>',
+        input: 'password',
+        inputPlaceholder: 'กรอกรหัส Staff PIN (เช่น 2026)',
+        inputAttributes: {
+          maxlength: 10,
+          autocapitalize: 'off',
+          autocorrect: 'off'
+        },
+        showCancelButton: true,
+        confirmButtonColor: '#E60012',
+        cancelButtonColor: '#262632',
+        confirmButtonText: 'ยืนยันส่ง Flex ทันที',
+        cancelButtonText: 'ยกเลิก',
+        preConfirm: (pinVal) => {
+          if (!pinVal || String(pinVal).trim() !== String(CONFIG.STAFF_PIN).trim()) {
+            Swal.showValidationMessage('รหัส Staff PIN ไม่ถูกต้อง');
+            return false;
+          }
+          return String(pinVal).trim();
+        }
+      });
+
+      if (!confirmStep.isConfirmed) return;
+
+      showStageLoading('กำลังส่ง LINE Multicast Flex หาผู้พลาดรางวัลทั้งหมด...');
+      try {
+        const res = await callGasApi({
+          action: 'sendConsolationFlex',
+          pin: confirmStep.value
+        });
+
+        hideStageLoading();
+
+        if (res.success) {
+          Swal.fire({
+            icon: 'success',
+            title: 'ส่ง Flex ขอบคุณผู้พลาดรางวัลสำเร็จ!',
+            text: res.message,
+            confirmButtonColor: '#E60012',
+            confirmButtonText: 'เรียบร้อย'
+          });
+        } else {
+          Swal.fire({
+            icon: 'warning',
+            title: 'แจ้งผลการส่งข้อความ',
+            text:
+              (res.message || 'พบข้อผิดพลาดบางส่วน') +
+              (res.errors && res.errors.length ? '\n' + res.errors.join('\n') : ''),
+            confirmButtonColor: '#E60012'
+          });
+        }
+      } catch (err) {
+        hideStageLoading();
+        Swal.fire({
+          icon: 'error',
+          title: 'ส่งข้อความไม่สำเร็จ',
+          text: err.message,
+          confirmButtonColor: '#E60012'
+        });
+      }
+    }
+
+    /**
+     * ========================================================================
+     * 7. UTILITY FUNCTIONS
+     * ========================================================================
+     */
+    function toggleFullScreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else if (document.exitFullscreen) {
+        document.exitFullscreen();
+      }
+    }
+
+    function normalizeId(val) {
+      return String(val || '').trim().toUpperCase();
+    }
+
+    function showStageLoading(msg) {
+      document.getElementById('stageLoadingText').textContent = msg || 'กำลังประมวลผล...';
+      document.getElementById('stageLoading').classList.remove('hidden');
+    }
+
+    function hideStageLoading() {
+      document.getElementById('stageLoading').classList.add('hidden');
+    }
+
+    function escapeHtml(str) {
+      return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+  </script>
+</body>
+</html>
