@@ -196,7 +196,7 @@
     }
 
     /* ========================================================================
-       3D GALA GIFT BOX & FULL-SCREEN FOCUS SPIN ARENA ANIMATIONS
+       MINIMAL CENTER SPOTLIGHT & 3D GALA GIFT BOX ANIMATIONS (STYLE 2)
        ======================================================================== */
     #focusSpinStage {
       background:
@@ -205,30 +205,96 @@
     }
 
     .focus-arena-frame {
-      background: radial-gradient(circle at 50% 65%, rgba(230, 0, 18, 0.20) 0%, rgba(22, 8, 12, 0.88) 65%);
-      border: 1.5px solid rgba(245, 215, 127, 0.52);
+      background:
+        radial-gradient(circle at 50% 45%, rgba(212, 175, 55, 0.12) 0%, rgba(230, 0, 18, 0.14) 38%, rgba(18, 6, 9, 0.95) 75%);
+      border: 1.5px solid rgba(245, 215, 127, 0.48);
       box-shadow:
-        0 28px 70px rgba(0, 0, 0, 0.80),
-        inset 0 0 50px rgba(212, 175, 55, 0.12);
+        0 28px 70px rgba(0, 0, 0, 0.82),
+        inset 0 0 60px rgba(212, 175, 55, 0.10);
     }
 
-    /* ลำแสงทองพุ่งออกจากปากกล่องของขวัญขณะเขย่า */
-    .golden-beam-cone {
+    /* เสาแสงทองคำ 24K แนวตั้งส่องจากปากกล่องขึ้นสู่รูปโปรไฟล์ตรงกลาง (Minimal Center Spotlight) */
+    .center-spotlight-pillar {
       position: absolute;
-      bottom: 130px;
+      top: 0;
+      bottom: 85px;
       left: 50%;
       transform: translateX(-50%);
-      width: 340px;
-      height: 300px;
-      background: radial-gradient(ellipse at 50% 88%, rgba(255, 242, 178, 0.58) 0%, rgba(212, 175, 55, 0.22) 42%, rgba(230, 0, 18, 0) 74%);
-      filter: blur(10px);
+      width: 240px;
+      background: linear-gradient(
+        0deg,
+        rgba(255, 242, 178, 0.50) 0%,
+        rgba(245, 215, 127, 0.24) 38%,
+        rgba(212, 175, 55, 0.10) 75%,
+        rgba(212, 175, 55, 0) 100%
+      );
+      filter: blur(18px);
       pointer-events: none;
-      animation: beamPulse 0.45s infinite alternate ease-in-out;
+      animation: spotlightPillarBreathe 0.9s infinite alternate ease-in-out;
     }
 
-    @keyframes beamPulse {
-      from { opacity: 0.72; transform: translateX(-50%) scaleX(0.94); }
+    /* แกนแสงคมชัดกึ่งกลางเสาสปอตไลท์ */
+    .center-spotlight-core {
+      position: absolute;
+      top: 12%;
+      bottom: 95px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 96px;
+      background: linear-gradient(
+        0deg,
+        rgba(255, 250, 220, 0.55) 0%,
+        rgba(245, 215, 127, 0.20) 55%,
+        rgba(245, 215, 127, 0) 100%
+      );
+      filter: blur(10px);
+      pointer-events: none;
+    }
+
+    @keyframes spotlightPillarBreathe {
+      from { opacity: 0.78; transform: translateX(-50%) scaleX(0.92); }
       to   { opacity: 1;    transform: translateX(-50%) scaleX(1.08); }
+    }
+
+    /* วงแหวนรัศมีทองคำ 24K หมุนช้าๆ รอบรูปโปรไฟล์ผู้มีสิทธิ์ตรงกลางลำแสง */
+    @keyframes haloSlowSpin {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+    .spotlight-halo-ring {
+      border: 1.5px dashed rgba(245, 215, 127, 0.55);
+      box-shadow: 0 0 40px rgba(212, 175, 55, 0.22), inset 0 0 24px rgba(245, 215, 127, 0.14);
+      animation: haloSlowSpin 14s linear infinite;
+    }
+
+    .spotlight-medallion-frame {
+      background: radial-gradient(circle at 35% 25%, #3A121B 0%, #170609 100%);
+      border: 2.5px solid #FFF2B2;
+      box-shadow:
+        0 0 42px rgba(245, 215, 127, 0.52),
+        0 14px 34px rgba(0, 0, 0, 0.75),
+        inset 0 0 18px rgba(212, 175, 55, 0.35);
+    }
+
+    /* ละอองแสงทองขนาดจิ๋วลอยขึ้นในลำแสงอย่างนุ่มนวล (ใช้ GPU ล้วน ไม่กินสเปกเครื่อง) */
+    .spotlight-mote {
+      position: absolute;
+      bottom: 110px;
+      width: 5px;
+      height: 5px;
+      border-radius: 9999px;
+      background: #FFF2B2;
+      box-shadow: 0 0 10px #F5D77F;
+      pointer-events: none;
+      opacity: 0;
+      animation: moteFloatUp 2.2s linear infinite;
+    }
+
+    @keyframes moteFloatUp {
+      0%   { transform: translateY(0) scale(0.6); opacity: 0; }
+      20%  { opacity: 0.85; }
+      80%  { opacity: 0.55; }
+      100% { transform: translateY(-300px) scale(1.15); opacity: 0; }
     }
 
     /* กล่องของขวัญลอยตัวนุ่มนวลในหน้าเตรียมพร้อม */
@@ -243,30 +309,30 @@
     /* แอนิเมชันเขย่ากล่องของขวัญอย่างเร้าใจ */
     @keyframes vigorousGiftShake {
       0%   { transform: translate(0, 0) rotate(0deg) scale(1, 1); }
-      18%  { transform: translate(-8px, 3px) rotate(-4.5deg) scale(1.04, 0.96); }
-      36%  { transform: translate(8px, -7px) rotate(4.5deg) scale(0.96, 1.05); }
-      54%  { transform: translate(-9px, 2px) rotate(-5deg) scale(1.05, 0.95); }
-      72%  { transform: translate(7px, -6px) rotate(4deg) scale(0.97, 1.04); }
+      18%  { transform: translate(-6px, 2px) rotate(-3.5deg) scale(1.03, 0.97); }
+      36%  { transform: translate(6px, -5px) rotate(3.5deg) scale(0.97, 1.04); }
+      54%  { transform: translate(-7px, 2px) rotate(-4deg) scale(1.04, 0.96); }
+      72%  { transform: translate(5px, -5px) rotate(3deg) scale(0.98, 1.03); }
       100% { transform: translate(0, 0) rotate(0deg) scale(1, 1); }
     }
     @keyframes rattleGiftLid {
-      0%, 100% { transform: translateY(-6px) rotate(-3deg); }
-      50%      { transform: translateY(-28px) rotate(5deg); }
+      0%, 100% { transform: translateY(-6px) rotate(-2.5deg); }
+      50%      { transform: translateY(-24px) rotate(4deg); }
     }
 
     .gift-box-shaking {
-      animation: vigorousGiftShake 0.32s infinite ease-in-out;
+      animation: vigorousGiftShake 0.34s infinite ease-in-out;
     }
     .gift-box-shaking .svg-gift-lid {
       transform-origin: 120px 84px;
-      animation: rattleGiftLid 0.24s infinite ease-in-out;
+      animation: rattleGiftLid 0.26s infinite ease-in-out;
     }
 
-    /* จังหวะฝากล่องระเบิดเปิดออกก่อนโชว์การ์ดผู้โชคดี */
+    /* จังหวะฝากล่องระเบิดแสงทองก่อนโชว์การ์ดผู้โชคดี */
     @keyframes burstGiftOpen {
       0%   { transform: scale(1); opacity: 1; }
-      55%  { transform: scale(1.24); opacity: 0.92; }
-      100% { transform: scale(0.75); opacity: 0; }
+      55%  { transform: scale(1.22); opacity: 0.92; }
+      100% { transform: scale(0.78); opacity: 0; }
     }
     .gift-box-burst {
       animation: burstGiftOpen 0.26s ease-out forwards;
@@ -275,25 +341,6 @@
       transform: translateY(-75px) rotate(24deg);
       opacity: 0;
       transition: all 0.24s ease-out;
-    }
-
-    /* ป้ายแคปซูลรายชื่อที่พุ่งเด้งไปมาในกรอบเวที */
-    .bouncing-name-capsule {
-      position: absolute;
-      left: 0;
-      top: 0;
-      padding: 6px 16px;
-      border-radius: 9999px;
-      background: linear-gradient(135deg, rgba(46, 10, 16, 0.96) 0%, rgba(22, 6, 10, 0.98) 100%);
-      border: 1px solid rgba(245, 215, 127, 0.85);
-      color: #FFF2B2;
-      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.55), 0 0 16px rgba(212, 175, 55, 0.25);
-      font-weight: 500;
-      font-size: 0.875rem;
-      white-space: nowrap;
-      pointer-events: none;
-      z-index: 15;
-      will-change: transform, opacity;
     }
 
     /* ========================================================================
@@ -648,10 +695,10 @@
 
             <div class="mt-4 space-y-1.5 max-w-xl">
               <p class="text-[11px] font-normal uppercase tracking-[0.26em] text-champagne-light/85">
-                24K GOLDEN MYSTERY GIFT BOX
+                24K GOLDEN SPOTLIGHT STAGE
               </p>
               <h3 class="text-2xl md:text-3xl font-semibold gold-text">
-                คลิกปุ่มด้านล่างเพื่อเปิดเวทีเขย่ากล่องของขวัญเต็มจอ
+                คลิกปุ่มด้านล่างเพื่อเปิดเวทีสปอตไลท์สุ่มผู้โชคดีเต็มจอ
               </h3>
               <p id="idlePoolSubText" class="text-sm font-light text-silver">
                 เฉพาะผู้ลงทะเบียนร่วมงานและสแกน Checked-In หน้างานแล้วเท่านั้น
@@ -665,7 +712,7 @@
               type="button"
               id="btnStartSpin"
               onclick="startLuckyDrawSpin()"
-              class="btn-true-stage w-full max-w-xl py-4.5 py-5 px-8 rounded-2xl text-lg md:text-2xl font-semibold text-white tracking-wide"
+              class="btn-true-stage w-full max-w-xl py-4 md:py-5 px-8 rounded-2xl text-lg md:text-2xl font-semibold text-white tracking-wide"
             >
               กดสุ่มเปิดกล่องของขวัญ
             </button>
@@ -884,40 +931,93 @@
     <div class="relative z-20 flex-1 max-w-6xl w-full mx-auto my-3 flex flex-col items-center justify-center min-h-0 overflow-y-auto no-scrollbar">
 
       <!-- ================================================================ -->
-      <!-- PHASE A: SHAKING 24K GIFT BOX & BOUNCING EMPLOYEE NAMES ARENA    -->
+      <!-- PHASE A: STYLE 2 — MINIMAL CENTER SPOTLIGHT (ลำแสงทอง + รูปโปรไฟล์) -->
       <!-- ================================================================ -->
       <div
         id="phaseShakingArena"
-        class="focus-arena-frame relative w-full h-full min-h-[380px] max-h-[640px] rounded-[32px] overflow-hidden flex flex-col items-center justify-between p-6 md:p-8"
+        class="focus-arena-frame relative w-full h-full min-h-[390px] max-h-[640px] rounded-[32px] overflow-hidden flex flex-col items-center justify-between py-5 px-6 md:py-7 md:px-10"
       >
-        <!-- Layer สำหรับแคปซูลรายชื่อที่พุ่งออกจากกล่องและเด้งชนขอบเวที -->
-        <div id="bouncingCapsulesLayer" class="absolute inset-0 pointer-events-none overflow-hidden z-10"></div>
+        <!-- เสาแสงสีทอง 24K พุ่งตรงจากปากกล่องของขวัญขึ้นสู่เหรียญสปอตไลท์ตรงกลาง -->
+        <div class="center-spotlight-pillar"></div>
+        <div class="center-spotlight-core"></div>
 
-        <!-- จออ่านรายชื่อความเร็วสูงเหนือกล่องของขวัญ -->
-        <div
-          id="rollingTickerCard"
-          class="relative z-20 mt-1 bg-velvet-950/90 backdrop-blur-md border border-champagne/80 rounded-3xl px-7 py-4 md:px-12 md:py-5 text-center max-w-2xl w-full shadow-[0_18px_45px_rgba(0,0,0,0.75)] transition-transform duration-75"
-        >
-          <p class="text-[11px] font-light uppercase tracking-[0.26em] text-champagne-light/85">
-            OPENING 24K GOLDEN GIFT BOX...
-          </p>
-          <p id="rollingEmpId" class="text-2xl md:text-4xl font-mono font-medium text-champagne-light tracking-[0.16em] mt-1">
-            • • • • • •
-          </p>
-          <h3 id="rollingFullName" class="text-3xl md:text-5xl font-semibold text-white leading-tight mt-1 truncate">
-            กำลังเขย่ากล่องสุ่มรายชื่อ...
-          </h3>
-          <p id="rollingTeam" class="text-base md:text-xl font-light text-silver mt-1 truncate">
-            ทีมปฏิบัติการ
-          </p>
+        <!-- ละอองแสงทองขนาดเล็กเรียบหรู ลอยขึ้นเบาๆ ภายในลำแสงสปอตไลท์ -->
+        <div class="absolute inset-0 pointer-events-none overflow-hidden z-10">
+          <span class="spotlight-mote" style="left: 44%; animation-delay: 0s; animation-duration: 2.1s;"></span>
+          <span class="spotlight-mote" style="left: 48%; animation-delay: 0.4s; animation-duration: 2.5s;"></span>
+          <span class="spotlight-mote" style="left: 52%; animation-delay: 0.8s; animation-duration: 1.9s;"></span>
+          <span class="spotlight-mote" style="left: 56%; animation-delay: 0.2s; animation-duration: 2.3s;"></span>
+          <span class="spotlight-mote" style="left: 46%; animation-delay: 1.2s; animation-duration: 2.4s;"></span>
+          <span class="spotlight-mote" style="left: 54%; animation-delay: 1.5s; animation-duration: 2.0s;"></span>
+          <span class="spotlight-mote" style="left: 50%; animation-delay: 1.0s; animation-duration: 2.2s;"></span>
+          <span class="spotlight-mote" style="left: 42%; animation-delay: 1.7s; animation-duration: 2.6s;"></span>
+          <span class="spotlight-mote" style="left: 58%; animation-delay: 0.6s; animation-duration: 2.5s;"></span>
         </div>
 
-        <!-- ลำแสงทองคำพุ่งจากในกล่อง + ตัวกล่องของขวัญกำมะหยี่แดงเขย่าเปิดฝา -->
-        <div class="relative z-20 flex flex-col items-center justify-end pb-1">
-          <div class="golden-beam-cone"></div>
+        <!-- ป้ายหัวข้อเล็กด้านบนสุดของลำแสง -->
+        <p class="relative z-20 text-[10px] md:text-[11px] font-light uppercase tracking-[0.28em] text-champagne-light/85">
+          24K CENTER SPOTLIGHT • กำลังค้นหาผู้โชคดี
+        </p>
 
-          <div id="focusGiftBoxWrapper" class="gift-box-shaking relative w-44 h-44 md:w-52 md:h-52">
-            <svg class="w-full h-full drop-shadow-[0_24px_40px_rgba(0,0,0,0.85)]" viewBox="0 0 240 220" fill="none">
+        <!-- จุดโฟกัสกลางเสาแสง: วงแหวนทองคำ 24K + รูปโปรไฟล์ผู้มีสิทธิ์ + แถบชื่อมินิมอล -->
+        <div
+          id="spotlightCenterPiece"
+          class="relative z-20 flex flex-col items-center justify-center my-auto transition-transform duration-75"
+        >
+          <!-- วงแหวนสปอตไลท์ทองคำคู่พร้อมรูปโปรไฟล์ -->
+          <div class="relative w-32 h-32 sm:w-36 sm:h-36 md:w-44 md:h-44 flex items-center justify-center">
+            <!-- รัศมีแสงทองฟุ้งหลังเหรียญโปรไฟล์ -->
+            <div class="absolute -inset-3 rounded-full bg-champagne/25 blur-xl pointer-events-none"></div>
+
+            <!-- วงแหวนประดับทองคำหมุนช้าๆ รอบนอก -->
+            <div class="spotlight-halo-ring absolute inset-0 rounded-full pointer-events-none"></div>
+
+            <!-- เหรียญกรอบทองคำ 24K แสดงรูปโปรไฟล์ LINE (พร้อมเหรียญตรา VIP สำรองอัตโนมัติ) -->
+            <div class="spotlight-medallion-frame relative w-24 h-24 sm:w-28 sm:h-28 md:w-36 md:h-36 rounded-full overflow-hidden flex items-center justify-center">
+              <!-- เหรียญตราสำรอง 24K Gold VIP Monogram (แสดงทันทีหากพนักงานไม่มีรูปโปรไฟล์) -->
+              <div
+                id="spotlightAvatarFallback"
+                class="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-b from-[#351018] to-[#140508] text-champagne-light select-none"
+              >
+                <svg class="w-5 h-5 md:w-6 md:h-6 opacity-80 mb-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 2l2.6 5.3 5.9.8-4.3 4.2 1 5.9L12 15.4 6.8 18.2l1-5.9-4.3-4.2 5.9-.8L12 2z"></path>
+                </svg>
+                <span id="spotlightFallbackInitial" class="text-xl md:text-2xl font-semibold tracking-wider text-champagne-bright">
+                  VIP
+                </span>
+              </div>
+
+              <!-- รูปโปรไฟล์จริงจาก LINE -->
+              <img
+                id="spotlightAvatarImg"
+                src=""
+                alt="Candidate Profile"
+                class="relative z-10 w-full h-full object-cover rounded-full opacity-0 transition-opacity duration-75"
+              />
+            </div>
+          </div>
+
+          <!-- ป้ายชื่อมินิมอลโปร่งแสงใต้เหรียญโปรไฟล์ -->
+          <div
+            id="rollingTickerCard"
+            class="mt-3 bg-velvet-950/85 backdrop-blur-md border border-champagne/45 rounded-2xl px-6 py-2.5 md:px-9 md:py-3 text-center min-w-[260px] sm:min-w-[340px] max-w-xl shadow-[0_14px_34px_rgba(0,0,0,0.75)]"
+          >
+            <p id="rollingEmpId" class="text-xs md:text-sm font-mono font-medium text-champagne-light tracking-[0.20em]">
+              • • • • • •
+            </p>
+            <h3 id="rollingFullName" class="text-xl sm:text-2xl md:text-3xl font-semibold text-white leading-snug mt-0.5 truncate max-w-md mx-auto">
+              กำลังค้นหาผู้โชคดี...
+            </h3>
+            <p id="rollingTeam" class="text-xs md:text-sm font-light text-silver/85 mt-0.5 truncate max-w-md mx-auto">
+              ทีมปฏิบัติการ
+            </p>
+          </div>
+        </div>
+
+        <!-- กล่องของขวัญกำมะหยี่แดงฐานด้านล่าง ส่งลำแสงสีทองขึ้นสู่ด้านบน -->
+        <div class="relative z-20 flex flex-col items-center justify-end">
+          <div id="focusGiftBoxWrapper" class="gift-box-shaking relative w-32 h-32 sm:w-36 sm:h-36 md:w-40 md:h-40">
+            <svg class="w-full h-full drop-shadow-[0_20px_35px_rgba(0,0,0,0.85)]" viewBox="0 0 240 220" fill="none">
               <defs>
                 <linearGradient id="spinVelvetBody" x1="40" y1="88" x2="200" y2="205" gradientUnits="userSpaceOnUse">
                   <stop offset="0%" stop-color="#FF1F30" />
@@ -936,20 +1036,20 @@
                 </linearGradient>
                 <radialGradient id="boxMouthGlow" cx="50%" cy="50%" r="50%">
                   <stop offset="0%" stop-color="#FFFBEB" stop-opacity="1" />
-                  <stop offset="55%" stop-color="#F5D77F" stop-opacity="0.65" />
+                  <stop offset="55%" stop-color="#F5D77F" stop-opacity="0.72" />
                   <stop offset="100%" stop-color="#E60012" stop-opacity="0" />
                 </radialGradient>
               </defs>
 
               <!-- แสงทองสว่างเรืองรองปากกล่อง -->
-              <ellipse cx="120" cy="88" rx="88" ry="32" fill="url(#boxMouthGlow)" />
+              <ellipse cx="120" cy="86" rx="92" ry="34" fill="url(#boxMouthGlow)" />
 
               <!-- ตัวกล่องกำมะหยี่แดง -->
               <rect x="44" y="88" width="152" height="114" rx="16" fill="url(#spinVelvetBody)" stroke="#F5D77F" stroke-width="2.2" />
               <rect x="105" y="88" width="30" height="114" fill="url(#spinGoldRibbon)" />
               <rect x="44" y="135" width="152" height="22" fill="url(#spinGoldRibbon)" opacity="0.95" />
 
-              <!-- ฝากล่องกระเพื่อมเปิดแง้มปล่อยป้ายชื่อเด้งออกมา -->
+              <!-- ฝากล่องกระเพื่อมเปิดปล่อยเสาแสงสปอตไลท์ -->
               <g class="svg-gift-lid">
                 <path d="M120 56 C90 18, 56 32, 72 58 C84 64, 108 60, 120 56 Z" fill="url(#spinGoldRibbon)" stroke="#FFF2B2" stroke-width="1" />
                 <path d="M120 56 C150 18, 184 32, 168 58 C156 64, 132 60, 120 56 Z" fill="url(#spinGoldRibbon)" stroke="#FFF2B2" stroke-width="1" />
@@ -982,7 +1082,7 @@
               <span class="w-1.5 h-1.5 rotate-45 bg-champagne-light"></span>
             </div>
 
-            <!-- หัวข้อบนแท่นของรางวัล (น้ำหนักบางโปร่ง) -->
+            <!-- หัวข้อบนแท่นของรางวัล -->
             <span class="text-[10px] md:text-[11px] font-normal uppercase tracking-[0.24em] text-champagne-light/80">
               PRIZE REWARD • ของรางวัล
             </span>
@@ -999,7 +1099,7 @@
               />
             </div>
 
-            <!-- ชื่อของรางวัลกำกับใต้ภาพ (ตัวบางอ่านสบายตา) -->
+            <!-- ชื่อของรางวัลกำกับใต้ภาพ -->
             <div class="text-center space-y-0.5 max-w-xs">
               <p id="focusRevealPrizeSubGroup" class="text-[10px] font-light uppercase tracking-widest text-silver/70">
                 PRIZE ITEM
@@ -1011,12 +1111,12 @@
           </div>
 
           <!-- ============================================================ -->
-          <!-- RIGHT CHAMBER: รายละเอียดผู้โชคดี (สลับอัตโนมัติ เดี่ยว / หลายคน)   -->
+          <!-- RIGHT CHAMBER: รายละเอียดผู้โชคดีพร้อมรูปโปรไฟล์ 24K             -->
           <!-- ============================================================ -->
           <div id="royalRightWinnerCol" class="md:col-span-7 flex flex-col justify-center p-6 sm:p-8 md:p-10 min-w-0">
 
             <!-- โหมดผู้โชคดีเดี่ยว 1 ท่าน -->
-            <div id="singleStageDisplay" class="flex flex-col items-center justify-center text-center space-y-4">
+            <div id="singleStageDisplay" class="flex flex-col items-center justify-center text-center space-y-3.5">
               <div class="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-velvet-950/85 border border-champagne/55">
                 <span class="w-1.5 h-1.5 rotate-45 bg-champagne-light"></span>
                 <span id="slotTopTag" class="text-[11px] md:text-xs font-medium tracking-[0.18em] text-champagne-light uppercase">
@@ -1025,8 +1125,28 @@
                 <span class="w-1.5 h-1.5 rotate-45 bg-champagne-light"></span>
               </div>
 
-              <div class="py-1 space-y-2.5 w-full">
-                <!-- รหัสพนักงาน: ใช้ font-medium เว้นระยะตัวอักษรโปร่งหรู -->
+              <!-- รูปโปรไฟล์ผู้โชคดีในกรอบวงแหวนทองคำ 24K (ต่อเนื่องจากลำแสงสปอตไลท์) -->
+              <div class="relative w-20 h-20 md:w-24 md:h-24 rounded-full p-[2.5px] bg-gradient-to-tr from-[#D4AF37] via-[#FFF2B2] to-[#D4AF37] shadow-[0_0_28px_rgba(245,215,127,0.35)]">
+                <div class="relative w-full h-full rounded-full overflow-hidden bg-velvet-950 flex items-center justify-center">
+                  <div
+                    id="winnerSingleAvatarFallback"
+                    class="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-b from-[#351018] to-[#140508] text-champagne-light"
+                  >
+                    <span id="winnerSingleInitial" class="text-xl md:text-2xl font-semibold text-champagne-bright">
+                      VIP
+                    </span>
+                  </div>
+                  <img
+                    id="winnerSingleAvatarImg"
+                    src=""
+                    alt="Winner Profile"
+                    class="relative z-10 w-full h-full object-cover rounded-full opacity-0 transition-opacity duration-200"
+                  />
+                </div>
+              </div>
+
+              <div class="space-y-2 w-full">
+                <!-- รหัสพนักงาน: font-medium โปร่งหรู -->
                 <p
                   id="slotEmpId"
                   class="text-2xl sm:text-3xl md:text-4xl font-mono font-medium text-champagne-light tracking-[0.16em]"
@@ -1034,7 +1154,7 @@
                   EMP001
                 </p>
 
-                <!-- ชื่อ-นามสกุลผู้โชคดี: จุดโฟกัสสายตาหลัก ใช้ font-bold คมชัดสระไม่ซ้อน -->
+                <!-- ชื่อ-นามสกุลผู้โชคดี: จุดโฟกัสหลัก font-bold -->
                 <h3
                   id="slotFullName"
                   class="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-snug tracking-tight break-words"
@@ -1048,7 +1168,7 @@
                 </p>
 
                 <!-- ป้ายแจ้งสถานะเข้างานพร้อมไอคอนเส้นเรียบคม -->
-                <div class="pt-3">
+                <div class="pt-2">
                   <span
                     id="slotAttendanceBadge"
                     class="inline-flex items-center gap-2 text-xs md:text-[13px] font-normal px-4 py-1.5 rounded-full border"
@@ -1083,9 +1203,9 @@
 
     <!-- Focus Stage Bottom Decision Bar -->
     <footer class="relative z-30 max-w-4xl w-full mx-auto min-h-[68px] flex items-center justify-center shrink-0">
-      <!-- ข้อความสถานะระหว่างกำลังเขย่ากล่อง -->
+      <!-- ข้อความสถานะระหว่างกำลังส่องสปอตไลท์ -->
       <p id="spinningFooterHint" class="text-sm font-light text-champagne-light/90 tracking-wider animate-pulse">
-        กำลังเขย่ากล่องของขวัญค้นหาผู้โชคดี กรุณารอสักครู่...
+        กำลังส่องสปอตไลท์ค้นหาผู้โชคดี กรุณารอสักครู่...
       </p>
 
       <!-- ปุ่มตัดสินผลหลังเปิดกล่อง: [ได้รับรางวัล] (ไอคอนเครื่องหมายถูกเส้นเรียบหรู) vs [สุ่มใหม่ / สละสิทธิ์] -->
@@ -1143,7 +1263,7 @@
       MAP_URL: 'https://maps.app.goo.gl/85FVz4J4Ai2xE8h88',
       STAFF_PIN: '2026',
 
-      // ระยะเวลาเขย่ากล่องของขวัญและเด้งรายชื่อบนเวที (มิลลิวินาที)
+      // ระยะเวลาส่องสปอตไลท์ค้นหาผู้โชคดีบนเวที (มิลลิวินาที)
       SPIN_DURATION_MS: 3200
     };
 
@@ -1172,8 +1292,8 @@
       },
       soundEnabled: true,
       audioCtx: null,
-      bouncingCapsules: [],
-      bounceRafId: null
+      cachedAvatarUrls: new Set(),
+      failedAvatarUrls: new Set()
     };
 
     /**
@@ -1256,7 +1376,6 @@
         const ctx = stageState.audioCtx;
         if (!ctx) return;
         const now = ctx.currentTime;
-        // คอร์ดเฉลิมฉลอง C Major Arpeggio (C5 - E5 - G5 - C6)
         const notes = [523.25, 659.25, 783.99, 1046.5];
         notes.forEach((freq, idx) => {
           const osc = ctx.createOscillator();
@@ -1307,7 +1426,7 @@
 
     /**
      * ========================================================================
-     * 2. API COMMUNICATION & DATA SYNC
+     * 2. API COMMUNICATION, AVATAR PRELOADER & DATA SYNC
      * ========================================================================
      */
     async function callGasApi(payload) {
@@ -1332,6 +1451,101 @@
       }
 
       return await response.json();
+    }
+
+    /**
+     * โหลดรูปโปรไฟล์เข้า Cache ล่วงหน้าแบบไม่บล็อกหน้าจอ เพื่อให้ตอนสลับรูปในเสาสปอตไลท์ลื่นไหลระดับ 60fps
+     */
+    function preloadPoolAvatarsInBackground() {
+      const combined = stageState.allRegisteredPool.length > 0
+        ? stageState.allRegisteredPool
+        : stageState.eligiblePool;
+
+      const urlsToPreload = [];
+      const seen = new Set();
+
+      for (let i = 0; i < combined.length; i++) {
+        const u = String(combined[i].pictureUrl || '').trim();
+        if (
+          u.indexOf('https://') === 0 &&
+          !stageState.cachedAvatarUrls.has(u) &&
+          !stageState.failedAvatarUrls.has(u) &&
+          !seen.has(u)
+        ) {
+          seen.add(u);
+          urlsToPreload.push(u);
+        }
+      }
+
+      // ทยอยโหลดทีละชุดย่อยเบื้องหลัง ไม่กระทบแบนด์วิดท์แม้มี 400+ รายชื่อ
+      let idx = 0;
+      function loadNextBatch() {
+        const limit = Math.min(idx + 8, urlsToPreload.length);
+        for (; idx < limit; idx++) {
+          const url = urlsToPreload[idx];
+          const img = new Image();
+          img.onload = () => stageState.cachedAvatarUrls.add(url);
+          img.onerror = () => stageState.failedAvatarUrls.add(url);
+          img.src = url;
+        }
+        if (idx < urlsToPreload.length) {
+          setTimeout(loadNextBatch, 180);
+        }
+      }
+
+      if (urlsToPreload.length > 0) {
+        setTimeout(loadNextBatch, 250);
+      }
+    }
+
+    function getPersonInitial(fullName) {
+      const raw = String(fullName || '').trim();
+      if (!raw) return 'VIP';
+      const cleaned = raw.replace(/^(นาย|นางสาว|นาง|น\.ส\.|ดร\.|คุณ)\s*/i, '').trim();
+      const ch = cleaned.charAt(0) || raw.charAt(0);
+      return ch ? ch.toUpperCase() : 'VIP';
+    }
+
+    /**
+     * แสดงรูปโปรไฟล์ลงในกรอบสปอตไลท์หรือการ์ดผู้โชคดี พร้อมสลับเป็นเหรียญ VIP 24K ทันทีหากไม่มีรูป
+     */
+    function applyAvatarToElements(imgEl, initialEl, person) {
+      if (initialEl) {
+        initialEl.textContent = getPersonInitial(person && person.fullName);
+      }
+      if (!imgEl) return;
+
+      const url = String((person && person.pictureUrl) || '').trim();
+      const isValidUrl = url.indexOf('https://') === 0 && !stageState.failedAvatarUrls.has(url);
+
+      if (!isValidUrl) {
+        imgEl.onload = null;
+        imgEl.onerror = null;
+        imgEl.classList.add('opacity-0');
+        imgEl.removeAttribute('src');
+        return;
+      }
+
+      if (stageState.cachedAvatarUrls.has(url)) {
+        imgEl.onload = null;
+        imgEl.onerror = () => {
+          stageState.failedAvatarUrls.add(url);
+          imgEl.classList.add('opacity-0');
+        };
+        imgEl.src = url;
+        imgEl.classList.remove('opacity-0');
+      } else {
+        imgEl.classList.add('opacity-0');
+        imgEl.onload = () => {
+          stageState.cachedAvatarUrls.add(url);
+          imgEl.classList.remove('opacity-0');
+        };
+        imgEl.onerror = () => {
+          stageState.failedAvatarUrls.add(url);
+          imgEl.classList.add('opacity-0');
+        };
+        imgEl.src = url;
+      }
     }
 
     async function loadLuckyDrawData(showToastAfter = false) {
@@ -1364,6 +1578,7 @@
 
         populatePrizeSelectors();
         refreshAllCountersUI();
+        preloadPoolAvatarsInBackground();
 
         if (showToastAfter) {
           Swal.fire({
@@ -1721,7 +1936,7 @@
 
     /**
      * ========================================================================
-     * 4. FULL-SCREEN FOCUS SPIN STAGE & BOUNCING GIFT BOX PHYSICS
+     * 4. FULL-SCREEN MINIMAL CENTER SPOTLIGHT SPIN & WINNER REVEAL
      * ========================================================================
      */
     function openFocusSpinStage(prize, targetDrawCount) {
@@ -1753,7 +1968,6 @@
     }
 
     function closeFocusSpinStage() {
-      stopBouncingCapsules();
       stageState.isFocusStageOpen = false;
       document.getElementById('focusSpinStage').classList.add('hidden');
       document.body.classList.remove('focus-mode-active');
@@ -1764,6 +1978,9 @@
       resetStageToIdle();
     }
 
+    /**
+     * สุ่มคัดเลือกผู้โชคดีอย่างโปร่งใส 100% จากรายชื่อทั้งหมดในกองสุ่ม (รองรับ 400+ รายชื่อเท่าเทียมกันทุกคน)
+     */
     function pickRandomUniqueCandidates(pool, count) {
       const copy = pool.slice();
       const randBuf = new Uint32Array(copy.length);
@@ -1783,119 +2000,6 @@
       }
 
       return copy.slice(0, count);
-    }
-
-    /**
-     * ปล่อยป้ายแคปซูลรายชื่อพนักงานพุ่งออกจากปากกล่องของขวัญแล้วเด้งชนขอบเวที
-     */
-    function spawnBouncingCapsule(person) {
-      const layer = document.getElementById('bouncingCapsulesLayer');
-      const arena = document.getElementById('phaseShakingArena');
-      if (!layer || !arena) return;
-
-      if (stageState.bouncingCapsules.length >= 10) {
-        const oldest = stageState.bouncingCapsules.shift();
-        if (oldest && oldest.el && oldest.el.parentNode) {
-          oldest.el.parentNode.removeChild(oldest.el);
-        }
-      }
-
-      const boundsW = arena.clientWidth || window.innerWidth * 0.85;
-      const boundsH = arena.clientHeight || 480;
-
-      const el = document.createElement('div');
-      el.className = 'bouncing-name-capsule';
-      el.textContent = person.empId + ' • ' + person.fullName;
-      layer.appendChild(el);
-
-      const pillW = el.offsetWidth || 210;
-      const pillH = el.offsetHeight || 38;
-
-      const startX = Math.max(16, Math.min(boundsW - pillW - 16, (boundsW - pillW) / 2 + (Math.random() - 0.5) * 50));
-      const startY = Math.max(140, boundsH - 175);
-
-      const dir = Math.random() < 0.5 ? -1 : 1;
-      const vx = dir * (4.0 + Math.random() * 5.2);
-      const vy = -(9.0 + Math.random() * 5.5);
-
-      stageState.bouncingCapsules.push({
-        el: el,
-        x: startX,
-        y: startY,
-        vx: vx,
-        vy: vy,
-        w: pillW,
-        h: pillH,
-        rot: (Math.random() - 0.5) * 18,
-        vRot: (Math.random() - 0.5) * 2.2,
-        bornAt: performance.now()
-      });
-    }
-
-    function startBouncingCapsulesLoop() {
-      const arena = document.getElementById('phaseShakingArena');
-
-      function stepPhysics(now) {
-        if (!stageState.isSpinning) return;
-        const boundsW = (arena && arena.clientWidth) || window.innerWidth * 0.85;
-        const boundsH = (arena && arena.clientHeight) || 480;
-
-        for (let i = stageState.bouncingCapsules.length - 1; i >= 0; i--) {
-          const item = stageState.bouncingCapsules[i];
-          const age = now - item.bornAt;
-
-          item.vy += 0.34;
-          item.x += item.vx;
-          item.y += item.vy;
-          item.rot += item.vRot;
-
-          if (item.x <= 14) {
-            item.x = 14;
-            item.vx = Math.abs(item.vx) * 0.90;
-          } else if (item.x + item.w >= boundsW - 14) {
-            item.x = Math.max(14, boundsW - item.w - 14);
-            item.vx = -Math.abs(item.vx) * 0.90;
-          }
-
-          if (item.y <= 14) {
-            item.y = 14;
-            item.vy = Math.abs(item.vy) * 0.82;
-          } else if (item.y + item.h >= boundsH - 16) {
-            item.y = boundsH - item.h - 16;
-            item.vy = -Math.abs(item.vy) * 0.80;
-          }
-
-          const opacity = age > 1750 ? Math.max(0, 1 - (age - 1750) / 350) : 1;
-          item.el.style.opacity = opacity.toFixed(2);
-          item.el.style.transform =
-            'translate3d(' +
-            item.x.toFixed(1) +
-            'px,' +
-            item.y.toFixed(1) +
-            'px,0) rotate(' +
-            item.rot.toFixed(1) +
-            'deg)';
-
-          if (age > 2100) {
-            if (item.el.parentNode) item.el.parentNode.removeChild(item.el);
-            stageState.bouncingCapsules.splice(i, 1);
-          }
-        }
-
-        stageState.bounceRafId = requestAnimationFrame(stepPhysics);
-      }
-
-      stageState.bounceRafId = requestAnimationFrame(stepPhysics);
-    }
-
-    function stopBouncingCapsules() {
-      if (stageState.bounceRafId) {
-        cancelAnimationFrame(stageState.bounceRafId);
-        stageState.bounceRafId = null;
-      }
-      stageState.bouncingCapsules = [];
-      const layer = document.getElementById('bouncingCapsulesLayer');
-      if (layer) layer.innerHTML = '';
     }
 
     async function startLuckyDrawSpin() {
@@ -1936,13 +2040,24 @@
       }
       targetDrawCount = Math.min(targetDrawCount, prize.remainingQty, activePool.length);
 
-      // สุ่มผู้โชคดีล่วงหน้าอย่างโปร่งใสด้วย Cryptographic Fisher-Yates Shuffle
+      // 1. สุ่มผู้โชคดีล่วงหน้าอย่างยุติธรรมด้วย Cryptographic Fisher-Yates Shuffle
       const selectedWinners = pickRandomUniqueCandidates(activePool, targetDrawCount);
+
+      // Preload รูปของผู้โชคดีที่ถูกสุ่มได้ทันทีเพื่อให้ตอนเปิดการ์ดแบบ B แสดงผลคมชัดเสี้ยววินาทีแรก
+      selectedWinners.forEach((w) => {
+        const u = String(w.pictureUrl || '').trim();
+        if (u.indexOf('https://') === 0 && !stageState.cachedAvatarUrls.has(u)) {
+          const preloadImg = new Image();
+          preloadImg.onload = () => stageState.cachedAvatarUrls.add(u);
+          preloadImg.onerror = () => stageState.failedAvatarUrls.add(u);
+          preloadImg.src = u;
+        }
+      });
 
       stageState.isSpinning = true;
       stageState.drawnCandidates = [];
 
-      // ตัดเข้าสู่หน้าสุ่มเต็มจอทันที
+      // 2. ตัดเข้าสู่หน้า Minimal Center Spotlight เต็มจอทันที
       openFocusSpinStage(prize, targetDrawCount);
 
       const shakingArena = document.getElementById('phaseShakingArena');
@@ -1961,12 +2076,11 @@
       giftBoxWrapper.classList.remove('gift-box-burst');
       giftBoxWrapper.classList.add('gift-box-shaking');
 
-      startBouncingCapsulesLoop();
+      // 3. รันแอนิเมชันเสาแสงสปอตไลท์สลับรูปโปรไฟล์พร้อมเสียงจังหวะชะลอตัว 3.2 วินาที
+      await runMinimalSpotlightAnimation(activePool, CONFIG.SPIN_DURATION_MS);
 
-      await runRollingSlotAnimation(activePool, CONFIG.SPIN_DURATION_MS);
-
+      // 4. เปิดฝากล่องพร้อมเสียง Fanfare และพลุเฉลิมฉลองสีแดง-ทอง 24K
       stageState.isSpinning = false;
-      stopBouncingCapsules();
 
       giftBoxWrapper.classList.remove('gift-box-shaking');
       giftBoxWrapper.classList.add('gift-box-burst');
@@ -1983,42 +2097,44 @@
       renderDrawnWinnersOnStage();
     }
 
-    function runRollingSlotAnimation(pool, totalDurationMs) {
+    /**
+     * แอนิเมชัน Minimal Center Spotlight: สลับรูปโปรไฟล์และชื่อกลางเสาแสงสีทองพร้อมชะลอจังหวะอย่างนุ่มนวล
+     */
+    function runMinimalSpotlightAnimation(pool, totalDurationMs) {
       return new Promise((resolve) => {
         const startTime = performance.now();
         let lastTickAt = 0;
-        let lastSpawnAt = 0;
 
         const idEl = document.getElementById('rollingEmpId');
         const nameEl = document.getElementById('rollingFullName');
         const teamEl = document.getElementById('rollingTeam');
-        const tickerCard = document.getElementById('rollingTickerCard');
+        const centerPiece = document.getElementById('spotlightCenterPiece');
+        const avatarImg = document.getElementById('spotlightAvatarImg');
+        const fallbackInitial = document.getElementById('spotlightFallbackInitial');
 
         function step(now) {
           const elapsed = now - startTime;
           const progress = Math.min(1, elapsed / totalDurationMs);
 
-          const dynamicInterval = 42 + Math.pow(progress, 2.6) * 240;
+          // ค่อยๆ ชะลอจังหวะการสลับใบหน้าและรายชื่อช่วงท้ายให้น่าลุ้นและดูหรู
+          const dynamicInterval = 48 + Math.pow(progress, 2.55) * 235;
 
           if (now - lastTickAt >= dynamicInterval) {
             lastTickAt = now;
             const randomPerson = pool[Math.floor(Math.random() * pool.length)];
+
             idEl.textContent = randomPerson.empId;
             nameEl.textContent = randomPerson.fullName;
             teamEl.textContent = 'ทีม: ' + randomPerson.team;
 
-            tickerCard.style.transform = 'translateY(-4px) scale(1.015)';
+            applyAvatarToElements(avatarImg, fallbackInitial, randomPerson);
+
+            centerPiece.style.transform = 'scale(1.028)';
             setTimeout(() => {
-              tickerCard.style.transform = 'translateY(0) scale(1)';
-            }, 38);
+              centerPiece.style.transform = 'scale(1)';
+            }, 42);
 
             playSlotTick(560 + Math.floor((1 - progress) * 320));
-          }
-
-          if (now - lastSpawnAt >= 135 && progress < 0.90) {
-            lastSpawnAt = now;
-            const p = pool[Math.floor(Math.random() * pool.length)];
-            spawnBouncingCapsule(p);
           }
 
           if (progress < 1) {
@@ -2033,7 +2149,7 @@
     }
 
     /**
-     * แสดงการ์ดแบบ B (Unified Royal Gala Card — แบ่งซ้ายรูปของรางวัล / ขวาข้อมูลผู้โชคดี)
+     * แสดงการ์ดแบบ B (Unified Royal Gala Card — แบ่งซ้ายรูปของรางวัล / ขวาข้อมูลผู้โชคดี + รูปโปรไฟล์)
      */
     function renderDrawnWinnersOnStage() {
       const winners = stageState.drawnCandidates;
@@ -2079,6 +2195,13 @@
         multiWrapper.classList.add('hidden');
         singleBox.classList.remove('hidden');
 
+        // แสดงรูปโปรไฟล์ผู้โชคดีในกรอบทองคำ 24K
+        applyAvatarToElements(
+          document.getElementById('winnerSingleAvatarImg'),
+          document.getElementById('winnerSingleInitial'),
+          w
+        );
+
         document.getElementById('slotTopTag').textContent = 'CONGRATULATIONS • ผู้โชคดี';
         document.getElementById('slotEmpId').textContent = w.empId;
         document.getElementById('slotFullName').textContent = w.fullName;
@@ -2091,7 +2214,7 @@
           'inline-flex items-center gap-2 text-xs md:text-[13px] font-normal px-4 py-1.5 rounded-full border ' +
           attTag.className;
       } else {
-        // สัดส่วน 4 : 8 สำหรับสุ่มพร้อมกันหลายรางวัล เพื่อให้ตารางรายชื่อฝั่งขวากว้างอ่านง่าย
+        // สัดส่วน 4 : 8 สำหรับสุ่มพร้อมกันหลายรางวัล
         unifiedCard.className =
           'unified-royal-card winner-glow winner-pop-enter w-full max-w-6xl rounded-[32px] overflow-hidden grid grid-cols-1 md:grid-cols-12 items-stretch';
         leftCol.className =
@@ -2106,17 +2229,34 @@
         multiBox.innerHTML = winners
           .map((w, idx) => {
             const attTag = getCandidateAttendanceTagInfo(w);
+            const rawAvatar = String(w.pictureUrl || '').trim();
+            const hasValidAvatar =
+              rawAvatar.indexOf('https://') === 0 && !stageState.failedAvatarUrls.has(rawAvatar);
+            const initial = escapeHtml(getPersonInitial(w.fullName));
+
+            const miniAvatarHtml = hasValidAvatar
+              ? '<div class="relative w-9 h-9 rounded-full p-[1.5px] bg-gradient-to-tr from-[#D4AF37] to-[#FFF2B2] shrink-0">' +
+                '<div class="relative w-full h-full rounded-full overflow-hidden bg-velvet-950 flex items-center justify-center">' +
+                '<span class="text-xs font-semibold text-champagne-light">' + initial + '</span>' +
+                '<img src="' + escapeHtml(rawAvatar) + '" alt="" onerror="this.style.display=\'none\'" class="absolute inset-0 w-full h-full object-cover rounded-full" />' +
+                '</div></div>'
+              : '<div class="w-9 h-9 rounded-full border border-champagne/60 bg-velvet-950 flex items-center justify-center shrink-0">' +
+                '<span class="text-xs font-semibold text-champagne-light">' + initial + '</span></div>';
+
             return (
               '<div class="batch-winner-item rounded-2xl p-4 flex flex-col justify-between gap-2.5">' +
               '<div class="flex items-center justify-between gap-2">' +
-              '<span class="gold-pill text-[11px] font-semibold px-2.5 py-0.5 rounded-full font-mono">#' +
+              '<div class="flex items-center gap-2 min-w-0">' +
+              miniAvatarHtml +
+              '<span class="gold-pill text-[11px] font-semibold px-2.5 py-0.5 rounded-full font-mono truncate">#' +
               (idx + 1) +
               ' • ' +
               escapeHtml(w.empId) +
               '</span>' +
+              '</div>' +
               '<button type="button" onclick="redrawSingleSlotInBatch(' +
               idx +
-              ')" class="inline-flex items-center gap-1 text-[11px] font-normal px-2.5 py-1 rounded-lg bg-velvet-950/90 border border-champagne/35 text-champagne-light hover:border-white hover:text-white transition" title="สุ่มเปลี่ยนเฉพาะคนนี้">' +
+              ')" class="inline-flex items-center gap-1 text-[11px] font-normal px-2.5 py-1 rounded-lg bg-velvet-950/90 border border-champagne/35 text-champagne-light hover:border-white hover:text-white transition shrink-0" title="สุ่มเปลี่ยนเฉพาะคนนี้">' +
               '<svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>' +
               '<span>เปลี่ยนคนนี้</span></button>' +
               '</div>' +
@@ -2141,7 +2281,6 @@
           .join('');
       }
 
-      // อัปเดตข้อความปุ่มได้รับรางวัลโดยรักษาไอคอนเครื่องหมายถูก SVG และความหนา-บางของฟอนต์ไว้ครบถ้วน
       document.getElementById('btnConfirmMainLabel').textContent =
         winners.length === 1
           ? 'ได้รับรางวัล'
@@ -2192,7 +2331,7 @@
     }
 
     /**
-     * กดปุ่ม [สุ่มใหม่ / สละสิทธิ์]: พักชื่อคนที่สละสิทธิ์ไว้ แล้วเขย่ากล่องสุ่มใหม่ทันทีในหน้า Focus Stage
+     * กดปุ่ม [สุ่มใหม่ / สละสิทธิ์]: พักชื่อคนที่สละสิทธิ์ไว้ แล้วส่องสปอตไลท์สุ่มใหม่ทันทีในหน้า Focus Stage
      */
     async function forfeitAndRedrawAll() {
       if (stageState.drawnCandidates.length === 0) return;
