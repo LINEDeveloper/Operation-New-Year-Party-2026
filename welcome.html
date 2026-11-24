@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome Stage | New Year Operations Party 2027</title>
+
+  <!-- Google Fonts: Prompt -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            prompt: ['Prompt', 'sans-serif']
+          },
+          colors: {
+            velvet: {
+              950: '#110608',
+              900: '#1A080C',
+              800: '#260D13'
+            },
+            truered: {
+              DEFAULT: '#E60012',
+              dark: '#680008',
+              vivid: '#FF2A3A'
+            },
+            champagne: {
+              DEFAULT: '#D4AF37',
+              light: '#F5D77F',
+              bright: '#FFF2B2'
+            },
+            silver: '#D6CED2'
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    /* ========================================================================
+       EXECUTIVE GALA แดง-ทอง 24K PROJECTOR STAGE THEME (16:9 AUTO-SCALING)
+       ======================================================================== */
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Prompt', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      background-color: #110608;
+      background-image:
+        radial-gradient(ellipse at 50% -12%, rgba(230, 0, 18, 0.38) 0%, rgba(104, 0, 8, 0.20) 44%, rgba(17, 6, 8, 0) 74%),
+        radial-gradient(circle at 12% 88%, rgba(212, 175, 55, 0.20) 0%, rgba(17, 6, 8, 0) 48%),
+        radial-gradient(circle at 88% 86%, rgba(230, 0, 18, 0.22) 0%, rgba(17, 6, 8, 0) 48%),
+        linear-gradient(180deg, #1B070C 0%, #100507 100%);
+      color: #FFFFFF;
+      user-select: none;
+    }
+
+    /* ลำแสงสปอตไลท์เวทีส่องลงมาจากด้านบน */
+    .stage-beam-left,
+    .stage-beam-right,
+    .stage-beam-center {
+      position: fixed;
+      top: -18vh;
+      pointer-events: none;
+      filter: blur(36px);
+      z-index: 2;
+    }
+    .stage-beam-center {
+      left: 50%;
+      width: min(46vw, 760px);
+      height: 85vh;
+      transform: translateX(-50%);
+      background: linear-gradient(180deg, rgba(245, 215, 127, 0.18) 0%, rgba(230, 0, 18, 0.09) 48%, rgba(17, 6, 8, 0) 100%);
+      animation: beamBreathe 6s ease-in-out infinite alternate;
+    }
+    .stage-beam-left {
+      left: 14%;
+      width: 24vw;
+      height: 78vh;
+      transform: rotate(-18deg);
+      background: linear-gradient(180deg, rgba(230, 0, 18, 0.18) 0%, rgba(212, 175, 55, 0.06) 55%, transparent 100%);
+      animation: beamSwayLeft 9s ease-in-out infinite alternate;
+    }
+    .stage-beam-right {
+      right: 14%;
+      width: 24vw;
+      height: 78vh;
+      transform: rotate(18deg);
+      background: linear-gradient(180deg, rgba(212, 175, 55, 0.16) 0%, rgba(230, 0, 18, 0.07) 55%, transparent 100%);
+      animation: beamSwayRight 9s ease-in-out infinite alternate;
+    }
+
+    @keyframes beamBreathe {
+      from { opacity: 0.68; transform: translateX(-50%) scaleX(0.94); }
+      to   { opacity: 1;    transform: translateX(-50%) scaleX(1.08); }
+    }
+    @keyframes beamSwayLeft {
+      from { transform: rotate(-22deg); opacity: 0.55; }
+      to   { transform: rotate(-10deg); opacity: 0.9; }
+    }
+    @keyframes beamSwayRight {
+      from { transform: rotate(22deg); opacity: 0.55; }
+      to   { transform: rotate(10deg); opacity: 0.9; }
+    }
+
+    /* ป้ายทองคำ 24K และตัวอักษรไล่เฉดทอง */
+    .gold-pill {
+      background: linear-gradient(90deg, #D4AF37 0%, #F5D77F 50%, #D4AF37 100%);
+      color: #140709;
+      box-shadow: 0 4px 16px rgba(212, 175, 55, 0.35);
+    }
+
+    .gold-text {
+      background: linear-gradient(90deg, #FFF2B2 0%, #F5D77F 38%, #D4AF37 72%, #FFF2B2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* ปุ่มควบคุมด้านบน (ซ่อนอัตโนมัติเมื่อฉายเต็มจอ) */
+    .stage-ctrl-btn {
+      background: rgba(20, 7, 10, 0.75);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(245, 215, 127, 0.40);
+      color: #F8FAFC;
+      transition: all 0.2s ease;
+    }
+    .stage-ctrl-btn:hover {
+      background: rgba(42, 12, 18, 0.92);
+      border-color: #FFF2B2;
+      color: #FFF2B2;
+      transform: translateY(-1px);
+    }
+
+    #topControlBar {
+      transition: opacity 0.45s ease, transform 0.45s ease;
+    }
+    body.controls-hidden #topControlBar {
+      opacity: 0;
+      transform: translateY(-18px);
+      pointer-events: none;
+    }
+    body.controls-hidden {
+      cursor: none;
+    }
+
+    /* การ์ดเวทีหลักตรงกลาง (Center Welcome Stage) */
+    .center-welcome-stage {
+      width: min(52vw, 860px);
+      min-width: 320px;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(230, 0, 18, 0.30) 0%, rgba(230, 0, 18, 0) 62%),
+        linear-gradient(160deg, rgba(34, 11, 17, 0.88) 0%, rgba(16, 5, 8, 0.94) 100%);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      border: 1.5px solid rgba(245, 215, 127, 0.62);
+      border-radius: clamp(24px, 2.4vw, 40px);
+      box-shadow:
+        0 30px 80px rgba(0, 0, 0, 0.82),
+        0 0 55px rgba(212, 175, 55, 0.18),
+        inset 0 1px 0 rgba(255, 242, 178, 0.35);
+      padding: clamp(1.3rem, 2.8vh, 2.75rem) clamp(1.4rem, 2.8vw, 3.25rem);
+    }
+
+    /* แอนิเมชันสลับข้อความ AI นุ่มนวล */
+    .greeting-fade {
+      transition: opacity 0.48s ease, transform 0.48s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .greeting-hidden {
+      opacity: 0;
+      transform: translateY(10px) scale(0.985);
+    }
+
+    /* เหรียญโปรไฟล์พนักงานที่ลอยรอบเวที (Floating Galaxy Orbs) */
+    .floating-orb {
+      position: absolute;
+      left: 0;
+      top: 0;
+      will-change: transform, opacity;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: opacity 0.85s ease;
+    }
+
+    .orb-avatar-ring {
+      width: clamp(64px, min(5.4vw, 9.6vh), 104px);
+      height: clamp(64px, min(5.4vw, 9.6vh), 104px);
+      border-radius: 9999px;
+      padding: 2.5px;
+      background: linear-gradient(135deg, #FFF2B2 0%, #D4AF37 50%, #E60012 100%);
+      box-shadow:
+        0 10px 28px rgba(0, 0, 0, 0.72),
+        0 0 22px rgba(245, 215, 127, 0.32);
+      position: relative;
+    }
+
+    .orb-name-pill {
+      margin-top: 6px;
+      max-width: clamp(120px, 11vw, 185px);
+      background: rgba(18, 6, 9, 0.88);
+      border: 1px solid rgba(245, 215, 127, 0.45);
+      border-radius: 9999px;
+      padding: 3px 11px;
+      text-align: center;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.65);
+    }
+
+    /* การ์ดต้อนรับคนสแกนเข้างานใหม่สดๆ (VIP Arrival Spotlight) */
+    #vipArrivalCard {
+      transition: opacity 0.42s ease, transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    #vipArrivalCard.arrival-hidden {
+      opacity: 0;
+      transform: translate(-50%, 28px) scale(0.94);
+      pointer-events: none;
+    }
+    #vipArrivalCard.arrival-visible {
+      opacity: 1;
+      transform: translate(-50%, 0) scale(1);
+    }
+  </style>
+</head>
+
+<body>
+  <!-- เลเยอร์ลำแสงสปอตไลท์ -->
+  <div class="stage-beam-left"></div>
+  <div class="stage-beam-center"></div>
+  <div class="stage-beam-right"></div>
+
+  <!-- เลเยอร์ Canvas วาดละอองทอง โบเก้ และประกายเพชรระยิบระยับ 60fps -->
+  <canvas id="sparkleCanvas" class="fixed inset-0 w-full h-full pointer-events-none z-[3]"></canvas>
+
+  <!-- เลเยอร์รูปโปรไฟล์พนักงานที่เช็คอินแล้วลอยรอบเวที -->
+  <div id="floatingGalaxyLayer" class="fixed inset-0 pointer-events-none z-[10]"></div>
+
+  <!-- ==================================================================== -->
+  <!-- TOP BAR: ป้ายยอดผู้เช็คอินจริง + แถบปุ่มควบคุมสำหรับทีมงานหน้าเวที      -->
+  <!-- ==================================================================== -->
+  <header class="fixed top-0 inset-x-0 z-[35] px-5 md:px-8 py-4 flex items-start justify-between gap-4 pointer-events-none">
+    <!-- มุมซ้ายบน: โลโก้ True + ยอด Checked-In เรียลไทม์ (แสดงตลอดเวลา) -->
+    <div class="pointer-events-auto flex items-center gap-3.5 bg-[#160609]/80 backdrop-blur-md border border-champagne/45 rounded-2xl px-4 py-2.5 shadow-[0_12px_32px_rgba(0,0,0,0.65)]">
+      <img
+        src="https://img2.pic.in.th/True--W9082df0ce2da3b92.png"
+        alt="True"
+        onerror="this.onerror=null;this.src='https://placehold.co/160x54/680008/FFFFFF?text=true';"
+        class="w-[78px] md:w-[92px] h-auto object-contain shrink-0"
+      />
+      <div class="h-8 w-[1px] bg-champagne-light/30"></div>
+      <div>
+        <div class="flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+          <span class="text-[10px] md:text-xs font-medium uppercase tracking-widest text-champagne-light">
+            Checked-In Live
+          </span>
+        </div>
+        <p class="text-sm md:text-lg font-bold text-white leading-tight">
+          เข้าร่วมงานแล้ว <span id="checkedInCounter" class="text-champagne-bright">0</span> ท่าน
+        </p>
+      </div>
+    </div>
+
+    <!-- มุมขวาบน: ปุ่มควบคุม (ซ่อนอัตโนมัติเมื่อกดเต็มจอและเมาส์นิ่ง 4 วินาที) -->
+    <div id="topControlBar" class="pointer-events-auto flex flex-wrap items-center justify-end gap-2">
+      <button
+        type="button"
+        id="btnModeBadge"
+        onclick="toggleDemoOrLiveMode()"
+        class="stage-ctrl-btn px-3 py-1.5 rounded-xl text-xs font-medium flex items-center gap-1.5"
+        title="คลิกเพื่อสลับโหมดซิงก์จริง / โหมดจำลอง"
+      >
+        <span id="modeDot" class="w-2 h-2 rounded-full bg-emerald-400"></span>
+        <span id="modeLabelText">กำลังเชื่อมต่อ...</span>
+      </button>
+
+      <button
+        type="button"
+        id="btnSoundToggle"
+        onclick="toggleWelcomeSound()"
+        class="stage-ctrl-btn px-3 py-1.5 rounded-xl text-xs font-normal text-champagne-light"
+      >
+        🔊 เสียงต้อนรับ: เปิด
+      </button>
+
+      <button
+        type="button"
+        onclick="syncCheckedInAttendees(true)"
+        class="stage-ctrl-btn px-3 py-1.5 rounded-xl text-xs font-normal"
+      >
+        ↻ ซิงก์ตอนนี้
+      </button>
+
+      <button
+        type="button"
+        onclick="triggerSimulatedArrival()"
+        class="stage-ctrl-btn px-3 py-1.5 rounded-xl text-xs font-normal text-champagne-bright"
+        title="กดทดสอบเอฟเฟกต์คนสแกนเข้างาน"
+      >
+        ✨ ทดสอบต้อนรับ
+      </button>
+
+      <button
+        type="button"
+        onclick="hideControlsNow()"
+        class="stage-ctrl-btn px-3 py-1.5 rounded-xl text-xs font-normal"
+      >
+        ซ่อนแถบปุ่ม
+      </button>
+
+      <button
+        type="button"
+        onclick="toggleFullScreen()"
+        class="gold-pill px-3.5 py-1.5 rounded-xl text-xs font-semibold hover:brightness-105 transition"
+      >
+        ⛶ เต็มจอ
+      </button>
+    </div>
+  </header>
+
+  <!-- ==================================================================== -->
+  <!-- CENTER STAGE: ป้ายต้อนรับหลัก + ระบบ AI สุ่มวนข้อความต้อนรับอัตโนมัติ   -->
+  <!-- ==================================================================== -->
+  <main class="relative z-[20] w-full h-full flex items-center justify-center px-4 pointer-events-none">
+    <section class="center-welcome-stage text-center relative overflow-hidden">
+      <!-- ประกายแสงมุมการ์ด -->
+      <div class="absolute -top-20 left-1/2 -translate-x-1/2 w-80 h-36 rounded-full bg-champagne/15 blur-2xl pointer-events-none"></div>
+
+      <!-- ป้ายหมวดหมู่ด้านบน -->
+      <div class="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-velvet-950/85 border border-champagne/55 mb-3">
+        <span class="w-1.5 h-1.5 rotate-45 bg-champagne-light"></span>
+        <span id="aiCategoryTag" class="text-[11px] md:text-xs font-semibold uppercase tracking-[0.22em] text-champagne-light">
+          WELCOME TO EXECUTIVE GALA NIGHT
+        </span>
+        <span class="w-1.5 h-1.5 rotate-45 bg-champagne-light"></span>
+      </div>
+
+      <!-- ชื่องานหลัก -->
+      <p id="stageEventSubTitle" class="text-xs md:text-sm font-medium tracking-[0.18em] uppercase text-silver/90">
+        New Year Operations Party 2027
+      </p>
+
+      <!-- ข้อความต้อนรับหลักที่ AI สุ่มหมุนเวียน -->
+      <div id="greetingContentBox" class="greeting-fade my-3 md:my-4 min-h-[108px] md:min-h-[136px] flex flex-col items-center justify-center">
+        <h1
+          id="aiHeadlineText"
+          class="text-2xl sm:text-3xl md:text-4xl lg:text-[2.65rem] font-bold gold-text leading-[1.26] tracking-tight"
+        >
+          ขอต้อนรับเพื่อนพนักงานทุกท่านสู่งานเลี้ยงส่งท้ายปีเก่าต้อนรับปีใหม่
+        </h1>
+        <p
+          id="aiSublineText"
+          class="mt-2.5 text-sm md:text-lg font-light text-white/90 max-w-2xl leading-relaxed"
+        >
+          ค่ำคืนแห่งรอยยิ้ม ความสุข และรางวัลสุดพิเศษสำหรับครอบครัว Operations ทุกคน
+        </p>
+      </div>
+
+      <!-- เส้นคั่นเพชรทองคำ 24K -->
+      <div class="flex items-center justify-center gap-3 pt-1">
+        <div class="h-[1px] w-16 md:w-28 bg-gradient-to-r from-transparent to-champagne/60"></div>
+        <span class="text-xs text-champagne-light">✦</span>
+        <span id="bottomVenueLabel" class="text-[11px] md:text-xs font-normal text-champagne-light/90 tracking-wider">
+          สแกน QR เช็คอินหน้างานเพื่อลุ้นรางวัลใหญ่บนเวทีตลอดค่ำคืนนี้
+        </span>
+        <span class="text-xs text-champagne-light">✦</span>
+        <div class="h-[1px] w-16 md:w-28 bg-gradient-to-l from-transparent to-champagne/60"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==================================================================== -->
+  <!-- VIP ARRIVAL SPOTLIGHT: เด้งต้อนรับด้านล่างทันทีที่มีคนสแกน QR เข้างานใหม่ -->
+  <!-- ==================================================================== -->
+  <div
+    id="vipArrivalCard"
+    class="arrival-hidden fixed bottom-6 left-1/2 z-[30] w-[min(92vw,560px)] rounded-3xl bg-gradient-to-r from-[#2B0B12]/95 via-[#1B070B]/95 to-[#2B0B12]/95 border-2 border-champagne-light px-5 py-3.5 shadow-[0_20px_55px_rgba(0,0,0,0.85),0_0_38px_rgba(245,215,127,0.42)] backdrop-blur-xl flex items-center gap-4"
+  >
+    <div class="relative w-16 h-16 md:w-20 md:h-20 rounded-full p-[2.5px] bg-gradient-to-tr from-[#D4AF37] via-[#FFF2B2] to-[#E60012] shrink-0 shadow-[0_0_24px_rgba(245,215,127,0.5)]">
+      <div class="w-full h-full rounded-full overflow-hidden bg-velvet-950 flex items-center justify-center relative">
+        <span id="arrivalInitial" class="text-lg font-bold text-champagne-bright">VIP</span>
+        <img
+          id="arrivalAvatarImg"
+          src=""
+          alt="New Check-in VIP"
+          class="absolute inset-0 w-full h-full object-cover rounded-full hidden"
+        />
+      </div>
+      <span class="absolute -bottom-0.5 -right-0.5 w-5 h-5 rounded-full bg-emerald-500 border-2 border-[#1B070B] flex items-center justify-center text-[10px] font-bold text-white">
+        ✓
+      </span>
+    </div>
+
+    <div class="min-w-0 flex-1">
+      <div class="inline-flex items-center gap-1.5 gold-pill text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+        <span>★ NEW VIP CHECKED-IN</span>
+      </div>
+      <h3 id="arrivalFullName" class="text-lg md:text-2xl font-bold text-white truncate mt-1">
+        ยินดีต้อนรับผู้เข้าร่วมงาน
+      </h3>
+      <p id="arrivalTeamMeta" class="text-xs md:text-sm font-normal text-champagne-light truncate">
+        ทีม Operations
+      </p>
+    </div>
+  </div>
+
+  <script>
+    /**
+     * ========================================================================
+     * CONFIG: เชื่อมต่อ Google Apps Script เดิมเดียวกับ index.html & luckydraw.html
+     * ========================================================================
+     */
+    const CONFIG = {
+      GAS_WEB_APP_URL: 'https://script.google.com/macros/s/AKfycbzL9SNCIhSiDC2hgaQ8xSiVqbT9GpEFErE2UAJX5CM1tleziGBfLT2eGdASj7pD_eg/exec',
+      EVENT_NAME: 'New Year Operations Party 2027',
+      VENUE_SUBTEXT: 'โรงแรม เอส รัชดา เลเชอร์ • ขอให้ทุกท่านโชคดีในการลุ้นรางวัลค่ำคืนนี้',
+
+      POLL_INTERVAL_MS: 9000,       // ซิงก์รายชื่อผู้เช็คอินทุก 9 วินาที (ปลอดภัยต่อโควตา Google 100%)
+      GREETING_INTERVAL_MS: 6500,   // สลับข้อความต้อนรับ AI ทุก 6.5 วินาที
+      MAX_FLOATING_ORBS: 14,        // จำนวนเหรียญโปรไฟล์ที่ลอยพร้อมกันบนจอ (สลับคิวครบทุกคนอัตโนมัติ)
+      STORAGE_CACHE_KEY: 'ny2027_welcome_checkedin_v1'
+    };
+
+    /**
+     * คลังข้อความ AI Dynamic Greeting (4 โหมด สลับอารมณ์ไม่ซ้ำจำเจ)
+     */
+    const AI_GREETING_POOL = {
+      generalWelcome: [
+        {
+          tag: 'WELCOME TO GALA NIGHT',
+          title: 'ขอต้อนรับเพื่อนพนักงานทุกท่านสู่งาน New Year Operations Party 2027',
+          sub: 'ค่ำคืนสุดพิเศษที่รวมพลังหัวใจชาว Operations ไว้ด้วยกัน ขอให้สนุกเต็มที่ตลอดงานครับ!'
+        },
+        {
+          tag: 'SPARKLING CELEBRATION',
+          title: 'ยินดีต้อนรับสู่ค่ำคืนแห่งรอยยิ้ม เสียงเพลง และการเฉลิมฉลองส่งท้ายปี',
+          sub: 'พักเรื่องงานไว้ชั่วคราว แล้วมาเก็บภาพความประทับใจร่วมกับเพื่อนๆ ทุกทีมกันนะครับ'
+        },
+        {
+          tag: 'THANK YOU FOR YOUR DEDICATION',
+          title: 'ขอบคุณทุกความทุ่มเทตลอดทั้งปี ค่ำคืนนี้คือรางวัลของพวกเราทุกคน!',
+          sub: 'เพราะพลังของทุกคนคือหัวใจสำคัญที่ทำให้ทีมของเราแข็งแกร่งและก้าวไปข้างหน้าอย่างงดงาม'
+        },
+        {
+          tag: 'VIP CHECK-IN STAGE',
+          title: 'สแกน QR เช็คอินเรียบร้อยแล้ว เตรียมลุ้นรางวัลใหญ่บนเวทีคืนนี้!',
+          sub: 'รูปโปรไฟล์ของเพื่อนๆ ที่เช็คอินแล้วกำลังเปล่งประกายอยู่บนหน้าจอแห่งความสุขนี้'
+        },
+        {
+          tag: 'OPERATIONS FAMILY',
+          title: 'อบอุ่นทุกครั้งที่ได้เจอกัน ขอต้อนรับครอบครัว Operations สู่ค่ำคืนสุดปัง!',
+          sub: 'อิ่มอร่อยกับอาหารมื้อพิเศษ ดนตรีสนุกๆ และมิตรภาพดีๆ รอบตัวคุณในค่ำคืนนี้'
+        }
+      ],
+      newYearWishes: [
+        {
+          tag: 'HAPPY NEW YEAR 2027',
+          title: 'สวัสดีปีใหม่ล่วงหน้า 2027 ขอให้เป็นปีที่เฮง ปัง และเติบโตยิ่งกว่าเดิม!',
+          sub: 'ขอให้เพื่อนพนักงานทุกท่านมีสุขภาพแข็งแรง มีความสุข และสมหวังในทุกเป้าหมายตลอดปีใหม่ครับ'
+        },
+        {
+          tag: 'LUCKY DRAW TONIGHT',
+          title: 'คืนนี้ดวงเศรษฐีอาจเป็นของคุณ! เตรียมเสียงกรี๊ดรอรับของรางวัลบนเวทีได้เลย',
+          sub: 'ทุกท่านที่สแกนเข้างานแล้วมีสิทธิ์ลุ้นรางวัลพิเศษมากมายตลอดค่ำคืนนี้ ขอให้โชคดีครับ!'
+        },
+        {
+          tag: 'SHINE BRIGHT IN 2027',
+          title: 'เปล่งประกายรับปี 2027 ไปด้วยกัน ก้าวสู่ปีใหม่ด้วยพลังบวกแบบคูณสอง!',
+          sub: 'ขอให้ความสำเร็จและโชคดีอยู่เคียงข้างเพื่อนๆ ชาว True Operations ทุกท่านตลอดทั้งปี'
+        },
+        {
+          tag: 'CHEERS TO OUR SUCCESS',
+          title: 'ฉลองให้กับทุกความสำเร็จที่ผ่านมา และเริ่มต้นปี 2027 อย่างสง่างาม!',
+          sub: 'ร่วมส่งต่อรอยยิ้มและเสียงหัวเราะให้ค่ำคืนนี้เป็นอีกหนึ่งความทรงจำที่ดีที่สุดของพวกเรา'
+        }
+      ],
+      personTemplates: [
+        (name, team) => ({
+          tag: 'WARM WELCOME • ยินดีต้อนรับ',
+          title: 'ขอต้อนรับ คุณ' + name + ' เข้าสู่งานปาร์ตี้ค่ำคืนนี้ครับ!',
+          sub: 'ตัวแทนพลังบวกจากทีม ' + team + ' เช็คอินเข้าสู่เวทีเรียบร้อย ขอให้โชคดีได้รางวัลใหญ่นะครับ'
+        }),
+        (name, team) => ({
+          tag: 'VIP GUEST ON STAGE',
+          title: 'สวัสดีครับ คุณ' + name + ' ดีใจที่ได้มาร่วมสนุกด้วยกันในคืนนี้!',
+          sub: 'เพื่อนๆ ทีม ' + team + ' พร้อมส่งเสียงเชียร์ลุ้น Lucky Draw ไปด้วยกันตลอดค่ำคืน'
+        }),
+        (name, team) => ({
+          tag: 'SPARKLING MEMBER',
+          title: 'คุณ' + name + ' เช็คอินเข้าร่วมค่ำคืนสุดพิเศษเรียบร้อยแล้ว!',
+          sub: 'ขอบคุณสำหรับความทุ่มเทในทีม ' + team + ' ตลอดปีที่ผ่านมา ขอให้คืนนี้สนุกสุดเหวี่ยงครับ'
+        })
+      ],
+      teamTemplates: [
+        (team, count) => ({
+          tag: 'TEAM SPIRIT SPOTLIGHT',
+          title: 'เสียงปรบมือต้อนรับเพื่อนๆ จากทีม ' + team + '!',
+          sub: 'ตบเท้าเช็คอินเข้างานกันอย่างคึกคัก (' + count + ' ท่านแล้ว) คืนนี้ขอให้ทีมนี้ดวงเฮงยกทีมครับ!'
+        }),
+        (team) => ({
+          tag: 'POWER OF OPERATIONS',
+          title: 'พลังของทีม ' + team + ' ทำให้บรรยากาศในงานคืนนี้สดใสสุดๆ!',
+          sub: 'ถ่ายรูปเช็คอินกับเพื่อนๆ แล้วเตรียมตัวลุ้นของรางวัลพิเศษบนเวทีด้วยกันนะครับ'
+        })
+      ]
+    };
+
+    /* รายชื่อตัวอย่างกรณีเปิดไฟล์เทสบนคอมพิวเตอร์ หรือยังไม่มีคนสแกนคนแรก */
+    const DEMO_ATTENDEES = [
+      { empId: 'DEMO01', fullName: 'เพื่อนพนักงาน VIP', team: 'True Shop Operations', pictureUrl: '' },
+      { empId: 'DEMO02', fullName: 'ทีมงานคุณภาพ', team: 'Channel Academy & Commu', pictureUrl: '' },
+      { empId: 'DEMO03', fullName: 'ครอบครัวทรู', team: 'Retail Synergy', pictureUrl: '' },
+      { empId: 'DEMO04', fullName: 'ดาวเด่นประจำงาน', team: 'Area Management', pictureUrl: '' },
+      { empId: 'DEMO05', fullName: 'ผู้โชคดีค่ำคืนนี้', team: 'Commercial Operations', pictureUrl: '' },
+      { empId: 'DEMO06', fullName: 'รอยยิ้มแห่งปี 2027', team: 'Operations Support', pictureUrl: '' }
+    ];
+
+    /**
+     * สถานะหลักของระบบหน้าจอต้อนรับ
+     */
+    const state = {
+      isDemoMode: false,
+      hasDoneFirstSync: false,
+      knownCheckedInMap: new Map(), // จำทุกคนที่เช็คอินแล้วตลอดคืน แม้ได้รางวัลไปแล้วก็ไม่หายจากจอ
+      serverTotalCheckedIn: 0,
+      failedAvatars: new Set(),
+
+      orbSlots: [],
+      nextRosterIndex: 0,
+
+      arrivalQueue: [],
+      isShowingArrival: false,
+
+      greetingStep: 0,
+      lastGreetIndex: -1,
+
+      soundEnabled: true,
+      audioCtx: null,
+      idleHideTimer: null
+    };
+
+    /* ========================================================================
+       1. เริ่มต้นระบบทั้งหมดเมื่อเปิดหน้าเว็บ
+       ======================================================================== */
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('stageEventSubTitle').textContent = CONFIG.EVENT_NAME;
+      document.getElementById('bottomVenueLabel').textContent = CONFIG.VENUE_SUBTEXT;
+
+      loadCachedAttendeesFromStorage();
+      initSparkleCanvas();
+      initFloatingOrbs();
+      setupAutoHideControls();
+
+      // เริ่มซิงก์ข้อมูลจริงจาก Google Sheets ทันที และซิงก์ซ้ำทุก 9 วินาที
+      syncCheckedInAttendees(false);
+      setInterval(() => {
+        if (!state.isDemoMode) {
+          syncCheckedInAttendees(false);
+        }
+      }, CONFIG.POLL_INTERVAL_MS);
+
+      // เริ่มระบบ AI หมุนเวียนข้อความต้อนรับทุก 6.5 วินาที
+      setInterval(rotateAiWelcomeMessage, CONFIG.GREETING_INTERVAL_MS);
+    });
+
+    /* ========================================================================
+       2. ระบบซิงก์ข้อมูลผู้เช็คอินจริงจาก Google Apps Script
+       ======================================================================== */
+    function loadCachedAttendeesFromStorage() {
+      try {
+        const raw = localStorage.getItem(CONFIG.STORAGE_CACHE_KEY);
+        if (!raw) return;
+        const arr = JSON.parse(raw);
+        if (Array.isArray(arr)) {
+          arr.forEach((p) => {
+            if (p && p.empId) state.knownCheckedInMap.set(String(p.empId).toUpperCase(), p);
+          });
+        }
+      } catch (_) {}
+    }
+
+    function saveCachedAttendeesToStorage() {
+      try {
+        const arr = Array.from(state.knownCheckedInMap.values());
+        localStorage.setItem(CONFIG.STORAGE_CACHE_KEY, JSON.stringify(arr));
+      } catch (_) {}
+    }
+
+    async function syncCheckedInAttendees(manualClick) {
+      try {
+        const response = await fetch(CONFIG.GAS_WEB_APP_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ action: 'getLuckyDrawData' }),
+          redirect: 'follow'
+        });
+
+        if (!response.ok) throw new Error('HTTP ' + response.status);
+        const res = await response.json();
+        if (!res || !res.success) throw new Error(res.message || 'Sync error');
+
+        state.isDemoMode = false;
+        updateModeBadgeUI();
+
+        const totalFromStats = Number((res.stats && res.stats.totalCheckedIn) || 0);
+
+        // หากแอดมินเคลียร์ชีทเริ่มงานใหม่ (ยอดเช็คอินเป็น 0) ให้ล้าง Cache เก่าอัตโนมัติ
+        if (totalFromStats === 0) {
+          state.knownCheckedInMap.clear();
+          localStorage.removeItem(CONFIG.STORAGE_CACHE_KEY);
+        }
+
+        const incomingList = [];
+        if (Array.isArray(res.eligiblePool)) {
+          incomingList.push(...res.eligiblePool);
+        }
+        if (Array.isArray(res.allRegisteredPool)) {
+          res.allRegisteredPool.forEach((p) => {
+            if (p && p.checkInStatus === 'Checked-In') incomingList.push(p);
+          });
+        }
+
+        const newlyArrived = [];
+        incomingList.forEach((person) => {
+          if (!person || !person.empId) return;
+          const key = String(person.empId).trim().toUpperCase();
+          const existed = state.knownCheckedInMap.has(key);
+          state.knownCheckedInMap.set(key, {
+            empId: person.empId,
+            fullName: person.fullName || 'พนักงาน',
+            team: person.team || 'Operations',
+            pictureUrl: person.pictureUrl || ''
+          });
+          if (!existed && state.hasDoneFirstSync) {
+            newlyArrived.push(state.knownCheckedInMap.get(key));
+          }
+        });
+
+        state.serverTotalCheckedIn = Math.max(totalFromStats, state.knownCheckedInMap.size);
+        document.getElementById('checkedInCounter').textContent =
+          state.serverTotalCheckedIn.toLocaleString();
+
+        saveCachedAttendeesToStorage();
+        refreshOrbRosterAssignments();
+
+        // เด้งการ์ดต้อนรับเฉพาะคนที่เพิ่งสแกนเข้ามาใหม่ระหว่างเปิดจอ
+        newlyArrived.slice(0, 5).forEach((vip) => enqueueVipArrival(vip));
+        state.hasDoneFirstSync = true;
+      } catch (err) {
+        console.warn('Live sync fallback to Demo mode:', err);
+        if (!state.hasDoneFirstSync && state.knownCheckedInMap.size === 0) {
+          state.isDemoMode = true;
+          updateModeBadgeUI();
+          document.getElementById('checkedInCounter').textContent = DEMO_ATTENDEES.length.toString();
+          refreshOrbRosterAssignments();
+        }
+      }
+    }
+
+    function toggleDemoOrLiveMode() {
+      state.isDemoMode = !state.isDemoMode;
+      updateModeBadgeUI();
+      if (!state.isDemoMode) {
+        syncCheckedInAttendees(true);
+      } else {
+        document.getElementById('checkedInCounter').textContent =
+          Math.max(state.knownCheckedInMap.size, DEMO_ATTENDEES.length).toString();
+        refreshOrbRosterAssignments();
+      }
+    }
+
+    function updateModeBadgeUI() {
+      const dot = document.getElementById('modeDot');
+      const label = document.getElementById('modeLabelText');
+      if (state.isDemoMode) {
+        dot.className = 'w-2 h-2 rounded-full bg-amber-400';
+        label.textContent = '🧪 โหมดจำลอง';
+      } else {
+        dot.className = 'w-2 h-2 rounded-full bg-red-500 animate-pulse';
+        label.textContent = 'LIVE ซิงก์จริง';
+      }
+    }
+
+    function getActiveRoster() {
+      const realList = Array.from(state.knownCheckedInMap.values());
+      if (!state.isDemoMode && realList.length > 0) {
+        return realList;
+      }
+      return DEMO_ATTENDEES;
+    }
+
+    /* ========================================================================
+       3. ระบบเหรียญโปรไฟล์ลอยรอบเวทีแบบไม่บังข้อความตรงกลาง (60fps Elliptical Halo)
+       ======================================================================== */
+    function initFloatingOrbs() {
+      const container = document.getElementById('floatingGalaxyLayer');
+      container.innerHTML = '';
+      state.orbSlots = [];
+
+      const count = CONFIG.MAX_FLOATING_ORBS;
+      for (let i = 0; i < count; i++) {
+        const el = document.createElement('div');
+        el.className = 'floating-orb';
+        el.innerHTML =
+          '<div class="orb-avatar-ring">' +
+          '  <div class="w-full h-full rounded-full overflow-hidden bg-[#1D070C] flex items-center justify-center relative">' +
+          '    <span class="orb-initial text-sm md:text-base font-bold text-champagne-bright">VIP</span>' +
+          '    <img class="orb-img absolute inset-0 w-full h-full object-cover rounded-full hidden" alt="" />' +
+          '  </div>' +
+          '</div>' +
+          '<div class="orb-name-pill">' +
+          '  <p class="orb-name text-[11px] md:text-xs font-semibold text-white truncate"></p>' +
+          '  <p class="orb-team text-[9px] md:text-[10px] font-light text-champagne-light truncate"></p>' +
+          '</div>';
+
+        container.appendChild(el);
+
+        state.orbSlots.push({
+          el: el,
+          angle: (i / count) * Math.PI * 2,
+          speed: 0.055 + (i % 3) * 0.012,
+          ringOffset: (i % 2 === 0 ? 0.035 : -0.025),
+          bobPhase: i * 1.3,
+          person: null,
+          lastSwapAt: performance.now() + i * 1100
+        });
+      }
+
+      refreshOrbRosterAssignments();
+      requestAnimationFrame(animateFloatingOrbs);
+    }
+
+    function assignPersonToOrb(slot, person) {
+      slot.person = person;
+      const initialEl = slot.el.querySelector('.orb-initial');
+      const imgEl = slot.el.querySelector('.orb-img');
+      const nameEl = slot.el.querySelector('.orb-name');
+      const teamEl = slot.el.querySelector('.orb-team');
+
+      if (!person) {
+        slot.el.style.opacity = '0';
+        return;
+      }
+
+      initialEl.textContent = getInitial(person.fullName);
+      nameEl.textContent = person.fullName;
+      teamEl.textContent = person.team || 'Operations';
+
+      const url = String(person.pictureUrl || '').trim();
+      if (url.indexOf('https://') === 0 && !state.failedAvatars.has(url)) {
+        imgEl.onload = () => imgEl.classList.remove('hidden');
+        imgEl.onerror = () => {
+          state.failedAvatars.add(url);
+          imgEl.classList.add('hidden');
+        };
+        imgEl.src = url;
+      } else {
+        imgEl.classList.add('hidden');
+        imgEl.removeAttribute('src');
+      }
+
+      slot.el.style.opacity = '0.94';
+    }
+
+    function refreshOrbRosterAssignments() {
+      const roster = getActiveRoster();
+      const total = roster.length;
+
+      state.orbSlots.forEach((slot, idx) => {
+        if (idx < total) {
+          const person = roster[(state.nextRosterIndex + idx) % total];
+          assignPersonToOrb(slot, person);
+        } else {
+          assignPersonToOrb(slot, null);
+        }
+      });
+    }
+
+    let lastFrameTime = performance.now();
+    function animateFloatingOrbs(now) {
+      const dt = Math.min(0.05, (now - lastFrameTime) / 1000);
+      lastFrameTime = now;
+
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      const cx = w * 0.5;
+      const cy = h * 0.52;
+      const roster = getActiveRoster();
+
+      state.orbSlots.forEach((slot) => {
+        if (!slot.person) return;
+
+        slot.angle += slot.speed * dt;
+        const rx = w * (0.39 + slot.ringOffset);
+        const ry = h * (0.36 + slot.ringOffset * 0.8);
+        const bobY = Math.sin(now * 0.0016 + slot.bobPhase) * 10;
+
+        const x = cx + Math.cos(slot.angle) * rx;
+        const y = cy + Math.sin(slot.angle) * ry + bobY;
+
+        slot.el.style.transform =
+          'translate3d(' + (x - 52).toFixed(1) + 'px, ' + (y - 52).toFixed(1) + 'px, 0)';
+
+        // กรณีคนเช็คอินมากกว่าจำนวนวงลอย (เช่น 50-300 คน) จะสลับคิวคนถัดไปขึ้นมาโชว์อย่างนุ่มนวล
+        if (roster.length > CONFIG.MAX_FLOATING_ORBS && now - slot.lastSwapAt > 14000) {
+          slot.lastSwapAt = now;
+          slot.el.style.opacity = '0';
+          setTimeout(() => {
+            const nextPerson = roster[state.nextRosterIndex % roster.length];
+            state.nextRosterIndex = (state.nextRosterIndex + 1) % roster.length;
+            assignPersonToOrb(slot, nextPerson);
+          }, 800);
+        }
+      });
+
+      requestAnimationFrame(animateFloatingOrbs);
+    }
+
+    /* ========================================================================
+       4. ระบบ AI สุ่มหมุนเวียนข้อความต้อนรับในงาน (Smart AI Greeting Loop)
+       ======================================================================== */
+    function rotateAiWelcomeMessage() {
+      const box = document.getElementById('greetingContentBox');
+      const tagEl = document.getElementById('aiCategoryTag');
+      const titleEl = document.getElementById('aiHeadlineText');
+      const subEl = document.getElementById('aiSublineText');
+
+      const realAttendees = Array.from(state.knownCheckedInMap.values());
+      const hasRealPeople = realAttendees.length > 0;
+
+      state.greetingStep = (state.greetingStep + 1) % 4;
+      let nextMsg = null;
+
+      if (state.greetingStep === 1 && hasRealPeople) {
+        // โหมดทักทายรายบุคคลจากผู้ที่สแกนเช็คอินเข้างานจริง
+        const p = realAttendees[Math.floor(Math.random() * realAttendees.length)];
+        const tpl =
+          AI_GREETING_POOL.personTemplates[
+            Math.floor(Math.random() * AI_GREETING_POOL.personTemplates.length)
+          ];
+        nextMsg = tpl(p.fullName, p.team || 'Operations');
+      } else if (state.greetingStep === 3 && hasRealPeople) {
+        // โหมดส่งเสียงเชียร์รายทีมจากผู้ที่เช็คอินจริง
+        const teamCounts = {};
+        realAttendees.forEach((p) => {
+          const t = p.team || 'Operations';
+          teamCounts[t] = (teamCounts[t] || 0) + 1;
+        });
+        const teams = Object.keys(teamCounts);
+        const randomTeam = teams[Math.floor(Math.random() * teams.length)];
+        const tpl =
+          AI_GREETING_POOL.teamTemplates[
+            Math.floor(Math.random() * AI_GREETING_POOL.teamTemplates.length)
+          ];
+        nextMsg = tpl(randomTeam, teamCounts[randomTeam]);
+      } else if (state.greetingStep % 2 === 0) {
+        const list = AI_GREETING_POOL.generalWelcome;
+        const idx = (state.lastGreetIndex + 1 + Math.floor(Math.random() * (list.length - 1))) % list.length;
+        state.lastGreetIndex = idx;
+        nextMsg = list[idx];
+      } else {
+        const list = AI_GREETING_POOL.newYearWishes;
+        nextMsg = list[Math.floor(Math.random() * list.length)];
+      }
+
+      box.classList.add('greeting-hidden');
+      setTimeout(() => {
+        tagEl.textContent = nextMsg.tag;
+        titleEl.textContent = nextMsg.title;
+        subEl.textContent = nextMsg.sub;
+        box.classList.remove('greeting-hidden');
+      }, 460);
+    }
+
+    /* ========================================================================
+       5. เอฟเฟกต์ VIP Arrival Spotlight + เสียงระฆังคริสตัล + พลุทองคำ 24K
+       ======================================================================== */
+    function enqueueVipArrival(person) {
+      state.arrivalQueue.push(person);
+      if (!state.isShowingArrival) {
+        processNextArrivalInQueue();
+      }
+    }
+
+    function processNextArrivalInQueue() {
+      if (state.arrivalQueue.length === 0) {
+        state.isShowingArrival = false;
+        return;
+      }
+
+      state.isShowingArrival = true;
+      const vip = state.arrivalQueue.shift();
+
+      const card = document.getElementById('vipArrivalCard');
+      const imgEl = document.getElementById('arrivalAvatarImg');
+      const initEl = document.getElementById('arrivalInitial');
+
+      initEl.textContent = getInitial(vip.fullName);
+      document.getElementById('arrivalFullName').textContent = 'คุณ' + vip.fullName;
+      document.getElementById('arrivalTeamMeta').textContent =
+        'รหัส ' + vip.empId + ' • ทีม ' + (vip.team || 'Operations');
+
+      const url = String(vip.pictureUrl || '').trim();
+      if (url.indexOf('https://') === 0 && !state.failedAvatars.has(url)) {
+        imgEl.onload = () => imgEl.classList.remove('hidden');
+        imgEl.onerror = () => imgEl.classList.add('hidden');
+        imgEl.src = url;
+      } else {
+        imgEl.classList.add('hidden');
+      }
+
+      card.classList.remove('arrival-hidden');
+      card.classList.add('arrival-visible');
+
+      playCrystalWelcomeChime();
+      fireWelcomeGoldSparkles();
+
+      setTimeout(() => {
+        card.classList.remove('arrival-visible');
+        card.classList.add('arrival-hidden');
+        setTimeout(processNextArrivalInQueue, 500);
+      }, 4200);
+    }
+
+    function triggerSimulatedArrival() {
+      ensureAudioContext();
+      const roster = getActiveRoster();
+      const sample = roster[Math.floor(Math.random() * roster.length)];
+      enqueueVipArrival(sample);
+    }
+
+    function fireWelcomeGoldSparkles() {
+      if (typeof confetti !== 'function') return;
+      confetti({
+        particleCount: 45,
+        spread: 64,
+        origin: { x: 0.5, y: 0.88 },
+        colors: ['#FFF2B2', '#F5D77F', '#D4AF37', '#E60012']
+      });
+    }
+
+    function ensureAudioContext() {
+      if (!state.audioCtx) {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (AudioCtx) state.audioCtx = new AudioCtx();
+      }
+      if (state.audioCtx && state.audioCtx.state === 'suspended') {
+        state.audioCtx.resume();
+      }
+    }
+
+    function playCrystalWelcomeChime() {
+      if (!state.soundEnabled) return;
+      try {
+        ensureAudioContext();
+        const ctx = state.audioCtx;
+        if (!ctx) return;
+        const now = ctx.currentTime;
+        const notes = [587.33, 739.99, 880.0, 1174.66];
+        notes.forEach((freq, idx) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          const t = now + idx * 0.085;
+          osc.frequency.setValueAtTime(freq, t);
+          gain.gain.setValueAtTime(0.14, t);
+          gain.gain.exponentialRampToValueAtTime(0.001, t + 0.65);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(t);
+          osc.stop(t + 0.65);
+        });
+      } catch (_) {}
+    }
+
+    function toggleWelcomeSound() {
+      ensureAudioContext();
+      state.soundEnabled = !state.soundEnabled;
+      document.getElementById('btnSoundToggle').textContent = state.soundEnabled
+        ? '🔊 เสียงต้อนรับ: เปิด'
+        : '🔇 เสียงต้อนรับ: ปิด';
+    }
+
+    /* ========================================================================
+       6. Canvas วาดละอองทอง โบเก้ และดาวเพชร 4 แฉกระยิบระยับ
+       ======================================================================== */
+    function initSparkleCanvas() {
+      const canvas = document.getElementById('sparkleCanvas');
+      const ctx = canvas.getContext('2d');
+      let particles = [];
+      let stars = [];
+
+      function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      window.addEventListener('resize', resize);
+      resize();
+
+      for (let i = 0; i < 68; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          r: Math.random() * 2.4 + 0.7,
+          vy: -(Math.random() * 0.45 + 0.15),
+          vx: (Math.random() - 0.5) * 0.25,
+          alpha: Math.random() * 0.75 + 0.2,
+          isRed: Math.random() < 0.22
+        });
+      }
+
+      for (let i = 0; i < 22; i++) {
+        stars.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          size: Math.random() * 5 + 3,
+          phase: Math.random() * Math.PI * 2,
+          speed: Math.random() * 0.035 + 0.015
+        });
+      }
+
+      function drawStar4(x, y, r, alpha) {
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.fillStyle = 'rgba(255, 242, 178, ' + alpha.toFixed(2) + ')';
+        ctx.beginPath();
+        for (let i = 0; i < 4; i++) {
+          ctx.rotate(Math.PI / 2);
+          ctx.moveTo(0, 0);
+          ctx.quadraticCurveTo(r * 0.16, r * 0.16, 0, r);
+          ctx.quadraticCurveTo(-r * 0.16, r * 0.16, 0, 0);
+        }
+        ctx.fill();
+        ctx.restore();
+      }
+
+      function render() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        particles.forEach((p) => {
+          p.x += p.vx;
+          p.y += p.vy;
+          if (p.y < -10) {
+            p.y = canvas.height + 10;
+            p.x = Math.random() * canvas.width;
+          }
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = p.isRed
+            ? 'rgba(255, 58, 74, ' + (p.alpha * 0.65).toFixed(2) + ')'
+            : 'rgba(245, 215, 127, ' + p.alpha.toFixed(2) + ')';
+          ctx.fill();
+        });
+
+        stars.forEach((s) => {
+          s.phase += s.speed;
+          const twinkle = (Math.sin(s.phase) + 1) * 0.5;
+          if (twinkle > 0.12) {
+            drawStar4(s.x, s.y, s.size * (0.6 + twinkle * 0.6), twinkle * 0.85);
+          }
+        });
+
+        requestAnimationFrame(render);
+      }
+
+      requestAnimationFrame(render);
+    }
+
+    /* ========================================================================
+       7. ระบบซ่อนปุ่มควบคุมอัตโนมัติเมื่อฉายขึ้นจอโปรเจ็คเตอร์
+       ======================================================================== */
+    function setupAutoHideControls() {
+      const resetIdle = () => {
+        document.body.classList.remove('controls-hidden');
+        clearTimeout(state.idleHideTimer);
+        if (document.fullscreenElement) {
+          state.idleHideTimer = setTimeout(() => {
+            document.body.classList.add('controls-hidden');
+          }, 3800);
+        }
+      };
+
+      window.addEventListener('mousemove', resetIdle);
+      window.addEventListener('keydown', resetIdle);
+      document.addEventListener('fullscreenchange', resetIdle);
+    }
+
+    function hideControlsNow() {
+      document.body.classList.add('controls-hidden');
+    }
+
+    function toggleFullScreen() {
+      ensureAudioContext();
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else if (document.exitFullscreen) {
+        document.exitFullscreen();
+      }
+    }
+
+    function getInitial(fullName) {
+      const raw = String(fullName || '').trim();
+      if (!raw) return 'VIP';
+      const cleaned = raw.replace(/^(นาย|นางสาว|นาง|น\.ส\.|ดร\.|คุณ)\s*/i, '').trim();
+      return (cleaned.charAt(0) || raw.charAt(0) || 'V').toUpperCase();
+    }
+  </script>
+</body>
+</html>
