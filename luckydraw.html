@@ -295,6 +295,16 @@
       will-change: transform, opacity;
     }
 
+    /* แท่นโชว์รูปของรางวัล 24K Gold Pedestal บนหน้าประกาศผู้โชคดี */
+    .prize-reveal-pedestal {
+      background: radial-gradient(circle at 50% 35%, rgba(212, 175, 55, 0.20) 0%, rgba(36, 12, 18, 0.96) 65%, rgba(17, 6, 8, 0.98) 100%);
+      border: 2px solid #F5D77F;
+      box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.78),
+        0 0 38px rgba(212, 175, 55, 0.28),
+        inset 0 1px 0 rgba(255, 242, 178, 0.35);
+    }
+
     /* การ์ดประกาศผลผู้โชคดี 24K Gold Spotlight */
     .winner-spotlight-card {
       background: radial-gradient(circle at 50% 0%, rgba(230, 0, 18, 0.34) 0%, rgba(30, 11, 16, 0.96) 68%);
@@ -810,10 +820,10 @@
   <!-- ==================================================================== -->
   <section
     id="focusSpinStage"
-    class="hidden fixed inset-0 z-40 flex flex-col justify-between px-4 py-5 md:px-10 md:py-7 select-none overflow-hidden"
+    class="hidden fixed inset-0 z-40 flex flex-col justify-between px-4 py-4 md:px-10 md:py-6 select-none overflow-hidden"
   >
     <!-- Focus Stage Top Header: โลโก้ True สีขาวตรงกลาง + ชื่อรางวัลที่กำลังชิงโชค -->
-    <header class="relative z-30 max-w-6xl w-full mx-auto flex flex-col items-center text-center">
+    <header class="relative z-30 max-w-6xl w-full mx-auto flex flex-col items-center text-center shrink-0">
       <!-- ปุ่มกลับหน้าหลักมุมขวาบน (แสดงเฉพาะหลังหยุดหมุน เผื่อต้องการยกเลิกรอบโดยไม่ตัดสิทธิ์ใคร) -->
       <button
         type="button"
@@ -828,7 +838,7 @@
         src="https://img2.pic.in.th/True--W9082df0ce2da3b92.png"
         alt="True"
         onerror="this.onerror=null;this.src='https://placehold.co/180x58/1A080C/FFFFFF?text=true';"
-        class="w-[84px] md:w-[98px] h-auto object-contain mb-2.5 drop-shadow-[0_2px_10px_rgba(0,0,0,0.6)]"
+        class="w-[80px] md:w-[94px] h-auto object-contain mb-2 drop-shadow-[0_2px_10px_rgba(0,0,0,0.6)]"
       />
 
       <div class="inline-flex flex-wrap items-center justify-center gap-2">
@@ -849,7 +859,7 @@
     </header>
 
     <!-- Focus Stage Center Workspace -->
-    <div class="relative z-20 flex-1 max-w-6xl w-full mx-auto my-4 flex flex-col items-center justify-center min-h-0">
+    <div class="relative z-20 flex-1 max-w-6xl w-full mx-auto my-3 flex flex-col items-center justify-center min-h-0 overflow-y-auto no-scrollbar">
 
       <!-- ================================================================ -->
       <!-- PHASE A: SHAKING 24K GIFT BOX & BOUNCING EMPLOYEE NAMES ARENA    -->
@@ -931,13 +941,36 @@
       </div>
 
       <!-- ================================================================ -->
-      <!-- PHASE B: WINNER SPOTLIGHT REVEAL (แสดงผลผู้โชคดีกลางเวทีคลีนเต็มตา) -->
+      <!-- PHASE B: WINNER SPOTLIGHT REVEAL + 24K GOLD PRIZE IMAGE PEDESTAL -->
       <!-- ================================================================ -->
-      <div id="phaseWinnerReveal" class="hidden w-full flex flex-col items-center justify-center">
+      <div id="phaseWinnerReveal" class="hidden w-full flex flex-col items-center justify-center py-1">
+
+        <!-- แท่นโชว์รูปของรางวัลทองคำ 24K กึ่งกลางเหนือการ์ดผู้โชคดี -->
+        <div id="focusPrizeShowcaseWrap" class="winner-pop-enter flex flex-col items-center mb-4 md:mb-5 relative">
+          <div class="prize-reveal-pedestal rounded-[26px] p-2.5 md:p-3 relative">
+            <div
+              id="focusPrizeImgBox"
+              class="w-[240px] sm:w-[300px] md:w-[360px] h-[20vh] min-h-[125px] max-h-[215px] rounded-2xl overflow-hidden bg-velvet-950/90 flex items-center justify-center p-1.5"
+            >
+              <img
+                id="focusRevealPrizeImg"
+                src="https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&w=800&q=80"
+                alt="Prize Showcase"
+                onerror="this.onerror=null;this.src=CONFIG.DEFAULT_PRIZE_IMAGE_URL;"
+                class="w-full h-full object-contain rounded-xl drop-shadow-[0_10px_24px_rgba(0,0,0,0.75)]"
+              />
+            </div>
+          </div>
+          <span class="gold-pill -mt-3 relative z-10 text-[10px] md:text-[11px] font-extrabold px-4 py-0.5 rounded-full uppercase tracking-wider shadow-lg">
+            🎁 PRIZE REWARD • ของรางวัลผู้โชคดี
+          </span>
+        </div>
+
         <!-- โหมดผู้โชคดีเดี่ยว 1 ท่าน -->
         <div
           id="singleStageDisplay"
-          class="winner-spotlight-card winner-glow w-full max-w-4xl rounded-[32px] p-8 md:p-12 text-center space-y-5"
+          style="animation-delay: 75ms"
+          class="winner-spotlight-card winner-glow w-full max-w-4xl rounded-[32px] px-6 py-6 md:px-12 md:py-9 text-center space-y-4"
         >
           <div class="inline-flex items-center gap-2 px-5 py-1.5 rounded-full bg-velvet-950/90 border border-champagne">
             <span id="slotTopTag" class="text-xs md:text-sm font-extrabold tracking-widest text-champagne-light uppercase">
@@ -945,7 +978,7 @@
             </span>
           </div>
 
-          <div class="py-2 space-y-3">
+          <div class="py-1 space-y-2.5">
             <p
               id="slotEmpId"
               class="text-3xl md:text-5xl font-mono font-extrabold text-champagne-light tracking-widest"
@@ -963,7 +996,7 @@
             </p>
 
             <!-- ป้ายแจ้งสถานะการเข้างานของผู้โชคดีสำหรับพิธีกรบนเวที -->
-            <div class="pt-2">
+            <div class="pt-1.5">
               <span
                 id="slotAttendanceBadge"
                 class="inline-block text-xs md:text-sm font-bold px-4 py-1.5 rounded-full border"
@@ -977,13 +1010,13 @@
         <!-- โหมดผู้โชคดีพร้อมกันหลายท่าน (Batch Grid) -->
         <div
           id="multiStageDisplay"
-          class="hidden w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 max-h-[58vh] overflow-y-auto px-2 py-1"
+          class="hidden w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 max-h-[44vh] overflow-y-auto px-2 py-1"
         ></div>
       </div>
     </div>
 
     <!-- Focus Stage Bottom Decision Bar -->
-    <footer class="relative z-30 max-w-4xl w-full mx-auto min-h-[72px] flex items-center justify-center">
+    <footer class="relative z-30 max-w-4xl w-full mx-auto min-h-[68px] flex items-center justify-center shrink-0">
       <!-- ข้อความสถานะระหว่างกำลังเขย่ากล่อง -->
       <p id="spinningFooterHint" class="text-sm font-semibold text-champagne-light/90 tracking-wider animate-pulse">
         ✨ กำลังเขย่ากล่องของขวัญค้นหาผู้โชคดี กรุณารอสักครู่... ✨
@@ -995,7 +1028,7 @@
           type="button"
           id="btnConfirmWinner"
           onclick="confirmCurrentWinners()"
-          class="btn-gold-confirm w-full sm:flex-1 max-w-lg py-4 px-6 rounded-2xl text-lg md:text-xl font-extrabold tracking-wide"
+          class="btn-gold-confirm w-full sm:flex-1 max-w-lg py-3.5 md:py-4 px-6 rounded-2xl text-lg md:text-xl font-extrabold tracking-wide"
         >
           ✓ ได้รับรางวัล (ยืนยันรับสิทธิ์ &amp; ส่ง LINE)
         </button>
@@ -1004,7 +1037,7 @@
           type="button"
           id="btnRedrawForfeit"
           onclick="forfeitAndRedrawAll()"
-          class="btn-dark-action w-full sm:w-auto py-4 px-7 rounded-2xl text-base md:text-lg font-bold"
+          class="btn-dark-action w-full sm:w-auto py-3.5 md:py-4 px-7 rounded-2xl text-base md:text-lg font-bold"
         >
           ↻ สุ่มใหม่ / สละสิทธิ์
         </button>
@@ -1605,6 +1638,13 @@
           ? 'สุ่มผู้โชคดี 1 รางวัล'
           : 'สุ่มพร้อมกัน ' + targetDrawCount + ' รางวัล';
 
+      // เตรียมรูปของรางวัลสำหรับแสดงบนแท่นทองคำ 24K ทันทีที่เปิดกล่อง
+      const revealPrizeImg = document.getElementById('focusRevealPrizeImg');
+      if (revealPrizeImg) {
+        revealPrizeImg.src = prize.prizeImageUrl || CONFIG.DEFAULT_PRIZE_IMAGE_URL;
+        revealPrizeImg.alt = prize.prizeName || 'Prize Showcase';
+      }
+
       const focusEl = document.getElementById('focusSpinStage');
       document.body.classList.add('focus-mode-active');
       focusEl.classList.remove('hidden');
@@ -1901,20 +1941,46 @@
     }
 
     /**
-     * แสดงการ์ดผู้โชคดีกลางหน้า Focus Stage รอขานชื่อและกดยืนยันสิทธิ์
+     * แสดงแท่นรูปของรางวัล 24K คู่กับการ์ดผู้โชคดีกลางหน้า Focus Stage รอขานชื่อและกดยืนยันสิทธิ์
      */
     function renderDrawnWinnersOnStage() {
       const winners = stageState.drawnCandidates;
+      const prize = getSelectedPrize();
       const revealSection = document.getElementById('phaseWinnerReveal');
+      const prizeShowcaseWrap = document.getElementById('focusPrizeShowcaseWrap');
+      const prizeImgBox = document.getElementById('focusPrizeImgBox');
+      const revealPrizeImg = document.getElementById('focusRevealPrizeImg');
       const singleBox = document.getElementById('singleStageDisplay');
       const multiBox = document.getElementById('multiStageDisplay');
 
       revealSection.classList.remove('hidden');
       document.getElementById('btnBackToDashboard').classList.remove('hidden');
 
+      if (revealPrizeImg) {
+        revealPrizeImg.src =
+          (prize && prize.prizeImageUrl) ? prize.prizeImageUrl : CONFIG.DEFAULT_PRIZE_IMAGE_URL;
+      }
+
+      // รีเซ็ตแอนิเมชันแท่นโชว์รูปของรางวัลให้เด้งขึ้นมาอย่างนุ่มนวลทุกครั้งที่สุ่มใหม่
+      if (prizeShowcaseWrap) {
+        prizeShowcaseWrap.classList.remove('winner-pop-enter');
+        void prizeShowcaseWrap.offsetWidth;
+        prizeShowcaseWrap.classList.add('winner-pop-enter');
+      }
+
       if (winners.length === 1) {
         const w = winners[0];
         const attTag = getCandidateAttendanceTagInfo(w);
+
+        // โหมด 1 รางวัล: แสดงแท่นรูปของรางวัลขนาดใหญ่เต็มตาเหนือการ์ดผู้โชคดี
+        if (prizeImgBox) {
+          prizeImgBox.className =
+            'w-[240px] sm:w-[300px] md:w-[360px] h-[20vh] min-h-[125px] max-h-[215px] rounded-2xl overflow-hidden bg-velvet-950/90 flex items-center justify-center p-1.5';
+        }
+        if (prizeShowcaseWrap) {
+          prizeShowcaseWrap.className =
+            'winner-pop-enter flex flex-col items-center mb-4 md:mb-5 relative';
+        }
 
         multiBox.classList.add('hidden');
         singleBox.classList.remove('hidden', 'winner-pop-enter');
@@ -1931,6 +1997,16 @@
         attBadgeEl.className =
           'inline-block text-xs md:text-sm font-bold px-4 py-1.5 rounded-full border ' + attTag.className;
       } else {
+        // โหมดสุ่มหลายคนพร้อมกัน: ย่อแท่นรูปของรางวัลให้กะทัดรัดเพื่อไม่เบียดพื้นที่ตารางรายชื่อด้านล่าง
+        if (prizeImgBox) {
+          prizeImgBox.className =
+            'w-[180px] sm:w-[220px] md:w-[260px] h-[13vh] min-h-[92px] max-h-[135px] rounded-2xl overflow-hidden bg-velvet-950/90 flex items-center justify-center p-1';
+        }
+        if (prizeShowcaseWrap) {
+          prizeShowcaseWrap.className =
+            'winner-pop-enter flex flex-col items-center mb-3 relative';
+        }
+
         singleBox.classList.add('hidden');
         multiBox.classList.remove('hidden');
 
