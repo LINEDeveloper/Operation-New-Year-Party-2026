@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Operations New Year Party 2026 | VIP Registration</title>
+  <title>New Year Operations Party 2027 | ลงทะเบียนเข้าร่วมงาน</title>
 
   <!-- Google Fonts: Prompt -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -19,189 +19,135 @@
   <!-- LINE LIFF SDK v2 -->
   <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Prompt', 'sans-serif']
-          },
-          colors: {
-            truered: {
-              DEFAULT: '#E60012',
-              dark: '#B0000E',
-              vivid: '#FF2938'
-            },
-            metallic: {
-              silver: '#C5CBD6'
-            }
-          }
-        }
-      }
-    };
-  </script>
-
   <style>
     body {
       font-family: 'Prompt', sans-serif;
       -webkit-font-smoothing: antialiased;
-      background-color: #12141A;
-      background-image:
-        radial-gradient(circle at 50% 15%, rgba(230, 0, 18, 0.14) 0%, rgba(18, 20, 26, 0) 48%),
-        radial-gradient(circle at 50% 38%, #282D37 0%, #171A21 62%, #111318 100%);
-      color: #FFFFFF;
+      background: linear-gradient(160deg, #EEF2F7 0%, #D6DDE8 50%, #BFC8D7 100%);
+      color: #0F172A;
+      min-height: 100vh;
     }
 
-    /* พื้นผิวการ์ดหลัก 90s Chrome Cassette Metallic Gradient */
-    .metallic-card {
-      background: linear-gradient(160deg, #3D4351 0%, #262B35 50%, #1A1E26 100%);
-      border: 1px solid rgba(255, 255, 255, 0.22);
-      box-shadow:
-        0 28px 65px rgba(0, 0, 0, 0.72),
-        inset 0 1px 0 rgba(255, 255, 255, 0.25),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.45);
-      position: relative;
+    /* กรอบตั๋วหลัก 1:1 Flex E-Ticket Twin */
+    .main-ticket-card {
+      border-radius: 22px;
+      border: 1px solid #B8C3D4;
+      box-shadow: 0 20px 45px rgba(15, 23, 42, 0.12);
       overflow: hidden;
     }
 
-    /* แสงสะท้อนโลหะโครเมียมด้านบนการ์ด */
-    .metallic-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -25%;
-      width: 150%;
-      height: 195px;
-      background: radial-gradient(ellipse at center top, rgba(255, 255, 255, 0.11) 0%, rgba(255, 255, 255, 0) 70%);
-      pointer-events: none;
+    /* ส่วนหัวตั๋วสีแดงทรูไล่เฉด */
+    .true-red-header {
+      background: linear-gradient(135deg, #E60012 0%, #C4000F 55%, #8F000B 100%);
+      padding: 18px;
     }
 
-    /* วงแหวนแผ่น CD / โครเมียมยุค 90 รอบรูปโปรไฟล์ LINE */
-    .chrome-cd-ring {
-      background: conic-gradient(
-        from 210deg,
-        rgba(255, 255, 255, 0.55),
-        rgba(197, 203, 214, 0.18),
-        rgba(255, 255, 255, 0.65),
-        rgba(230, 0, 18, 0.35),
-        rgba(255, 255, 255, 0.55)
-      );
-      box-shadow: 0 0 28px rgba(255, 255, 255, 0.15);
+    /* พื้นผิวตัวตั๋วสีขาว-เทาแพลทินัมไล่เฉด */
+    .ticket-lower-surface {
+      background: linear-gradient(180deg, #F8FAFC 0%, #E7ECF3 55%, #D5DCE8 100%);
     }
 
-    /* หน้าปัดช่องเทปคาสเซ็ท 90s Chrome Deck */
-    .cassette-deck-strip {
-      background: linear-gradient(90deg, #161920 0%, #222733 50%, #161920 100%);
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.65);
+    /* ป้ายวงรีโปร่งแสง Snug Ruby Glass ใต้โลโก้ True */
+    .snug-ruby-pill {
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      max-width: 100%;
+      background: rgba(74, 0, 6, 0.38);
+      border: 1px solid rgba(255, 255, 255, 0.42);
+      border-radius: 9999px;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
     }
 
-    /* ล้อหมุนม้วนเทปคาสเซ็ท */
-    @keyframes slowSpin {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-    .reel-spin {
-      animation: slowSpin 9s linear infinite;
-    }
-
-    /* ปุ่มหลักสีแดง True ไล่เฉด */
-    .btn-true-red {
-      background: linear-gradient(135deg, #E60012 0%, #B0000E 100%);
-      box-shadow: 0 10px 26px -4px rgba(230, 0, 18, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.28);
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .btn-true-red:hover:not(:disabled) {
-      transform: translateY(-1.5px);
-      box-shadow: 0 14px 30px -4px rgba(230, 0, 18, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.32);
-      filter: brightness(1.05);
-    }
-    .btn-true-red:active:not(:disabled) {
-      transform: translateY(0) scale(0.99);
+    .snug-ruby-icon-circle {
+      width: 22px;
+      height: 22px;
+      border-radius: 9999px;
+      background-color: rgba(255, 255, 255, 0.16);
+      border: 1px solid rgba(255, 255, 255, 0.55);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #FFFFFF;
+      line-height: 1;
+      flex-shrink: 0;
     }
 
-    /* ปุ่มรองสีเทาเมทัลลิกเข้มขอบเงินโครเมียม */
-    .btn-metallic-dark {
-      background: linear-gradient(145deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.03) 100%);
-      border: 1px solid rgba(197, 203, 214, 0.34);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
-      transition: all 0.2s ease;
-    }
-    .btn-metallic-dark:hover:not(:disabled) {
-      background: linear-gradient(145deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.06) 100%);
-      border-color: rgba(255, 255, 255, 0.48);
-      transform: translateY(-1px);
+    /* แถบไฮไลท์เวลาสแกน เช็คอินเข้างาน */
+    .checkin-highlight-box {
+      background: linear-gradient(90deg, #FFF5F5 0%, #FEE2E2 100%);
+      border: 1px solid #FECACA;
     }
 
-    /* รอยบากตั๋วคอนเสิร์ตยุค 90 กลืนกับพื้นผิวการ์ดเมทัลลิก */
-    .ticket-cutout-left,
-    .ticket-cutout-right {
+    /* รอยปรุฉีกตั๋วพร้อมรอยบากครึ่งวงกลมซ้าย-ขวา */
+    .ticket-notch-left,
+    .ticket-notch-right {
       position: absolute;
       top: 50%;
       width: 22px;
       height: 22px;
       border-radius: 9999px;
       transform: translateY(-50%);
-      background-color: #212630;
+      background-color: #CBD4E1;
+      border: 1px solid #B8C3D4;
+      pointer-events: none;
     }
-    .ticket-cutout-left {
-      left: -11px;
-      box-shadow: inset -2px 0 4px rgba(0, 0, 0, 0.38);
+    .ticket-notch-left { left: -11px; }
+    .ticket-notch-right { right: -11px; }
+
+    /* ปุ่มกดหลักสีแดงทรูไล่เฉด */
+    .btn-true-red {
+      background: linear-gradient(135deg, #E60012 0%, #A8000D 100%);
+      box-shadow: 0 10px 24px -5px rgba(230, 0, 18, 0.48), inset 0 1px 0 rgba(255, 255, 255, 0.28);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .ticket-cutout-right {
-      right: -11px;
-      box-shadow: inset 2px 0 4px rgba(0, 0, 0, 0.38);
+    .btn-true-red:hover:not(:disabled) {
+      filter: brightness(1.05);
+      transform: translateY(-1.5px);
+    }
+    .btn-true-red:active:not(:disabled) {
+      transform: translateY(0) scale(0.99);
     }
 
-    /* ลายบาร์โค้ดหางตั๋วยุค 90 */
-    .retro-barcode {
-      background-image: repeating-linear-gradient(
-        90deg,
-        #1E293B 0px,
-        #1E293B 2px,
-        transparent 2px,
-        transparent 5px,
-        #1E293B 5px,
-        #1E293B 6px,
-        transparent 6px,
-        transparent 9px,
-        #1E293B 9px,
-        #1E293B 12px,
-        transparent 12px,
-        transparent 15px
-      );
+    /* ปุ่มกดรองสีเงิน Platinum-Slate */
+    .btn-platinum {
+      background: linear-gradient(180deg, #F8FAFC 0%, #DCE2EC 100%);
+      border: 1px solid #94A3B8;
+      color: #1E293B;
+      box-shadow: 0 4px 10px rgba(15, 23, 42, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+      transition: all 0.18s ease;
+    }
+    .btn-platinum:hover:not(:disabled) {
+      background: linear-gradient(180deg, #FFFFFF 0%, #E2E8F0 100%);
+      border-color: #64748B;
+      transform: translateY(-1px);
     }
 
-    /* แอนิเมชันสลับหน้าจอนุ่มนวลโดยส่วนหัวไม่กระโดด */
     @keyframes viewFadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(6px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
     }
     .animate-screen {
       animation: viewFadeIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
 
-    /* ปรับแต่ง SweetAlert2 ให้เข้ากับธีม 90s Chrome Metallic */
+    /* SweetAlert2 Theme Matching */
     div:where(.swal2-container) div:where(.swal2-popup) {
-      background: linear-gradient(160deg, #343A47 0%, #1D212A 100%) !important;
-      border: 1px solid rgba(255, 255, 255, 0.22) !important;
+      background: linear-gradient(180deg, #FFFFFF 0%, #EEF2F7 100%) !important;
+      border: 1px solid #CBD5E1 !important;
       border-radius: 1.5rem !important;
-      color: #FFFFFF !important;
+      color: #0F172A !important;
       font-family: 'Prompt', sans-serif !important;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.78) !important;
+      box-shadow: 0 24px 55px rgba(15, 23, 42, 0.22) !important;
     }
     div:where(.swal2-container) .swal2-title {
-      color: #FFFFFF !important;
+      color: #0F172A !important;
       font-size: 1.15rem !important;
     }
     div:where(.swal2-container) .swal2-html-container {
-      color: #C5CBD6 !important;
+      color: #475569 !important;
       font-size: 0.875rem !important;
     }
   </style>
@@ -209,128 +155,119 @@
 
 <body class="min-h-screen flex items-center justify-center p-4 selection:bg-[#E60012] selection:text-white">
 
-  <!-- ==================================================================== -->
-  <!-- LOADING OVERLAY (แสดงระหว่างเชื่อม LIFF และส่งข้อมูลไป Google Sheets)   -->
-  <!-- ==================================================================== -->
+  <!-- LOADING OVERLAY -->
   <div
     id="loadingOverlay"
-    class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#12141A]/90 backdrop-blur-md"
+    class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-slate-900/65 backdrop-blur-sm"
   >
-    <div class="relative w-16 h-16 mb-3.5 flex items-center justify-center">
-      <div class="absolute inset-0 rounded-full border-[3px] border-white/15"></div>
+    <div class="relative w-14 h-14 mb-3 flex items-center justify-center">
+      <div class="absolute inset-0 rounded-full border-[3px] border-white/25"></div>
       <div class="absolute inset-0 rounded-full border-[3px] border-t-[#E60012] border-r-white border-b-transparent border-l-transparent animate-spin"></div>
-      <div class="w-4 h-4 rounded-full bg-white/20 border border-white/50"></div>
     </div>
-    <p id="loadingText" class="text-xs font-semibold text-white tracking-wider uppercase">
+    <p id="loadingText" class="text-xs font-semibold text-white tracking-wider">
       กำลังเชื่อมต่อ LINE LIFF...
     </p>
   </div>
 
-  <!-- ==================================================================== -->
-  <!-- MAIN MOBILE LIFF CARD (90s Chrome Cassette • กึ่งกลางหน้าจอพอดี)        -->
-  <!-- ==================================================================== -->
+  <!-- MAIN CONTAINER -->
   <main class="w-full max-w-[410px]">
-    <div class="metallic-card rounded-[30px]">
-      <!-- แถบคาดบนสุดสีแดง True คู่เส้นโครเมียม -->
-      <div class="h-[4px] w-full bg-gradient-to-r from-[#E60012] via-[#FF3B4B] to-[#E60012]"></div>
+    <div class="main-ticket-card w-full">
 
-      <div class="p-6 relative z-10">
+      <!-- 1. PERSISTENT RED TICKET HEADER -->
+      <header class="true-red-header">
+        <div class="flex items-center justify-between gap-3">
+          <!-- ซ้าย: โลโก้ True 132px + ป้าย Ruby Glass "ลงทะเบียน" (17px) -->
+          <div class="flex flex-col items-start min-w-0">
+            <div class="w-[132px] aspect-[22/10] -ml-[4px] flex items-center justify-start overflow-hidden shrink-0">
+              <img
+                src="https://img2.pic.in.th/True--W9082df0ce2da3b92.png"
+                alt="True"
+                onerror="this.onerror=null;this.src='https://placehold.co/264x120/E60012/FFFFFF?text=true';"
+                class="w-full h-full object-cover block"
+              />
+            </div>
 
-        <!-- ============================================================== -->
-        <!-- PERSISTENT TOP HEADER: แสดงคงที่เหมือนกันทุกหน้า สลับหน้าไม่กระโดด  -->
-        <!-- ============================================================== -->
-        <header class="pb-4 border-b border-white/10">
-          <!-- Row 1: โลโก้ True สีขาวไร้พื้นหลัง + ป้ายไฟ REC • BACK TO 90s -->
-          <div class="flex items-center justify-between gap-3">
-            <img
-              src="https://img2.pic.in.th/True--W9082df0ce2da3b92.png"
-              alt="True"
-              onerror="this.onerror=null;this.src='https://placehold.co/180x64/262B35/FFFFFF?text=true';"
-              class="w-[86px] h-auto object-contain shrink-0 drop-shadow-[0_2px_6px_rgba(0,0,0,0.35)]"
-            />
-
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/30 border border-white/20 text-[10px] font-bold tracking-widest text-white uppercase shadow-inner">
-              <span class="w-2 h-2 rounded-full bg-[#E60012] animate-pulse"></span>
-              <span>BACK TO 90s • 2026</span>
-            </span>
+            <div
+              id="headerRubyPill"
+              class="snug-ruby-pill mt-1.5"
+              style="padding:4.5px 16px;gap:0px;"
+            >
+              <span id="headerPillIconWrap" class="snug-ruby-icon-circle hidden text-[12px]">✓</span>
+              <span
+                id="headerPillText"
+                style="font-size:17px;"
+                class="font-bold text-white tracking-wide leading-none whitespace-nowrap"
+              >ลงทะเบียน</span>
+            </div>
           </div>
 
-          <!-- Row 2: รูปโปรไฟล์ LINE ขนาดใหญ่ 96px กึ่งกลาง พร้อมวงแหวน Chrome CD -->
-          <div class="mt-4 flex flex-col items-center text-center">
-            <div class="relative p-[3px] rounded-full chrome-cd-ring">
+          <!-- ขวา: รูปโปรไฟล์ LINE 70px ขอบขาว + จุดเขียวออนไลน์ -->
+          <div class="relative w-[70px] h-[70px] shrink-0">
+            <div class="w-full h-full rounded-full bg-[#F8FAFC] p-[2px] shadow-md">
               <img
                 id="profileAvatar"
                 src="https://cdn-icons-png.flaticon.com/512/847/847969.png"
                 alt="LINE Profile"
                 onerror="this.onerror=null;this.src='https://cdn-icons-png.flaticon.com/512/847/847969.png';"
-                class="w-24 h-24 rounded-full object-cover border-[2.5px] border-white bg-[#1E222B] shadow-lg"
+                class="w-full h-full rounded-full object-cover block bg-slate-700"
               />
-              <span
-                id="liffStatusDot"
-                class="absolute bottom-1.5 right-1.5 w-5 h-5 rounded-full bg-emerald-400 border-[3px] border-[#262B35]"
-                title="LINE Connected"
-              ></span>
             </div>
-
-            <p id="profileName" class="mt-2.5 text-sm font-semibold text-white truncate max-w-[280px]">
-              กำลังโหลดโปรไฟล์...
-            </p>
+            <span
+              id="liffStatusDot"
+              class="absolute bottom-[2px] right-[2px] w-[15px] h-[15px] rounded-full bg-[#22C55E] border-2 border-[#9E000C]"
+              title="LINE Connected"
+            ></span>
           </div>
+        </div>
 
-          <!-- Row 3: ชื่องานและวันเวลาแบบกระชับ -->
-          <div class="mt-2.5 text-center">
-            <h1 class="text-[19px] font-bold text-white tracking-tight leading-snug">
-              Operations New Year Party 2026
-            </h1>
-            <p id="eventSubInfo" class="text-xs text-[#C5CBD6] mt-0.5">
-              27 พ.ย. 2026 • 18:00 น. | โรงแรม เอส รัชดา เลเชอร์
-            </p>
-          </div>
+        <!-- ข้อมูลชิดขวาล่างของหัวตั๋วสีแดง -->
+        <div class="text-right mt-2.5">
+          <p id="headerPrimaryName" class="text-base font-bold text-white leading-snug break-words">
+            กำลังโหลดโปรไฟล์...
+          </p>
+          <p id="headerSecondaryMeta" class="text-xs font-medium text-[#FFE4E6] mt-0.5">
+            New Year Operations Party 2027
+          </p>
+          <p id="headerTertiaryTeam" class="hidden text-[11px] text-[#FECDD3] mt-0.5 truncate"></p>
+        </div>
+      </header>
 
-          <!-- Row 4: แถบหน้าปัดเทปคาสเซ็ท 90s Chrome Cassette Deck -->
-          <div class="mt-3.5 cassette-deck-strip rounded-xl px-3.5 py-2 flex items-center justify-between">
-            <div class="flex items-center gap-1.5 text-[#C5CBD6]">
-              <svg class="w-4 h-4 reel-spin text-white/80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="12" cy="12" r="9" />
-                <circle cx="12" cy="12" r="3" />
-                <path d="M12 3v3M12 18v3M3 12h3M18 12h3" />
-              </svg>
-              <span class="text-[10px] font-mono font-semibold tracking-wider text-white/90 uppercase">
-                SIDE A • VIP ACCESS
-              </span>
+      <!-- 2. TICKET BODY VIEWS -->
+      <div class="ticket-lower-surface">
+
+        <!-- VIEW 1: หน้าแรก (เลือกสถานะเข้าร่วมงาน) -->
+        <section id="stepSelectIntent" class="animate-screen">
+          <div class="px-4 pt-4 pb-3 space-y-2.5">
+            <div class="checkin-highlight-box rounded-[12px] px-3 py-2 flex items-center justify-between gap-2">
+              <span class="text-xs font-bold text-[#991B1B]">เวลาสแกน เช็คอินเข้างาน</span>
+              <span id="checkInTimeDisplay" class="text-sm font-bold text-[#E60012] text-right">18:30 - 19:00 น.</span>
             </div>
-
-            <div class="flex items-center gap-1.5">
-              <span class="text-[10px] font-mono text-[#FF4D5A] font-bold tracking-wider">HI-FI 90s</span>
-              <svg class="w-4 h-4 reel-spin text-white/80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="12" cy="12" r="9" />
-                <circle cx="12" cy="12" r="3" />
-                <path d="M12 3v3M12 18v3M3 12h3M18 12h3" />
-              </svg>
+            <div class="text-center space-y-0.5 pt-0.5">
+              <p id="eventDateDisplay" class="text-xs font-bold text-[#0F172A]">วันศุกร์ที่ 27 พฤศจิกายน 2026 | 18:00 - 24:00 น.</p>
+              <p id="eventVenueDisplay" class="text-xs text-[#475569]">สถานที่: โรงแรม เอส รัชดา เลเชอร์</p>
             </div>
           </div>
-        </header>
 
-        <!-- ============================================================== -->
-        <!-- VIEW 1: หน้าแรก (เลือกสถานะเข้าร่วมงาน)                          -->
-        <!-- ============================================================== -->
-        <section id="stepSelectIntent" class="animate-screen pt-5">
-          <div class="space-y-3">
-            <!-- ปุ่มที่ 1: ลงทะเบียนร่วมงาน -->
+          <div class="relative h-[22px] flex items-center justify-center select-none">
+            <span class="ticket-notch-left"></span>
+            <span class="text-xs text-[#94A3B8] tracking-[0.18em] overflow-hidden whitespace-nowrap px-5">- - - - - - - - - - - - - - - - - - - - - -</span>
+            <span class="ticket-notch-right"></span>
+          </div>
+
+          <div class="px-4 pt-2.5 pb-4 space-y-2.5">
+            <!-- ปุ่มที่ 1: ลงทะเบียนร่วมงาน (ไอคอนรูปตั๋วใหม่) -->
             <button
               type="button"
               onclick="selectIntent('ร่วมงาน')"
               class="btn-true-red w-full py-3.5 px-4 rounded-2xl flex items-center justify-between text-left group"
             >
               <div class="flex items-center gap-3.5">
-                <div class="w-11 h-11 rounded-xl bg-white/15 border border-white/25 flex items-center justify-center shrink-0">
-                  <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M5 13l4 4L19 7" />
-                  </svg>
+                <div class="w-11 h-11 rounded-xl bg-white/15 border border-white/25 flex items-center justify-center shrink-0 shadow-inner">
+                  <svg class="w-6 h-6 text-white group-hover:scale-105 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z" /><polygon points="12 8.3 13.15 10.65 15.75 11.02 13.87 12.85 14.32 15.43 12 14.21 9.68 15.43 10.13 12.85 8.25 11.02 10.85 10.65 12 8.3" fill="currentColor" stroke="none" /></svg>
                 </div>
                 <div>
                   <span class="block text-base font-bold text-white leading-tight">ลงทะเบียนร่วมงาน</span>
-                  <span class="block text-xs text-white/85 mt-0.5">รับบัตร QR เข้างาน &amp; สิทธิ์ลุ้นรางวัล</span>
+                  <span class="block text-xs text-white/90 mt-0.5">รับบัตร QR เข้างาน &amp; สิทธิ์ลุ้นรางวัล</span>
                 </div>
               </div>
               <svg class="w-5 h-5 text-white/90 group-hover:translate-x-1 transition-transform shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -342,52 +279,33 @@
             <button
               type="button"
               onclick="selectIntent('ไม่ร่วมงาน')"
-              class="btn-metallic-dark w-full py-3.5 px-4 rounded-2xl flex items-center justify-between text-left group"
+              class="btn-platinum w-full py-3.5 px-4 rounded-2xl flex items-center justify-between text-left group"
             >
               <div class="flex items-center gap-3.5">
-                <div class="w-11 h-11 rounded-xl bg-white/5 border border-white/15 flex items-center justify-center shrink-0">
-                  <svg class="w-5 h-5 text-[#C5CBD6]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                <div class="w-11 h-11 rounded-xl bg-slate-200/85 border border-slate-300 flex items-center justify-center shrink-0">
+                  <svg class="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.1" d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </div>
                 <div>
-                  <span class="block text-base font-semibold text-white leading-tight">ไม่ร่วมงาน</span>
-                  <span class="block text-xs text-[#C5CBD6] mt-0.5">แจ้งติดภารกิจไม่สามารถเข้าร่วม</span>
+                  <span class="block text-base font-bold text-[#1E293B] leading-tight">ไม่ร่วมงาน</span>
+                  <span class="block text-xs text-slate-500 mt-0.5">แจ้งติดภารกิจไม่สามารถเข้าร่วม</span>
                 </div>
               </div>
-              <svg class="w-5 h-5 text-[#C5CBD6] group-hover:translate-x-1 transition-transform shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-5 h-5 text-slate-500 group-hover:translate-x-1 transition-transform shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 5l7 7-7 7" />
               </svg>
             </button>
           </div>
-
-          <!-- Footer: ชื่อบริษัท + ลิงก์นโยบายความเป็นส่วนตัวสีแดง -->
-          <footer class="border-t border-white/10 pt-4 mt-5 text-center">
-            <p class="text-xs font-medium text-[#C0C6D2]">
-              บริษัท ทรู คอร์ปอเรชั่น จำกัด (มหาชน)
-            </p>
-            <a
-              id="privacyPolicyLink"
-              href="https://linedeveloper.github.io/True/privacy.html"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="inline-block mt-1 text-[13px] font-bold text-[#FF2938] hover:text-[#FF525E] underline-offset-2 hover:underline transition"
-            >
-              นโยบายความเป็นส่วนตัว (Privacy Policy)
-            </a>
-          </footer>
         </section>
 
-        <!-- ============================================================== -->
-        <!-- VIEW 2: หน้าตรวจสอบรหัสพนักงาน (ฟอนต์ข้อมูลพนักงานขนาดกะทัดรัด)    -->
-        <!-- ============================================================== -->
-        <section id="stepVerifyEmp" class="hidden animate-screen pt-4 space-y-4">
-          <!-- แถบปุ่มย้อนกลับ + ป้ายสถานะที่เลือก -->
+        <!-- VIEW 2: หน้าตรวจสอบรหัสพนักงาน -->
+        <section id="stepVerifyEmp" class="hidden animate-screen p-4 space-y-3.5">
           <div class="flex items-center justify-between">
             <button
               type="button"
               onclick="backToIntentSelection()"
-              class="inline-flex items-center gap-1.5 text-xs font-medium text-[#C5CBD6] hover:text-white transition py-1 pr-2"
+              class="inline-flex items-center gap-1 text-xs font-semibold text-slate-600 hover:text-[#0F172A] transition py-1 pr-2"
             >
               <span>←</span>
               <span>ย้อนกลับ</span>
@@ -395,62 +313,58 @@
 
             <span
               id="selectedIntentBadge"
-              class="inline-block text-[11px] font-semibold px-3 py-1 rounded-full bg-[#E60012] text-white shadow-sm"
+              class="inline-block text-[11px] font-bold px-3 py-1 rounded-full bg-[#E60012] text-white shadow-sm"
             >
               เลือกสถานะ: ร่วมงาน
             </span>
           </div>
 
-          <!-- ช่องกรอกรหัสพนักงาน + ปุ่มตรวจสอบ -->
           <div class="space-y-1.5">
-            <label for="empIdInput" class="block text-xs font-medium text-[#C5CBD6]">
+            <label for="empIdInput" class="block text-xs font-semibold text-[#334155]">
               กรอกรหัสพนักงานเพื่อตรวจสอบข้อมูล
             </label>
             <div class="flex gap-2">
               <input
                 id="empIdInput"
                 type="text"
-                placeholder="รหัสพนักงาน เช่น EMP001"
+                placeholder="รหัสพนักงาน เช่น 90006323"
                 autocomplete="off"
-                class="flex-1 bg-[#161920]/90 border border-white/20 rounded-xl px-3.5 py-2.5 text-base font-semibold text-white placeholder:text-white/35 uppercase focus:outline-none focus:border-white transition"
+                class="flex-1 min-w-0 bg-white border border-[#CBD5E1] rounded-xl px-3.5 py-2.5 text-base font-bold text-[#0F172A] placeholder:text-slate-400 uppercase focus:outline-none focus:border-[#E60012] transition"
               />
               <button
                 type="button"
                 id="btnCheckEmp"
                 onclick="checkEmployeeData()"
-                class="px-4 py-2.5 rounded-xl bg-white text-slate-900 hover:bg-slate-100 active:scale-95 text-xs font-bold shadow-md transition shrink-0"
+                class="px-4 py-2.5 rounded-xl bg-[#0F172A] text-white hover:bg-slate-800 active:scale-95 text-xs font-bold shadow-sm transition shrink-0"
               >
                 ตรวจสอบข้อมูล
               </button>
             </div>
           </div>
 
-          <!-- กล่องแสดงข้อมูลพนักงาน Read-Only (ฟอนต์กะทัดรัดสวยงาม) -->
           <div id="employeeResultBox" class="hidden space-y-3 pt-0.5">
-            <!-- แจ้งเตือนกรณีเคยลงทะเบียนไว้ก่อนแล้ว -->
             <div
               id="existingRegNotice"
-              class="hidden px-3 py-2 rounded-xl bg-amber-500/15 border border-amber-300/35 text-[11px] text-amber-200 leading-relaxed"
+              class="hidden px-3 py-2 rounded-xl bg-amber-50 border border-amber-300 text-[11px] font-medium text-amber-800 leading-relaxed"
             ></div>
 
-            <div class="bg-white text-slate-900 rounded-2xl p-4 shadow-lg border border-white">
+            <div class="bg-white text-slate-900 rounded-2xl p-3.5 shadow-sm border border-[#CBD5E1]">
               <div class="flex items-center justify-between gap-2">
                 <span class="text-[10px] font-semibold uppercase tracking-wider text-slate-400">
                   ข้อมูลพนักงาน (Read-Only)
                 </span>
                 <span
                   id="verifiedEmpIdBadge"
-                  class="text-[11px] font-mono font-bold px-2.5 py-0.5 rounded-md bg-slate-900 text-white tracking-wide"
+                  class="text-[11px] font-mono font-bold px-2.5 py-0.5 rounded-md bg-[#0F172A] text-white tracking-wide"
                 ></span>
               </div>
 
               <div class="mt-2 pt-2 border-t border-slate-100">
-                <p id="empFullNameDisplay" class="text-[14px] font-bold text-slate-900 leading-snug"></p>
+                <p id="empFullNameDisplay" class="text-[15px] font-bold text-[#0F172A] leading-snug"></p>
                 <p id="empTeamDisplay" class="text-xs font-semibold text-[#E60012] mt-0.5"></p>
               </div>
             </div>
 
-            <!-- ปุ่มยืนยันตามตัวเลือกที่กดมาจากหน้าแรก -->
             <button
               type="button"
               id="btnConfirmAttend"
@@ -464,147 +378,84 @@
               type="button"
               id="btnConfirmDecline"
               onclick="submitRegistration('ไม่ร่วมงาน')"
-              class="hidden btn-metallic-dark w-full py-3.5 rounded-2xl text-sm font-bold text-white tracking-wide"
+              class="hidden btn-platinum w-full py-3.5 rounded-2xl text-sm font-bold tracking-wide"
             >
               ยืนยันไม่เข้าร่วมงาน
             </button>
           </div>
         </section>
 
-        <!-- ============================================================== -->
-        <!-- VIEW 3: หน้าบัตร QR (90s Chrome Cassette Ticket)                -->
-        <!-- ============================================================== -->
-        <section id="stepSuccessAttend" class="hidden animate-screen pt-4 space-y-4">
-          <!-- หัวข้อลงทะเบียนสำเร็จจัดกึ่งกลางชัดเจน -->
-          <div class="text-center">
-            <div class="w-10 h-10 rounded-full bg-emerald-500/20 border border-emerald-400/50 flex items-center justify-center mx-auto mb-2 shadow-sm">
-              <svg class="w-5 h-5 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
-              </svg>
-            </div>
-            <h2 id="attendStatusTitle" class="text-2xl font-bold text-white text-center tracking-tight">
-              ลงทะเบียนสำเร็จ
-            </h2>
-            <p id="attendStatusSub" class="text-xs text-[#C5CBD6] text-center mt-0.5">
-              ส่งบัตรเข้าห้องแชท LINE เรียบร้อยแล้ว
-            </p>
-          </div>
-
-          <!-- ตั๋วเข้างานสีขาวสไตล์ 90s Chrome Cassette Concert Pass -->
-          <div class="bg-white rounded-3xl overflow-hidden shadow-xl text-slate-900">
-            <!-- แถบหัวตั๋วเทปคาสเซ็ทสีเข้ม + โลโก้ True สีขาว -->
-            <div class="bg-gradient-to-r from-[#1D212B] via-[#2B313F] to-[#1D212B] px-4 py-3 text-white">
-              <div class="flex items-center justify-between">
-                <img
-                  src="https://img2.pic.in.th/True--W9082df0ce2da3b92.png"
-                  alt="True"
-                  onerror="this.onerror=null;this.src='https://placehold.co/150x52/1D212B/FFFFFF?text=true';"
-                  class="w-[74px] h-auto object-contain"
-                />
-                <span class="text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full bg-[#E60012] text-white tracking-wider">
-                  90s VIP PASS
-                </span>
-              </div>
-
-              <!-- ช่องหน้าต่างล้อเทปคาสเซ็ทพร้อมข้อความ "โปรดแสดง QR เพื่อยืนยันเข้างาน" -->
-              <div class="mt-2.5 bg-black/40 border border-white/15 rounded-xl px-3 py-1.5 flex items-center justify-between gap-2">
-                <svg class="w-4 h-4 reel-spin text-white/80 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <circle cx="12" cy="12" r="9" />
-                  <circle cx="12" cy="12" r="3" />
-                </svg>
-                <span class="text-[11px] font-semibold text-white text-center truncate">
-                  โปรดแสดง QR เพื่อยืนยันเข้างาน
-                </span>
-                <svg class="w-4 h-4 reel-spin text-white/80 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <circle cx="12" cy="12" r="9" />
-                  <circle cx="12" cy="12" r="3" />
-                </svg>
-              </div>
+        <!-- VIEW 3: หน้าบัตร QR E-Ticket PASS 1:1 -->
+        <section id="stepSuccessAttend" class="hidden animate-screen">
+          <div class="pt-4 pb-3.5 px-4 space-y-3">
+            <div id="attendStatusBanner" class="px-3 py-1.5 rounded-xl bg-emerald-50 border border-emerald-200 text-center">
+              <p id="attendStatusSub" class="text-xs font-bold text-emerald-700">
+                ✓ ลงทะเบียนสำเร็จ • ส่งบัตรเข้าห้องแชท LINE แล้ว
+              </p>
             </div>
 
-            <!-- กรอบแสดง QR Code ประจำตัวพนักงาน -->
-            <div class="pt-4 px-5 pb-1 text-center">
-              <div class="w-44 h-44 mx-auto p-2 rounded-2xl border border-slate-200 bg-white shadow-inner flex items-center justify-center">
-                <img
-                  id="successQrImg"
-                  src=""
-                  alt="VIP Entry QR Code"
-                  class="w-full h-full object-contain"
-                />
-              </div>
-            </div>
-
-            <!-- รอยปรุฉีกตั๋ว Boarding Pass -->
-            <div class="relative py-2.5 flex items-center">
-              <div class="ticket-cutout-left"></div>
-              <div class="w-full border-t-2 border-dashed border-slate-200 mx-5"></div>
-              <div class="ticket-cutout-right"></div>
-            </div>
-
-            <!-- ข้อมูลพนักงานบนหางตั๋ว + บาร์โค้ดประดับ -->
-            <div class="px-5 pt-1 pb-4 text-center">
-              <p id="successAttendName" class="text-base font-bold text-slate-900 leading-snug"></p>
-              <p id="successAttendMeta" class="text-xs font-semibold text-[#E60012] mt-0.5"></p>
-              <div class="retro-barcode h-4 w-40 mx-auto mt-3 opacity-35 rounded-sm"></div>
+            <div class="w-[180px] h-[180px] mx-auto rounded-[18px] border border-[#CBD5E1] p-[10px] bg-white shadow-sm flex items-center justify-center">
+              <img
+                id="successQrImg"
+                src=""
+                alt="E-Ticket QR Code"
+                class="w-full h-full object-contain block"
+              />
             </div>
           </div>
 
-          <!-- ปุ่มปิดหน้าต่าง + ปุ่มเปลี่ยนสถานะ (ซ่อนอัตโนมัติทันทีเมื่อเช็คอินเข้างานแล้ว) -->
-          <div class="space-y-2">
-            <button
-              type="button"
-              onclick="closeLiffWindow()"
-              class="w-full py-3.5 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/20 text-sm font-semibold text-white transition"
-            >
-              ปิดหน้าต่าง
-            </button>
-            <button
-              type="button"
-              id="btnChangeAttendStatus"
-              onclick="backToIntentSelection()"
-              class="w-full py-1.5 text-xs font-medium text-[#C5CBD6] hover:text-white underline underline-offset-2 transition"
-            >
-              เปลี่ยนสถานะการเข้าร่วมงาน
-            </button>
+          <div class="relative h-[22px] flex items-center justify-center select-none">
+            <span class="ticket-notch-left"></span>
+            <span class="text-xs text-[#94A3B8] tracking-[0.18em] overflow-hidden whitespace-nowrap px-5">- - - - - - - - - - - - - - - - - - - - - -</span>
+            <span class="ticket-notch-right"></span>
+          </div>
+
+          <div class="px-4 pt-2 pb-[18px] space-y-2.5">
+            <div class="checkin-highlight-box rounded-[12px] px-3 py-2 flex items-center justify-between gap-2">
+              <span class="text-xs font-bold text-[#991B1B]">เวลาสแกน เช็คอินเข้างาน</span>
+              <span class="text-sm font-bold text-[#E60012] text-right">18:30 - 19:00 น.</span>
+            </div>
+            <div class="text-center space-y-0.5 pt-0.5">
+              <p class="text-xs font-bold text-[#0F172A]">วันศุกร์ที่ 27 พฤศจิกายน 2026 | 18:00 - 24:00 น.</p>
+              <p class="text-xs text-[#475569]">สถานที่: โรงแรม เอส รัชดา เลเชอร์</p>
+            </div>
           </div>
         </section>
 
-        <!-- ============================================================== -->
-        <!-- VIEW 4: หน้าแจ้งไม่ร่วมงานสำเร็จ                                 -->
-        <!-- ============================================================== -->
-        <section id="stepSuccessDecline" class="hidden animate-screen text-center space-y-4 pt-5 pb-1">
-          <div class="w-13 h-13 w-12 h-12 rounded-full bg-white/10 border border-white/20 flex items-center justify-center mx-auto">
-            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <!-- VIEW 4: หน้าแจ้งไม่ร่วมงานสำเร็จ -->
+        <section id="stepSuccessDecline" class="hidden animate-screen p-5 text-center space-y-3.5">
+          <div class="w-12 h-12 rounded-full bg-white border border-[#CBD5E1] shadow-sm flex items-center justify-center mx-auto">
+            <svg class="w-6 h-6 text-[#059669]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.3" d="M5 13l4 4L19 7" />
             </svg>
           </div>
 
           <div class="space-y-1">
-            <h2 class="text-xl font-bold text-white tracking-tight">
+            <h2 class="text-lg font-bold text-[#0F172A] tracking-tight">
               บันทึกสถานะเรียบร้อย
             </h2>
-            <p class="text-xs text-[#C5CBD6]">
+            <p class="text-xs text-[#475569]">
               ขอบคุณที่แจ้งสถานะการไม่เข้าร่วมงานให้ทีมงานทราบ
             </p>
           </div>
 
-          <div class="bg-white/10 border border-white/15 rounded-2xl p-3.5 space-y-0.5">
-            <p id="successDeclineName" class="text-sm font-bold text-white"></p>
-            <p id="successDeclineMeta" class="text-xs font-medium text-[#C5CBD6]"></p>
+          <div class="bg-white border border-[#CBD5E1] rounded-2xl p-3.5 space-y-0.5 shadow-sm">
+            <p id="successDeclineName" class="text-sm font-bold text-[#0F172A]"></p>
+            <p id="successDeclineMeta" class="text-xs font-medium text-[#64748B]"></p>
           </div>
 
           <div class="space-y-2 pt-1">
             <button
               type="button"
               onclick="closeLiffWindow()"
-              class="btn-true-red w-full py-3.5 rounded-2xl text-sm font-bold text-white"
+              class="btn-true-red w-full py-3 rounded-[12px] text-xs font-bold text-white"
             >
               ปิดหน้าต่าง
             </button>
             <button
               type="button"
               onclick="backToIntentSelection()"
-              class="w-full py-2 text-xs font-medium text-[#C5CBD6] hover:text-white underline underline-offset-2 transition"
+              class="block w-full py-1 text-xs font-medium text-[#475569] hover:text-[#0F172A] underline underline-offset-2 transition"
             >
               แก้ไขสถานะใหม่
             </button>
@@ -613,29 +464,67 @@
 
       </div>
     </div>
+
+    <!-- 3. BELOW-CARD FOOTER & TICKET ACTIONS -->
+    <div id="homeFooterArea" class="mt-3.5 text-center space-y-0.5">
+      <p class="text-xs font-medium text-[#334155]">
+        บริษัท ทรู คอร์ปอเรชั่น จำกัด (มหาชน)
+      </p>
+      <a
+        id="privacyPolicyLink"
+        href="https://linedeveloper.github.io/True/privacy.html"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-block text-xs font-bold text-[#E60012] hover:underline underline-offset-2 transition"
+      >
+        นโยบายความเป็นส่วนตัว (Privacy Policy)
+      </a>
+      <p class="text-[11.5px] font-normal text-[#64748B] pt-1">
+        New Year Operations Party 2027
+      </p>
+    </div>
+
+    <div id="qrFooterActions" class="hidden mt-3.5 space-y-2 text-center">
+      <button
+        type="button"
+        onclick="closeLiffWindow()"
+        class="btn-platinum w-full py-3 rounded-[12px] text-xs font-bold"
+      >
+        ปิดหน้าต่าง
+      </button>
+      <button
+        type="button"
+        id="btnChangeAttendStatus"
+        onclick="backToIntentSelection()"
+        class="block w-full py-1 text-xs font-medium text-[#475569] hover:text-[#E60012] underline underline-offset-2 transition"
+      >
+        เปลี่ยนสถานะการเข้าร่วมงาน
+      </button>
+      <div class="pt-1 space-y-0.5">
+        <p class="text-xs font-bold text-[#334155]">
+          โปรดแสดง QR เพื่อยืนยันเข้างานเพื่อลุ้นรางวัลในงาน
+        </p>
+        <p class="text-xs font-normal text-[#64748B]">
+          New Year Operations Party 2027
+        </p>
+      </div>
+    </div>
+
   </main>
 
   <script>
-    /* ========================================================================
-       CONFIG: ตั้งค่าระบบใช้งานจริง (เชื่อมต่อ LIFF ID & GAS Web App URL แล้ว)
-       ======================================================================== */
     const CONFIG = {
       LIFF_ID: '1656846002-2BvPPmrM',
       GAS_WEB_APP_URL: 'https://script.google.com/macros/s/AKfycbzL9SNCIhSiDC2hgaQ8xSiVqbT9GpEFErE2UAJX5CM1tleziGBfLT2eGdASj7pD_eg/exec',
-      WINNERS_PAGE_URL: 'https://linedeveloper.github.io/Operation-New-Year-Party-2026/winners.html',
       PRIVACY_POLICY_URL: 'https://linedeveloper.github.io/True/privacy.html',
-      SOUVENIR_IMAGE_URL: 'https://images.unsplash.com/photo-1513885535751-8b9238bd345a?auto=format&fit=crop&w=1000&q=80',
-      MAP_URL: 'https://maps.app.goo.gl/85FVz4J4Ai2xE8h88',
-      STAFF_PIN: '2026',
-
-      EVENT_DATE_VENUE: '27 พ.ย. 2026 • 18:00 น. | โรงแรม เอส รัชดา เลเชอร์',
-      DEFAULT_AVATAR_URL: 'https://cdn-icons-png.flaticon.com/512/847/847969.png'
+      EVENT_NAME: 'New Year Operations Party 2027',
+      DEFAULT_AVATAR_URL: 'https://cdn-icons-png.flaticon.com/512/847/847969.png',
+      HIDE_ICON_ON_REGISTER_PILL: true
     };
 
-    /* สถานะการทำงานของแอปพลิเคชัน */
     const state = {
-      selectedIntent: '', // 'ร่วมงาน' | 'ไม่ร่วมงาน'
-      verifiedEmployee: null, // { empId, fullName, team }
+      selectedIntent: '',
+      verifiedEmployee: null,
       lineProfile: {
         userId: '',
         displayName: 'ผู้ใช้งาน LINE',
@@ -645,9 +534,7 @@
       isInClient: false
     };
 
-    /* เริ่มต้นระบบเมื่อเปิดหน้าเว็บ */
     document.addEventListener('DOMContentLoaded', async () => {
-      document.getElementById('eventSubInfo').textContent = CONFIG.EVENT_DATE_VENUE;
       document.getElementById('privacyPolicyLink').href = CONFIG.PRIVACY_POLICY_URL;
 
       const empInput = document.getElementById('empIdInput');
@@ -664,7 +551,52 @@
       await initializeLiff();
     });
 
-    /* เชื่อมต่อ LINE LIFF SDK v2 และดึงรูป + ชื่อโปรไฟล์จริง พร้อมเช็กบัตรเข้างานอัตโนมัติ */
+    function updateHeaderPillAndIdentity(mode, empObj) {
+      const pillEl = document.getElementById('headerRubyPill');
+      const iconWrap = document.getElementById('headerPillIconWrap');
+      const textEl = document.getElementById('headerPillText');
+
+      if (mode === 'ETICKET' || mode === 'CHECKEDIN') {
+        pillEl.style.padding = '4px 14px 4px 7px';
+        pillEl.style.gap = '7.5px';
+        iconWrap.classList.remove('hidden');
+        iconWrap.innerHTML = '✓';
+        textEl.style.fontSize = '13.5px';
+        textEl.textContent = mode === 'CHECKEDIN' ? 'VIP CHECKED-IN' : 'E-Ticket PASS';
+      } else {
+        textEl.style.fontSize = '17px';
+        textEl.textContent = 'ลงทะเบียน';
+        if (CONFIG.HIDE_ICON_ON_REGISTER_PILL) {
+          pillEl.style.padding = '4.5px 16px';
+          pillEl.style.gap = '0px';
+          iconWrap.classList.add('hidden');
+        } else {
+          pillEl.style.padding = '4px 16px 4px 7px';
+          pillEl.style.gap = '7.5px';
+          iconWrap.classList.remove('hidden');
+        }
+      }
+
+      const pName = document.getElementById('headerPrimaryName');
+      const pMeta = document.getElementById('headerSecondaryMeta');
+      const pTeam = document.getElementById('headerTertiaryTeam');
+
+      if (empObj && empObj.empId) {
+        pName.className = 'text-lg font-bold text-white leading-snug break-words';
+        pName.textContent = empObj.fullName;
+        pMeta.className = 'text-xs font-bold text-[#FFE4E6] mt-0.5';
+        pMeta.textContent = 'รหัสพนักงาน ' + empObj.empId;
+        pTeam.textContent = empObj.team || '';
+        pTeam.classList.toggle('hidden', !empObj.team);
+      } else {
+        pName.className = 'text-base font-bold text-white leading-snug break-words';
+        pName.textContent = state.lineProfile.displayName;
+        pMeta.className = 'text-xs font-medium text-[#FFE4E6] mt-0.5';
+        pMeta.textContent = CONFIG.EVENT_NAME;
+        pTeam.classList.add('hidden');
+      }
+    }
+
     async function initializeLiff() {
       showLoading('กำลังเชื่อมต่อ LINE LIFF...');
       try {
@@ -684,27 +616,21 @@
           pictureUrl: profile.pictureUrl || CONFIG.DEFAULT_AVATAR_URL
         };
 
-        document.getElementById('profileName').textContent = state.lineProfile.displayName;
         document.getElementById('profileAvatar').src = state.lineProfile.pictureUrl;
-        document.getElementById('liffStatusDot').className =
-          'absolute bottom-1.5 right-1.5 w-5 h-5 rounded-full bg-emerald-400 border-[3px] border-[#262B35]';
+        updateHeaderPillAndIdentity('REGISTER', null);
 
-        /* เช็กประวัติการลงทะเบียนทันที หากเคยลงทะเบียนแล้วจะเปิดหน้า QR เลยโดยไม่ส่ง Flex ซ้ำ */
         await checkExistingRegistrationByLineId();
       } catch (err) {
         console.error('LIFF Init Error:', err);
-        document.getElementById('profileName').textContent = 'ผู้ใช้งานผ่านเบราว์เซอร์';
-        document.getElementById('liffStatusDot').className =
-          'absolute bottom-1.5 right-1.5 w-5 h-5 rounded-full bg-amber-400 border-[3px] border-[#262B35]';
+        state.lineProfile.displayName = 'ผู้ใช้งานผ่านเบราว์เซอร์';
+        updateHeaderPillAndIdentity('REGISTER', null);
       } finally {
         hideLoading();
       }
     }
 
-    /* เช็กประวัติการลงทะเบียนจาก LINE User ID แบบ Read-Only (ไม่เขียนทับชีทและไม่ส่ง Flex ซ้ำ) */
     async function checkExistingRegistrationByLineId() {
       if (!state.lineProfile.userId) return;
-
       showLoading('กำลังตรวจสอบบัตรเข้างานของคุณ...');
       try {
         const res = await callGasApi({
@@ -712,9 +638,7 @@
           lineUserId: state.lineProfile.userId
         });
 
-        if (!res || !res.success || !res.found || !res.registration) {
-          return;
-        }
+        if (!res || !res.success || !res.found || !res.registration) return;
 
         const reg = res.registration;
         state.verifiedEmployee = {
@@ -727,9 +651,10 @@
           renderAttendPassUI(reg, true);
           switchSection('stepSuccessAttend');
         } else if (reg.regStatus === 'ไม่ร่วมงาน') {
+          updateHeaderPillAndIdentity('REGISTER', state.verifiedEmployee);
           document.getElementById('successDeclineName').textContent = reg.fullName;
           document.getElementById('successDeclineMeta').textContent =
-            reg.empId + ' • ทีม ' + reg.team;
+            'รหัสพนักงาน ' + reg.empId + ' • ทีม ' + reg.team;
           switchSection('stepSuccessDecline');
         }
       } catch (err) {
@@ -737,32 +662,26 @@
       }
     }
 
-    /* อัปเดตข้อมูลหน้าบัตร QR ตามสถานะจริง (ลงทะเบียนใหม่ / เปิดดูบัตรซ้ำ / เช็คอินแล้วล็อกสถานะ) */
     function renderAttendPassUI(empOrReg, isReturningView) {
       const qrUrl =
-        'https://quickchart.io/qr?size=300&margin=2&text=' +
+        'https://quickchart.io/qr?size=300&margin=1&text=' +
         encodeURIComponent(empOrReg.empId);
       document.getElementById('successQrImg').src = qrUrl;
-      document.getElementById('successAttendName').textContent = empOrReg.fullName;
-      document.getElementById('successAttendMeta').textContent =
-        empOrReg.empId + ' • ' + empOrReg.team;
 
-      const titleEl = document.getElementById('attendStatusTitle');
+      const isCheckedIn = empOrReg.checkInStatus === 'Checked-In';
+      updateHeaderPillAndIdentity(isCheckedIn ? 'CHECKEDIN' : 'ETICKET', empOrReg);
+
       const subEl = document.getElementById('attendStatusSub');
       const changeBtn = document.getElementById('btnChangeAttendStatus');
-      const isCheckedIn = empOrReg.checkInStatus === 'Checked-In';
 
-      if (titleEl && subEl) {
+      if (subEl) {
         if (isCheckedIn) {
-          titleEl.textContent = 'เช็คอินเข้างานแล้ว';
           subEl.textContent =
-            'เวลาเข้างาน: ' + (empOrReg.checkInTime || '-') + ' • มีสิทธิ์ลุ้นรางวัลแล้ว';
+            '✓ เช็คอินแล้ว (' + (empOrReg.checkInTime || '-') + ') • มีสิทธิ์ลุ้นรางวัลแล้ว';
         } else if (isReturningView) {
-          titleEl.textContent = 'บัตรเข้างานของคุณ';
-          subEl.textContent = 'คุณลงทะเบียนเรียบร้อยแล้ว แสดง QR นี้หน้างานได้ทันที';
+          subEl.textContent = '✓ บัตรเข้างานของคุณ • แสดง QR นี้หน้างานได้ทันที';
         } else {
-          titleEl.textContent = 'ลงทะเบียนสำเร็จ';
-          subEl.textContent = 'ส่งบัตรเข้าห้องแชท LINE เรียบร้อยแล้ว';
+          subEl.textContent = '✓ ลงทะเบียนสำเร็จ • ส่งบัตรเข้าห้องแชท LINE แล้ว';
         }
       }
 
@@ -771,25 +690,19 @@
       }
     }
 
-    /* ส่งคำสั่งไปยัง Google Apps Script แบบ text/plain;charset=utf-8 ป้องกัน CORS Preflight */
     async function callGasApi(payload) {
       const response = await fetch(CONFIG.GAS_WEB_APP_URL, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'text/plain;charset=utf-8'
-        },
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify(payload),
         redirect: 'follow'
       });
-
       if (!response.ok) {
         throw new Error('การเชื่อมต่อเซิร์ฟเวอร์ขัดข้อง (HTTP ' + response.status + ')');
       }
-
       return await response.json();
     }
 
-    /* เลือกสถานะจากหน้าแรก ("ร่วมงาน" หรือ "ไม่ร่วมงาน") */
     function selectIntent(intent) {
       state.selectedIntent = intent;
       resetVerifiedEmployeeUI();
@@ -797,28 +710,23 @@
       const badge = document.getElementById('selectedIntentBadge');
       if (intent === 'ร่วมงาน') {
         badge.textContent = 'เลือกสถานะ: ร่วมงาน';
-        badge.className =
-          'inline-block text-[11px] font-semibold px-3 py-1 rounded-full bg-[#E60012] text-white shadow-sm';
+        badge.className = 'inline-block text-[11px] font-bold px-3 py-1 rounded-full bg-[#E60012] text-white shadow-sm';
       } else {
         badge.textContent = 'เลือกสถานะ: ไม่ร่วมงาน';
-        badge.className =
-          'inline-block text-[11px] font-semibold px-3 py-1 rounded-full bg-white/15 border border-white/25 text-white';
+        badge.className = 'inline-block text-[11px] font-bold px-3 py-1 rounded-full bg-slate-700 text-white shadow-sm';
       }
 
       switchSection('stepVerifyEmp');
-      setTimeout(() => {
-        document.getElementById('empIdInput').focus();
-      }, 120);
+      setTimeout(() => document.getElementById('empIdInput').focus(), 120);
     }
 
-    /* ย้อนกลับไปหน้าแรก */
     function backToIntentSelection() {
       state.selectedIntent = '';
       resetVerifiedEmployeeUI();
+      updateHeaderPillAndIdentity('REGISTER', null);
       switchSection('stepSelectIntent');
     }
 
-    /* ซ่อนการ์ดผลลัพธ์เดิมเมื่อผู้ใช้พิมพ์แก้รหัสพนักงาน */
     function resetVerifiedEmployeeUI() {
       state.verifiedEmployee = null;
       document.getElementById('employeeResultBox').classList.add('hidden');
@@ -827,7 +735,6 @@
       document.getElementById('btnConfirmDecline').classList.add('hidden');
     }
 
-    /* ตรวจสอบรหัสพนักงานจากชีท Employees */
     async function checkEmployeeData() {
       const rawEmpId = document.getElementById('empIdInput').value.trim();
       if (!rawEmpId) {
@@ -843,11 +750,7 @@
 
       showLoading('กำลังตรวจสอบข้อมูลพนักงาน...');
       try {
-        const res = await callGasApi({
-          action: 'checkEmployee',
-          empId: rawEmpId
-        });
-
+        const res = await callGasApi({ action: 'checkEmployee', empId: rawEmpId });
         hideLoading();
 
         if (!res.success || !res.employee) {
@@ -863,6 +766,7 @@
         }
 
         state.verifiedEmployee = res.employee;
+        updateHeaderPillAndIdentity('REGISTER', res.employee);
         document.getElementById('verifiedEmpIdBadge').textContent = res.employee.empId;
         document.getElementById('empFullNameDisplay').textContent = res.employee.fullName;
         document.getElementById('empTeamDisplay').textContent = 'ทีม ' + res.employee.team;
@@ -872,7 +776,6 @@
           Boolean(res.existingRegistration) &&
           res.existingRegistration.checkInStatus === 'Checked-In';
 
-        /* ล็อกป้องกันการเปลี่ยนสถานะเป็นไม่ร่วมงาน หากสแกนเข้างานไปแล้ว */
         if (isAlreadyCheckedIn && state.selectedIntent === 'ไม่ร่วมงาน') {
           noticeEl.textContent =
             'รหัสนี้เช็คอินเข้างานเรียบร้อยแล้ว ไม่สามารถเปลี่ยนสถานะเป็น "ไม่ร่วมงาน" ได้';
@@ -914,24 +817,11 @@
       }
     }
 
-    /* ยืนยันการลงทะเบียนลงชีท Registrations และส่ง Flex Message เข้าแชท LINE */
     async function submitRegistration(regStatus) {
-      if (!state.verifiedEmployee || !state.verifiedEmployee.empId) {
-        Swal.fire({
-          icon: 'warning',
-          title: 'กรุณาตรวจสอบรหัสพนักงานก่อน',
-          confirmButtonColor: '#E60012'
-        });
-        return;
-      }
+      if (!state.verifiedEmployee || !state.verifiedEmployee.empId) return;
 
       const canUseClientSend = Boolean(state.isLiffReady && state.isInClient);
-
-      showLoading(
-        regStatus === 'ร่วมงาน'
-          ? 'กำลังออกบัตร 90s VIP QR Pass...'
-          : 'กำลังบันทึกสถานะ...'
-      );
+      showLoading(regStatus === 'ร่วมงาน' ? 'กำลังออกบัตร E-Ticket PASS...' : 'กำลังบันทึกสถานะ...');
 
       try {
         const res = await callGasApi({
@@ -944,7 +834,6 @@
           usePush: !canUseClientSend
         });
 
-        /* ส่งการ์ดเข้าห้องแชทผ่าน liff.sendMessages() เป็นหลัก หากติดสิทธิ์ให้ยิง Push API สำรองอัตโนมัติ */
         if (res.success && res.lineMessage && canUseClientSend) {
           try {
             await liff.sendMessages([res.lineMessage]);
@@ -976,10 +865,10 @@
           renderAttendPassUI(state.verifiedEmployee, false);
           switchSection('stepSuccessAttend');
         } else {
+          updateHeaderPillAndIdentity('REGISTER', state.verifiedEmployee);
           document.getElementById('successDeclineName').textContent = state.verifiedEmployee.fullName;
           document.getElementById('successDeclineMeta').textContent =
-            state.verifiedEmployee.empId + ' • ทีม ' + state.verifiedEmployee.team;
-
+            'รหัสพนักงาน ' + state.verifiedEmployee.empId + ' • ทีม ' + state.verifiedEmployee.team;
           switchSection('stepSuccessDecline');
         }
       } catch (err) {
@@ -993,20 +882,17 @@
       }
     }
 
-    /* สลับเฉพาะส่วนเนื้อหาด้านล่างโดยตรึง Header ด้านบนไว้นิ่งสนิท */
     function switchSection(targetId) {
       const sections = ['stepSelectIntent', 'stepVerifyEmp', 'stepSuccessAttend', 'stepSuccessDecline'];
       sections.forEach((id) => {
-        const el = document.getElementById(id);
-        if (id === targetId) {
-          el.classList.remove('hidden');
-        } else {
-          el.classList.add('hidden');
-        }
+        document.getElementById(id).classList.toggle('hidden', id !== targetId);
       });
+
+      const isQrView = targetId === 'stepSuccessAttend';
+      document.getElementById('qrFooterActions').classList.toggle('hidden', !isQrView);
+      document.getElementById('homeFooterArea').classList.toggle('hidden', isQrView);
     }
 
-    /* ปิดหน้าต่าง LIFF กลับสู่ห้องแชท LINE */
     function closeLiffWindow() {
       if (state.isLiffReady && liff.isInClient()) {
         liff.closeWindow();
