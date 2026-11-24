@@ -51,7 +51,7 @@
 
   <style>
     /* ========================================================================
-       EXECUTIVE GALA แดง-ทอง 24K MASTER THEME
+       EXECUTIVE GALA แดง-ทอง 24K MASTER THEME (100% ORIGINAL THEME)
        ======================================================================== */
     body {
       font-family: 'Prompt', sans-serif;
@@ -472,12 +472,15 @@
     <!-- HIGH-VISIBILITY TOP SCOREBOARD (3 การ์ดขนาดใหญ่เต็มความกว้าง)       -->
     <!-- ================================================================== -->
     <section class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-      <!-- Card 1: เช็คอินเข้างานทั้งหมด -->
+      <!-- Card 1: เช็คอินเข้างานทั้งหมด (+ แจ้งยอดลงทะเบียนรวม) -->
       <div class="glass-stage rounded-2xl px-6 py-4 flex items-center justify-between">
         <div>
           <p class="text-xs md:text-sm font-semibold text-silver">เช็คอินเข้างานทั้งหมด</p>
           <p id="statTotalCheckedIn" class="text-3xl md:text-4xl font-extrabold text-white leading-none mt-1.5">
             0
+          </p>
+          <p id="statTotalRegisteredSub" class="text-[11px] text-champagne-light/85 font-medium mt-1">
+            ลงทะเบียนรวมทั้งหมด: 0 ท่าน
           </p>
         </div>
         <span class="text-xs font-bold px-3 py-1.5 rounded-xl bg-white/10 border border-white/15 text-silver uppercase tracking-wider">
@@ -485,25 +488,33 @@
         </span>
       </div>
 
-      <!-- Card 2: มีสิทธิ์ลุ้นรางวัลคงเหลือ (Pool) เน้นขอบทอง 24K -->
-      <div class="pool-highlight-card rounded-2xl px-6 py-4 flex items-center justify-between">
+      <!-- Card 2: มีสิทธิ์ลุ้นรางวัลคงเหลือ (Pool) เน้นขอบทอง 24K สลับตามชุดที่ 1 / 2 อัตโนมัติ -->
+      <div class="pool-highlight-card rounded-2xl px-6 py-4 flex items-center justify-between gap-2">
         <div>
-          <p class="text-xs md:text-sm font-bold text-champagne-light">มีสิทธิ์ลุ้นรางวัลคงเหลือ (Pool)</p>
+          <p id="statPoolTitleLabel" class="text-xs md:text-sm font-bold text-champagne-light">
+            มีสิทธิ์ลุ้นรางวัลคงเหลือ (Pool)
+          </p>
           <p id="statEligiblePool" class="text-3xl md:text-4xl font-extrabold text-champagne-light drop-shadow-[0_0_16px_rgba(245,215,127,0.45)] leading-none mt-1.5">
             0
           </p>
+          <p id="statPoolRuleSub" class="text-[11px] text-silver font-medium mt-1">
+            เฉพาะผู้เช็คอินหน้างาน (หักผู้ได้รางวัลแล้ว)
+          </p>
         </div>
-        <span class="gold-pill text-xs font-extrabold px-3 py-1.5 rounded-xl uppercase tracking-wider">
-          Eligible Pool
+        <span id="statPoolModePill" class="gold-pill text-xs font-extrabold px-3 py-1.5 rounded-xl uppercase tracking-wider shrink-0">
+          ชุดที่ 1 • เช็คอิน
         </span>
       </div>
 
-      <!-- Card 3: ได้รับรางวัลไปแล้ว -->
+      <!-- Card 3: ได้รับรางวัลไปแล้ว (ตัดสิทธิ์ข้ามทุกกองสุ่มทันที) -->
       <div class="glass-stage rounded-2xl px-6 py-4 flex items-center justify-between">
         <div>
           <p class="text-xs md:text-sm font-semibold text-silver">ได้รับรางวัลไปแล้ว</p>
           <p id="statWinnersCount" class="text-3xl md:text-4xl font-extrabold text-emerald-400 leading-none mt-1.5">
             0
+          </p>
+          <p class="text-[11px] text-silver/85 font-medium mt-1">
+            จำกัดสิทธิ์ 1 ท่าน ต่อ 1 รางวัลตลอดงาน
           </p>
         </div>
         <span class="text-xs font-bold px-3 py-1.5 rounded-xl bg-emerald-500/15 border border-emerald-400/30 text-emerald-300 uppercase tracking-wider">
@@ -529,7 +540,7 @@
           <div class="relative z-10 flex flex-wrap items-center justify-between gap-3 border-b border-champagne/25 pb-4">
             <div>
               <span id="stageStatusLabel" class="text-xs font-bold uppercase tracking-[0.22em] text-champagne-light">
-                READY FOR LUCKY DRAW
+                READY FOR LUCKY DRAW • ชุดที่ 1 (เฉพาะผู้เช็คอินหน้างาน)
               </span>
               <h2 id="stageActivePrizeHeader" class="text-xl md:text-3xl font-extrabold text-white mt-1">
                 พร้อมสุ่มผู้โชคดี
@@ -637,8 +648,8 @@
       <!-- RIGHT COLUMN (4 COLS): 24K GOLD PRIZE PEDESTAL & DRAW CONTROLS   -->
       <!-- ================================================================ -->
       <aside class="lg:col-span-4 flex flex-col">
-        <div class="glass-stage rounded-3xl p-5 md:p-6 space-y-5 flex-1 flex flex-col justify-between">
-          <div class="space-y-4">
+        <div class="glass-stage rounded-3xl p-5 md:p-6 space-y-4 flex-1 flex flex-col justify-between">
+          <div class="space-y-3.5">
             <div class="flex items-center justify-between border-b border-champagne/25 pb-3">
               <h2 class="text-sm font-bold uppercase tracking-wider text-champagne-light">
                 1. เลือกรายการของรางวัล
@@ -677,7 +688,7 @@
             </div>
 
             <!-- กรอบแท่นโชว์ภาพของรางวัล 16:9 ขอบทอง 24K -->
-            <div class="bg-velvet-950/90 border-2 border-champagne rounded-2xl p-3 space-y-3 shadow-2xl">
+            <div class="bg-velvet-950/90 border-2 border-champagne rounded-2xl p-3 space-y-2.5 shadow-2xl">
               <div class="relative aspect-video w-full rounded-xl overflow-hidden bg-velvet-900 flex items-center justify-center">
                 <img
                   id="prizePreviewImg"
@@ -690,7 +701,7 @@
                   <span id="prizeQtyOverlayText" class="text-xs font-bold text-champagne-light">0 / 0 รางวัล</span>
                 </div>
               </div>
-              <div class="text-center px-2 pb-1">
+              <div class="text-center px-2 pb-0.5">
                 <p id="prizeGroupLabel" class="text-[11px] font-semibold uppercase tracking-widest text-silver">
                   PRIZE CATEGORY
                 </p>
@@ -701,57 +712,91 @@
             </div>
           </div>
 
-          <!-- 2. รูปแบบการกดสุ่มในรอบนี้ -->
-          <div class="pt-4 border-t border-champagne/25 space-y-3">
-            <label class="block text-xs font-bold uppercase tracking-wider text-champagne-light">
-              2. รูปแบบการกดสุ่มในรอบนี้
-            </label>
-
-            <div class="grid grid-cols-2 gap-2.5">
-              <button
-                type="button"
-                id="modeSingleBtn"
-                onclick="setDrawMode('SINGLE')"
-                class="py-2.5 px-3 rounded-xl text-xs font-bold border transition"
-              >
-                สุ่มทีละ 1 รางวัล
-              </button>
-              <button
-                type="button"
-                id="modeBatchBtn"
-                onclick="setDrawMode('BATCH')"
-                class="py-2.5 px-3 rounded-xl text-xs font-bold border transition"
-              >
-                สุ่มพร้อมกันหลายรางวัล
-              </button>
-            </div>
-
-            <!-- กล่องระบุจำนวนรางวัลเมื่อเลือกโหมดสุ่มพร้อมกันหลายรางวัล -->
-            <div id="batchCountBox" class="hidden bg-velvet-950/85 border border-champagne/40 rounded-xl p-3 space-y-2">
-              <div class="flex items-center justify-between gap-2">
-                <label for="batchCountInput" class="text-xs text-silver font-medium">
-                  จำนวนรางวัลที่ต้องการสุ่มพร้อมกัน:
+          <!-- 2. เงื่อนไขกองผู้มีสิทธิ์ลุ้นรางวัล (Hybrid Auto + Manual Switch) & 3. รูปแบบการกดสุ่ม -->
+          <div class="pt-3.5 border-t border-champagne/25 space-y-3.5">
+            <!-- เงื่อนไขกองผู้มีสิทธิ์ (Hybrid Pool Mode) -->
+            <div class="space-y-2">
+              <div class="flex items-center justify-between">
+                <label class="block text-xs font-bold uppercase tracking-wider text-champagne-light">
+                  2. เงื่อนไขกองผู้มีสิทธิ์ (Pool)
                 </label>
-                <input
-                  type="number"
-                  id="batchCountInput"
-                  min="1"
-                  max="50"
-                  value="2"
-                  oninput="clampBatchInput()"
-                  onchange="clampBatchInput()"
-                  class="w-20 bg-velvet-900 border border-champagne rounded-lg px-2.5 py-1.5 text-center text-sm font-bold text-champagne-light focus:outline-none"
-                />
+                <span id="poolAutoSyncTag" class="text-[10px] font-semibold text-silver">
+                  ซิงก์ตามรางวัลอัตโนมัติ
+                </span>
               </div>
-              <div class="flex items-center justify-between text-[11px]">
-                <span class="text-silver">สุ่มสูงสุดไม่เกินของคงเหลือและคนใน Pool</span>
+
+              <div class="grid grid-cols-2 gap-2">
                 <button
                   type="button"
-                  onclick="fillMaxRemainingBatch()"
-                  class="text-champagne-light underline hover:text-white font-semibold"
+                  id="poolCheckedInBtn"
+                  onclick="setPoolMode('CHECKED_IN', true)"
+                  class="py-2 px-2.5 rounded-xl text-xs font-extrabold border transition text-center"
                 >
-                  สุ่มครบจำนวนคงเหลือ
+                  ชุดที่ 1: เฉพาะเช็คอิน
                 </button>
+                <button
+                  type="button"
+                  id="poolAllRegBtn"
+                  onclick="setPoolMode('ALL_REGISTERED', true)"
+                  class="py-2 px-2.5 rounded-xl text-xs font-bold border transition text-center"
+                >
+                  ชุดที่ 2: ลงทะเบียนทั้งหมด
+                </button>
+              </div>
+            </div>
+
+            <!-- รูปแบบการกดสุ่มในรอบนี้ -->
+            <div class="pt-3 border-t border-champagne/15 space-y-2.5">
+              <label class="block text-xs font-bold uppercase tracking-wider text-champagne-light">
+                3. รูปแบบการกดสุ่มในรอบนี้
+              </label>
+
+              <div class="grid grid-cols-2 gap-2.5">
+                <button
+                  type="button"
+                  id="modeSingleBtn"
+                  onclick="setDrawMode('SINGLE')"
+                  class="py-2.5 px-3 rounded-xl text-xs font-bold border transition"
+                >
+                  สุ่มทีละ 1 รางวัล
+                </button>
+                <button
+                  type="button"
+                  id="modeBatchBtn"
+                  onclick="setDrawMode('BATCH')"
+                  class="py-2.5 px-3 rounded-xl text-xs font-bold border transition"
+                >
+                  สุ่มพร้อมกันหลายรางวัล
+                </button>
+              </div>
+
+              <!-- กล่องระบุจำนวนรางวัลเมื่อเลือกโหมดสุ่มพร้อมกันหลายรางวัล -->
+              <div id="batchCountBox" class="hidden bg-velvet-950/85 border border-champagne/40 rounded-xl p-3 space-y-2">
+                <div class="flex items-center justify-between gap-2">
+                  <label for="batchCountInput" class="text-xs text-silver font-medium">
+                    จำนวนรางวัลที่ต้องการสุ่มพร้อมกัน:
+                  </label>
+                  <input
+                    type="number"
+                    id="batchCountInput"
+                    min="1"
+                    max="50"
+                    value="2"
+                    oninput="clampBatchInput()"
+                    onchange="clampBatchInput()"
+                    class="w-20 bg-velvet-900 border border-champagne rounded-lg px-2.5 py-1.5 text-center text-sm font-bold text-champagne-light focus:outline-none"
+                  />
+                </div>
+                <div class="flex items-center justify-between text-[11px]">
+                  <span class="text-silver">สุ่มสูงสุดไม่เกินของคงเหลือและคนใน Pool</span>
+                  <button
+                    type="button"
+                    onclick="fillMaxRemainingBatch()"
+                    class="text-champagne-light underline hover:text-white font-semibold"
+                  >
+                    สุ่มครบจำนวนคงเหลือ
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -789,6 +834,9 @@
       <div class="inline-flex flex-wrap items-center justify-center gap-2">
         <span id="focusPrizeGroupPill" class="gold-pill text-[11px] md:text-xs font-extrabold px-3.5 py-0.5 rounded-full uppercase tracking-wider">
           GRAND PRIZE
+        </span>
+        <span id="focusPoolModeBadge" class="px-3 py-0.5 rounded-full bg-velvet-900/90 border border-champagne text-[11px] md:text-xs font-bold text-champagne-light">
+          ชุดที่ 1 • เฉพาะผู้เช็คอิน
         </span>
         <span id="focusDrawTargetBadge" class="px-3 py-0.5 rounded-full bg-truered/90 border border-champagne-light/60 text-[11px] md:text-xs font-bold text-white">
           สุ่มผู้โชคดี 1 รางวัล
@@ -913,6 +961,16 @@
             <p id="slotTeam" class="text-xl md:text-3xl font-semibold text-silver">
               ทีม: -
             </p>
+
+            <!-- ป้ายแจ้งสถานะการเข้างานของผู้โชคดีสำหรับพิธีกรบนเวที -->
+            <div class="pt-2">
+              <span
+                id="slotAttendanceBadge"
+                class="inline-block text-xs md:text-sm font-bold px-4 py-1.5 rounded-full border"
+              >
+                ✓ เช็คอินอยู่ในงาน
+              </span>
+            </div>
           </div>
         </div>
 
@@ -977,7 +1035,10 @@
      * Application State
      */
     const stageState = {
-      eligiblePool: [], // รายชื่อผู้มีสิทธิ์จาก Backend (ร่วมงาน + Checked-In + ยังไม่เคยได้รางวัล)
+      eligiblePool: [], // ชุดที่ 1: ร่วมงาน + Checked-In + ยังไม่เคยได้รางวัลใดๆ
+      allRegisteredPool: [], // ชุดที่ 2: ลงทะเบียนทั้งหมด (ร่วมงาน + ไม่ร่วมงาน) + ยังไม่เคยได้รางวัลใดๆ
+      activePoolMode: 'CHECKED_IN', // 'CHECKED_IN' | 'ALL_REGISTERED'
+      lastAutoSyncedPrizeId: '',
       skippedEmpIds: new Set(), // พักชื่อคนที่ขานชื่อแล้วไม่อยู่ในงานชั่วคราวไม่ให้เด้งซ้ำทันที
       prizes: [],
       prizeGroups: [],
@@ -990,6 +1051,7 @@
       drawnCandidates: [], // ผู้โชคดีที่เพิ่งสุ่มขึ้นมา รอกดยืนยัน [ได้รับรางวัล]
       stats: {
         totalCheckedIn: 0,
+        totalAllRegistered: 0,
         totalWinners: 0
       },
       soundEnabled: true,
@@ -1006,6 +1068,7 @@
         document.getElementById('linkWinnersBoard').href = CONFIG.WINNERS_PAGE_URL;
       }
 
+      setPoolMode('CHECKED_IN', false);
       setDrawMode('SINGLE');
 
       // รองรับปุ่มลัด Spacebar สำหรับกดเริ่มหมุนสุ่มจากหน้าตั้งค่าหลัก
@@ -1157,7 +1220,7 @@
 
     async function loadLuckyDrawData(showToastAfter = false) {
       if (stageState.isSpinning) return;
-      showStageLoading('กำลังซิงก์รายชื่อผู้เช็คอินและสต็อกของรางวัลล่าสุด...');
+      showStageLoading('กำลังซิงก์รายชื่อผู้มีสิทธิ์และสต็อกของรางวัลล่าสุด...');
 
       try {
         const res = await callGasApi({ action: 'getLuckyDrawData' });
@@ -1168,10 +1231,18 @@
         }
 
         stageState.eligiblePool = Array.isArray(res.eligiblePool) ? res.eligiblePool : [];
+        stageState.allRegisteredPool = Array.isArray(res.allRegisteredPool)
+          ? res.allRegisteredPool
+          : stageState.eligiblePool.slice();
         stageState.prizes = Array.isArray(res.prizes) ? res.prizes : [];
         stageState.prizeGroups = Array.isArray(res.prizeGroups) ? res.prizeGroups : [];
         stageState.stats = {
           totalCheckedIn: Number((res.stats && res.stats.totalCheckedIn) || 0),
+          totalAllRegistered: Number(
+            (res.stats && res.stats.totalAllRegistered) !== undefined
+              ? res.stats.totalAllRegistered
+              : stageState.allRegisteredPool.length + Number((res.stats && res.stats.totalWinners) || 0)
+          ),
           totalWinners: Number((res.stats && res.stats.totalWinners) || 0)
         };
 
@@ -1183,7 +1254,7 @@
             toast: true,
             position: 'top-end',
             icon: 'success',
-            title: 'ซิงก์ข้อมูลล่าสุดเรียบร้อย (Pool: ' + getActivePool().length + ' คน)',
+            title: 'ซิงก์ข้อมูลล่าสุดเรียบร้อย (Pool รอบนี้: ' + getActivePool().length + ' คน)',
             showConfirmButton: false,
             timer: 2000
           });
@@ -1200,10 +1271,14 @@
     }
 
     /**
-     * คืนค่ารายชื่อผู้มีสิทธิ์สุ่มจริงในขณะนั้น (หักคนที่สละสิทธิ์ชั่วคราวออก)
+     * คืนค่ารายชื่อผู้มีสิทธิ์สุ่มจริงตามโหมด Pool ปัจจุบัน (หักคนที่สละสิทธิ์ชั่วคราวออก)
      */
     function getActivePool() {
-      return stageState.eligiblePool.filter(
+      const sourcePool =
+        stageState.activePoolMode === 'ALL_REGISTERED'
+          ? stageState.allRegisteredPool
+          : stageState.eligiblePool;
+      return sourcePool.filter(
         (person) => !stageState.skippedEmpIds.has(normalizeId(person.empId))
       );
     }
@@ -1214,7 +1289,7 @@
 
     /**
      * ========================================================================
-     * 3. PRIZE DROPDOWNS & DRAW MODE CONTROLS
+     * 3. PRIZE DROPDOWNS, HYBRID POOL MODE & DRAW MODE CONTROLS
      * ========================================================================
      */
     function populatePrizeSelectors() {
@@ -1257,6 +1332,7 @@
       const prevPrizeId = stageState.selectedPrizeId;
       itemSelect.innerHTML = filtered
         .map((p) => {
+          const poolPrefix = p.poolType === 'ALL_REGISTERED' ? '[ชุดที่ 2 • ทั้งหมด] ' : '';
           const statusSuffix =
             p.remainingQty > 0
               ? ' (คงเหลือ ' + p.remainingQty + '/' + p.totalQty + ')'
@@ -1265,7 +1341,7 @@
             '<option value="' +
             escapeHtml(p.prizeId) +
             '">' +
-            escapeHtml(p.prizeName + statusSuffix) +
+            escapeHtml(poolPrefix + p.prizeName + statusSuffix) +
             '</option>'
           );
         })
@@ -1281,6 +1357,7 @@
       }
 
       itemSelect.value = stageState.selectedPrizeId;
+      syncPoolModeWithPrizeIfNeeded();
       updatePrizeShowcaseUI();
     }
 
@@ -1290,7 +1367,49 @@
         return;
       }
       stageState.selectedPrizeId = document.getElementById('prizeItemSelect').value;
+      syncPoolModeWithPrizeIfNeeded(true);
       updatePrizeShowcaseUI();
+    }
+
+    /**
+     * สลับโหมด Pool อัตโนมัติตามคอลัมน์ G ของรางวัลที่เลือก (Hybrid Auto-Sync)
+     */
+    function syncPoolModeWithPrizeIfNeeded(forceSync = false) {
+      const prize = getSelectedPrize();
+      if (!prize) return;
+
+      if (forceSync || stageState.lastAutoSyncedPrizeId !== prize.prizeId) {
+        stageState.lastAutoSyncedPrizeId = prize.prizeId;
+        const targetMode = prize.poolType === 'ALL_REGISTERED' ? 'ALL_REGISTERED' : 'CHECKED_IN';
+        setPoolMode(targetMode, false);
+      }
+    }
+
+    /**
+     * ตั้งค่าโหมดกองผู้มีสิทธิ์ลุ้นรางวัล (กดสลับเองหน้างานได้ และอัปเดตตัวเลข Pool ทันที)
+     */
+    function setPoolMode(mode, isManualOverride = false) {
+      if (stageState.isSpinning || stageState.drawnCandidates.length > 0) return;
+      stageState.activePoolMode = mode === 'ALL_REGISTERED' ? 'ALL_REGISTERED' : 'CHECKED_IN';
+
+      const checkedInBtn = document.getElementById('poolCheckedInBtn');
+      const allRegBtn = document.getElementById('poolAllRegBtn');
+      const syncTag = document.getElementById('poolAutoSyncTag');
+
+      if (stageState.activePoolMode === 'CHECKED_IN') {
+        checkedInBtn.className = 'py-2 px-2.5 rounded-xl text-xs font-extrabold border gold-pill border-white shadow text-center';
+        allRegBtn.className = 'py-2 px-2.5 rounded-xl text-xs font-bold border border-champagne/35 bg-velvet-950/75 text-silver hover:text-white text-center';
+      } else {
+        allRegBtn.className = 'py-2 px-2.5 rounded-xl text-xs font-extrabold border gold-pill border-white shadow text-center';
+        checkedInBtn.className = 'py-2 px-2.5 rounded-xl text-xs font-bold border border-champagne/35 bg-velvet-950/75 text-silver hover:text-white text-center';
+      }
+
+      if (syncTag) {
+        syncTag.textContent = isManualOverride ? 'ปรับโหมดด้วยมือบนเวที' : 'ซิงก์ตามรางวัลอัตโนมัติ';
+      }
+
+      clampBatchInput();
+      refreshAllCountersUI();
     }
 
     function updatePrizeShowcaseUI() {
@@ -1322,7 +1441,7 @@
       stageHeaderEl.textContent = prize.prizeName + ' (' + remText + ')';
 
       clampBatchInput();
-      updateSpinButtonState();
+      refreshAllCountersUI();
     }
 
     function setDrawMode(mode) {
@@ -1370,15 +1489,37 @@
 
     function refreshAllCountersUI() {
       const activePoolCount = getActivePool().length;
+      const isAllRegMode = stageState.activePoolMode === 'ALL_REGISTERED';
+
       document.getElementById('statTotalCheckedIn').textContent =
         stageState.stats.totalCheckedIn.toLocaleString();
+      document.getElementById('statTotalRegisteredSub').textContent =
+        'ลงทะเบียนรวมทั้งหมด: ' + stageState.stats.totalAllRegistered.toLocaleString() + ' ท่าน';
+
       document.getElementById('statEligiblePool').textContent =
         activePoolCount.toLocaleString();
       document.getElementById('statWinnersCount').textContent =
         stageState.stats.totalWinners.toLocaleString();
 
-      document.getElementById('idlePoolSubText').textContent =
-        'ผู้มีสิทธิ์ลุ้นรางวัลในกล่องของขวัญขณะนี้ ' + activePoolCount.toLocaleString() + ' ท่าน (Checked-In แล้ว)';
+      document.getElementById('statPoolTitleLabel').textContent = isAllRegMode
+        ? 'มีสิทธิ์ลุ้นรางวัลคงเหลือ (Pool ลงทะเบียนทั้งหมด)'
+        : 'มีสิทธิ์ลุ้นรางวัลคงเหลือ (Pool เช็คอินหน้างาน)';
+
+      document.getElementById('statPoolRuleSub').textContent = isAllRegMode
+        ? 'รวมผู้แจ้งร่วมงาน + ไม่ร่วมงาน (หักผู้ได้รางวัลแล้ว)'
+        : 'เฉพาะผู้สแกน Checked-In หน้างาน (หักผู้ได้รางวัลแล้ว)';
+
+      document.getElementById('statPoolModePill').textContent = isAllRegMode
+        ? 'ชุดที่ 2 • ทั้งหมด'
+        : 'ชุดที่ 1 • เช็คอิน';
+
+      document.getElementById('stageStatusLabel').textContent = isAllRegMode
+        ? 'READY FOR LUCKY DRAW • ชุดที่ 2 (ผู้ลงทะเบียนร่วมงาน + ไม่ร่วมงาน)'
+        : 'READY FOR LUCKY DRAW • ชุดที่ 1 (เฉพาะผู้เช็คอินหน้างาน)';
+
+      document.getElementById('idlePoolSubText').textContent = isAllRegMode
+        ? 'ผู้มีสิทธิ์ในกล่องรอบนี้ ' + activePoolCount.toLocaleString() + ' ท่าน (ผู้ลงทะเบียนร่วมงาน + ไม่ร่วมงาน ที่ยังไม่ได้รางวัล)'
+        : 'ผู้มีสิทธิ์ในกล่องรอบนี้ ' + activePoolCount.toLocaleString() + ' ท่าน (เฉพาะผู้สแกน Checked-In หน้างานที่ยังไม่ได้รางวัล)';
 
       const skippedBtn = document.getElementById('btnRestoreSkipped');
       if (stageState.skippedEmpIds.size > 0) {
@@ -1404,7 +1545,7 @@
         if (prize && prize.remainingQty <= 0) {
           spinBtn.textContent = 'แจกรางวัลรายการนี้ครบจำนวนแล้ว';
         } else if (activePool.length === 0) {
-          spinBtn.textContent = 'ไม่มีรายชื่อผู้มีสิทธิ์คงเหลือใน Pool';
+          spinBtn.textContent = 'ไม่มีรายชื่อผู้มีสิทธิ์คงเหลือใน Pool นี้';
         } else {
           spinBtn.textContent = 'กรุณาเลือกรายการของรางวัล';
         }
@@ -1425,6 +1566,28 @@
     }
 
     /**
+     * สร้างข้อมูลป้ายบอกสถานะผู้โชคดีสำหรับพิธีกรบนเวที (คงโทนสี Gala แดง-ทอง-มรกต 100%)
+     */
+    function getCandidateAttendanceTagInfo(person) {
+      if (person && person.checkInStatus === 'Checked-In') {
+        return {
+          text: '✓ เช็คอินอยู่ในงาน',
+          className: 'bg-emerald-500/20 border-emerald-400/50 text-emerald-300'
+        };
+      }
+      if (person && person.regStatus === 'ไม่ร่วมงาน') {
+        return {
+          text: 'แจ้งสถานะ: ไม่ร่วมงาน (ยืนยันส่งสิทธิ์ทาง LINE)',
+          className: 'bg-amber-950/90 border-champagne text-champagne-light'
+        };
+      }
+      return {
+        text: 'ลงทะเบียนร่วมงาน • ยังไม่สแกนเช็คอินหน้างาน',
+        className: 'bg-amber-950/80 border-champagne/60 text-champagne-light'
+      };
+    }
+
+    /**
      * ========================================================================
      * 4. FULL-SCREEN FOCUS SPIN STAGE & BOUNCING GIFT BOX PHYSICS
      * ========================================================================
@@ -1433,6 +1596,10 @@
       stageState.isFocusStageOpen = true;
       document.getElementById('focusPrizeGroupPill').textContent = prize.prizeGroup || 'LUCKY DRAW';
       document.getElementById('focusPrizeTitle').textContent = prize.prizeName;
+      document.getElementById('focusPoolModeBadge').textContent =
+        stageState.activePoolMode === 'ALL_REGISTERED'
+          ? 'ชุดที่ 2 • ผู้ลงทะเบียนทั้งหมด (ร่วมงาน+ไม่ร่วมงาน)'
+          : 'ชุดที่ 1 • เฉพาะผู้เช็คอินหน้างาน';
       document.getElementById('focusDrawTargetBadge').textContent =
         targetDrawCount === 1
           ? 'สุ่มผู้โชคดี 1 รางวัล'
@@ -1614,8 +1781,11 @@
       if (activePool.length === 0) {
         Swal.fire({
           icon: 'warning',
-          title: 'ไม่มีผู้มีสิทธิ์เหลืออยู่ในกองสุ่ม',
-          text: 'ตรวจสอบว่ามีพนักงานสแกน Checked-In เข้างานแล้ว หรือคืนสิทธิ์ผู้สละสิทธิ์ชั่วคราว',
+          title: 'ไม่มีผู้มีสิทธิ์เหลืออยู่ในกองสุ่มนี้',
+          text:
+            stageState.activePoolMode === 'ALL_REGISTERED'
+              ? 'ตรวจสอบว่ามีพนักงานลงทะเบียนเข้ามาแล้ว หรือคืนสิทธิ์ผู้สละสิทธิ์ชั่วคราว'
+              : 'ตรวจสอบว่ามีพนักงานสแกน Checked-In เข้างานแล้ว หรือคืนสิทธิ์ผู้สละสิทธิ์ชั่วคราว',
           confirmButtonColor: '#E60012'
         });
         return;
@@ -1744,6 +1914,8 @@
 
       if (winners.length === 1) {
         const w = winners[0];
+        const attTag = getCandidateAttendanceTagInfo(w);
+
         multiBox.classList.add('hidden');
         singleBox.classList.remove('hidden', 'winner-pop-enter');
         void singleBox.offsetWidth;
@@ -1753,6 +1925,11 @@
         document.getElementById('slotEmpId').textContent = w.empId;
         document.getElementById('slotFullName').textContent = w.fullName;
         document.getElementById('slotTeam').textContent = 'ทีม: ' + w.team;
+
+        const attBadgeEl = document.getElementById('slotAttendanceBadge');
+        attBadgeEl.textContent = attTag.text;
+        attBadgeEl.className =
+          'inline-block text-xs md:text-sm font-bold px-4 py-1.5 rounded-full border ' + attTag.className;
       } else {
         singleBox.classList.add('hidden');
         multiBox.classList.remove('hidden');
@@ -1760,6 +1937,7 @@
         multiBox.innerHTML = winners
           .map((w, idx) => {
             const delayMs = idx * 55;
+            const attTag = getCandidateAttendanceTagInfo(w);
             return (
               '<div style="animation-delay:' +
               delayMs +
@@ -1772,7 +1950,7 @@
               '</span>' +
               '<button type="button" onclick="redrawSingleSlotInBatch(' +
               idx +
-              ')" class="text-xs px-3 py-1 rounded-lg bg-velvet-950/90 border border-champagne/40 text-champagne-light hover:border-white hover:text-white transition" title="สุ่มเปลี่ยนเฉพาะคนนี้กรณีไม่อยู่ในงาน">↻ สุ่มเปลี่ยนคนนี้</button>' +
+              ')" class="text-xs px-3 py-1 rounded-lg bg-velvet-950/90 border border-champagne/40 text-champagne-light hover:border-white hover:text-white transition" title="สุ่มเปลี่ยนเฉพาะคนนี้">↻ สุ่มเปลี่ยนคนนี้</button>' +
               '</div>' +
               '<div>' +
               '<p class="text-xl font-extrabold text-white leading-snug">' +
@@ -1781,6 +1959,11 @@
               '<p class="text-xs font-semibold text-champagne-light mt-1">ทีม: ' +
               escapeHtml(w.team) +
               '</p>' +
+              '<span class="inline-block mt-2 text-[11px] font-bold px-2.5 py-0.5 rounded-full border ' +
+              attTag.className +
+              '">' +
+              escapeHtml(attTag.text) +
+              '</span>' +
               '</div>' +
               '</div>'
             );
@@ -1797,7 +1980,7 @@
     }
 
     /**
-     * สุ่มเปลี่ยนเฉพาะรายบุคคลในโหมดสุ่มหลายคน (กรณีมีบางคนไม่อยู่ในห้องจัดงาน)
+     * สุ่มเปลี่ยนเฉพาะรายบุคคลในโหมดสุ่มหลายคน (กรณีมีบางคนสละสิทธิ์)
      */
     function redrawSingleSlotInBatch(slotIndex) {
       const forfeitedPerson = stageState.drawnCandidates[slotIndex];
@@ -1837,7 +2020,7 @@
     }
 
     /**
-     * กดปุ่ม [สุ่มใหม่ / สละสิทธิ์]: พักชื่อคนที่ไม่อยู่ในงานไว้ แล้วเขย่ากล่องสุ่มใหม่ทันทีในหน้า Focus Stage
+     * กดปุ่ม [สุ่มใหม่ / สละสิทธิ์]: พักชื่อคนที่สละสิทธิ์ไว้ แล้วเขย่ากล่องสุ่มใหม่ทันทีในหน้า Focus Stage
      */
     async function forfeitAndRedrawAll() {
       if (stageState.drawnCandidates.length === 0) return;
@@ -1880,14 +2063,13 @@
       stageState.drawnCandidates = [];
       closeFocusSpinStage();
 
-      document.getElementById('stageStatusLabel').textContent = 'READY FOR LUCKY DRAW';
       refreshAllCountersUI();
       updatePrizeShowcaseUI();
     }
 
     /**
      * ========================================================================
-     * 5. กดปุ่ม [ได้รับรางวัล] -> บันทึก Winners + หักสต็อก + ส่ง LINE + กลับหน้าหลักอัตโนมัติ
+     * 5. กดปุ่ม [ได้รับรางวัล] -> บันทึก Winners + ตัดสิทธิ์ทั้ง 2 Pool ทันที + ส่ง LINE
      * ========================================================================
      */
     async function confirmCurrentWinners() {
@@ -1904,7 +2086,8 @@
         const res = await callGasApi({
           action: 'confirmWinners',
           prizeId: prize.prizeId,
-          empIds: winnerEmpIds
+          empIds: winnerEmpIds,
+          poolMode: stageState.activePoolMode
         });
 
         hideStageLoading();
@@ -1920,9 +2103,12 @@
           return;
         }
 
-        // 1. ตัดรายชื่อผู้โชคดีออกจาก Eligible Pool ทันที 100%
+        // 1. ตัดรายชื่อผู้โชคดีออกจากทั้ง Pool ชุดที่ 1 และ Pool ชุดที่ 2 ทันที 100% (1 คน ได้ 1 รางวัลเท่านั้น)
         const confirmedSet = new Set(winnerEmpIds.map((id) => normalizeId(id)));
         stageState.eligiblePool = stageState.eligiblePool.filter(
+          (p) => !confirmedSet.has(normalizeId(p.empId))
+        );
+        stageState.allRegisteredPool = stageState.allRegisteredPool.filter(
           (p) => !confirmedSet.has(normalizeId(p.empId))
         );
 
