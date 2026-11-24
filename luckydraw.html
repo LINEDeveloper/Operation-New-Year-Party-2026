@@ -132,29 +132,6 @@
       transform: translateY(-1px);
     }
 
-    /* ปุ่มหลักสำหรับกดเริ่มสุ่มเปิดกล่องของขวัญ */
-    .btn-true-stage {
-      background: linear-gradient(135deg, #E60012 0%, #8A000B 100%);
-      border: 1.5px solid #F5D77F;
-      box-shadow:
-        0 12px 38px rgba(230, 0, 18, 0.50),
-        0 0 24px rgba(212, 175, 55, 0.22),
-        inset 0 1px 0 rgba(255, 255, 255, 0.28);
-      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .btn-true-stage:hover:not(:disabled) {
-      transform: translateY(-2px) scale(1.01);
-      box-shadow:
-        0 18px 46px rgba(230, 0, 18, 0.68),
-        0 0 32px rgba(245, 215, 127, 0.38);
-      filter: brightness(1.06);
-    }
-    .btn-true-stage:disabled {
-      opacity: 0.45;
-      cursor: not-allowed;
-      box-shadow: none;
-    }
-
     /* ปุ่มยืนยันได้รับรางวัล ทองคำ 24K */
     .btn-gold-confirm {
       background: linear-gradient(135deg, #D4AF37 0%, #FFF2B2 50%, #D4AF37 100%);
@@ -193,6 +170,70 @@
       outline: none;
       border-color: #F5D77F;
       box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.20);
+    }
+
+    /* ========================================================================
+       IDLE GIFT BOX TRIGGER + SUBTLE GOLD PULSE RINGS (วงแหวนคลื่นทองจางๆ)
+       ======================================================================== */
+    @keyframes floatGiftIdle {
+      0%, 100% { transform: translateY(0px); }
+      50%      { transform: translateY(-8px); }
+    }
+    .gift-idle-float {
+      animation: floatGiftIdle 3.4s ease-in-out infinite;
+    }
+
+    /* วงแหวนประคองสีทองบางจางรอบกล่องของขวัญหน้าแรก */
+    .idle-gold-static-ring {
+      position: absolute;
+      inset: -6px;
+      border-radius: 9999px;
+      border: 1px solid rgba(245, 215, 127, 0.16);
+      pointer-events: none;
+      transition: border-color 0.35s ease, transform 0.35s ease;
+    }
+
+    #idleGiftBoxTrigger:hover:not(:disabled) .idle-gold-static-ring {
+      border-color: rgba(245, 215, 127, 0.36);
+      transform: scale(1.04);
+    }
+
+    /* คลื่นวงแหวนทองจางๆ แผ่ขยายช้าๆ อย่างนุ่มนวล */
+    .idle-gold-wave-ring {
+      position: absolute;
+      inset: 4px;
+      border-radius: 9999px;
+      border: 1px solid rgba(245, 215, 127, 0.34);
+      pointer-events: none;
+      opacity: 0;
+      will-change: transform, opacity;
+      animation: idleSubtleWave 3.8s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+    }
+
+    @keyframes idleSubtleWave {
+      0% {
+        transform: scale(0.92);
+        opacity: 0;
+      }
+      22% {
+        opacity: 0.34;
+      }
+      100% {
+        transform: scale(1.42);
+        opacity: 0;
+      }
+    }
+
+    /* สถานะล็อกกล่องอัตโนมัติเมื่อของรางวัลหมดหรือไม่มีคนใน Pool */
+    #idleGiftBoxTrigger:disabled {
+      cursor: not-allowed;
+      opacity: 0.42;
+      filter: saturate(0.45);
+      animation: none;
+    }
+    #idleGiftBoxTrigger:disabled .idle-gold-wave-ring,
+    #idleGiftBoxTrigger:disabled .idle-gold-static-ring {
+      display: none;
     }
 
     /* ========================================================================
@@ -255,7 +296,7 @@
       to   { opacity: 1;    transform: translateX(-50%) scaleX(1.06); }
     }
 
-    /* วงกลมคลื่นสัญญาณสีทอง (Solid Concentric Signal Waves - ไร้เส้นประ 100%) */
+    /* วงกลมคลื่นสัญญาณสีทองขณะสุ่ม (Solid Concentric Signal Waves - ไร้เส้นประ 100%) */
     .signal-wave-static-inner {
       position: absolute;
       inset: -14px;
@@ -327,15 +368,6 @@
       18%  { opacity: 0.85; }
       78%  { opacity: 0.45; }
       100% { transform: translateY(-320px) scale(1.05); opacity: 0; }
-    }
-
-    /* กล่องของขวัญลอยตัวนุ่มนวลในหน้าเตรียมพร้อม */
-    @keyframes floatGiftIdle {
-      0%, 100% { transform: translateY(0px); }
-      50%      { transform: translateY(-8px); }
-    }
-    .gift-idle-float {
-      animation: floatGiftIdle 3.2s ease-in-out infinite;
     }
 
     /* แอนิเมชันเขย่ากล่องของขวัญด้านล่างเสาสปอตไลท์ */
@@ -633,12 +665,12 @@
     </section>
 
     <!-- ================================================================== -->
-    <!-- GALA 24K TWO-COLUMN WORKSPACE (ซ้ายเวที 8 Cols | ขวาแท่นรางวัล 4 Cols) -->
+    <!-- GALA 24K TWO-COLUMN WORKSPACE (ซ้ายเวทีคลิกกล่อง 8 Cols | ขวา 4 Cols) -->
     <!-- ================================================================== -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch flex-1">
 
       <!-- ================================================================ -->
-      <!-- LEFT COLUMN (8 COLS): GRAND GIFT BOX STAGE                       -->
+      <!-- LEFT COLUMN (8 COLS): CLEAN SINGLE-TRIGGER GIFT BOX STAGE        -->
       <!-- ================================================================ -->
       <section class="lg:col-span-8 flex flex-col">
         <div class="glass-stage rounded-3xl p-6 md:p-9 flex-1 flex flex-col justify-between relative overflow-hidden">
@@ -667,18 +699,25 @@
             </button>
           </div>
 
-          <!-- จุดศูนย์กลางเวที: กล่องของขวัญกำมะหยี่แดงผูกโบว์ทอง 24K -->
-          <div class="relative z-10 my-6 flex-1 flex flex-col items-center justify-center text-center py-4">
-            <div
+          <!-- จุดศูนย์กลางเวที: คลิกกล่องของขวัญจุดเดียว + วงแหวนคลื่นทองจางๆ + ข้อความกระชับ -->
+          <div class="relative z-10 my-auto flex-1 flex flex-col items-center justify-center text-center py-8">
+            <button
+              type="button"
+              id="idleGiftBoxTrigger"
               onclick="triggerGiftBoxClick()"
-              class="gift-idle-float cursor-pointer group relative flex items-center justify-center"
-              title="คลิกที่กล่องของขวัญเพื่อเริ่มสุ่มผู้โชคดี"
+              class="gift-idle-float group relative w-52 h-52 md:w-64 md:h-64 rounded-full flex items-center justify-center focus:outline-none transition-all duration-300"
+              aria-label="คลิกกล่องของขวัญเพื่อสุ่มผู้โชคดี"
             >
-              <!-- รัศมีแสงทอง 24K หลังกล่องของขวัญ -->
-              <div class="absolute -inset-8 rounded-full bg-gradient-to-tr from-truered/35 via-champagne/30 to-champagne-light/25 blur-2xl group-hover:scale-110 transition-transform duration-500"></div>
+              <!-- รัศมีออร่าสีทองนุ่มนวลหลังกล่องของขวัญ -->
+              <div class="absolute -inset-6 rounded-full bg-gradient-to-tr from-truered/30 via-champagne/28 to-champagne-light/20 blur-2xl group-hover:scale-110 group-hover:opacity-100 opacity-85 transition-all duration-500 pointer-events-none"></div>
+
+              <!-- วงแหวนคลื่นทองจางๆ แผ่รัศมีรอบกล่องของขวัญ (Subtle Gold Pulse Rings) -->
+              <div class="idle-gold-static-ring"></div>
+              <div class="idle-gold-wave-ring" style="animation-delay: 0s;"></div>
+              <div class="idle-gold-wave-ring" style="animation-delay: 1.9s;"></div>
 
               <!-- Sculptural 3D Red Velvet & 24K Gold Ribbon Gift Box SVG -->
-              <svg class="w-48 h-48 md:w-56 md:h-56 relative z-10 drop-shadow-[0_24px_38px_rgba(0,0,0,0.75)] group-hover:scale-105 transition-transform duration-300" viewBox="0 0 260 240" fill="none">
+              <svg class="w-48 h-48 md:w-60 md:h-60 relative z-10 drop-shadow-[0_26px_42px_rgba(0,0,0,0.78)] group-hover:scale-105 group-active:scale-95 transition-transform duration-300" viewBox="0 0 260 240" fill="none">
                 <defs>
                   <linearGradient id="galaVelvetBody" x1="45" y1="90" x2="215" y2="215" gradientUnits="userSpaceOnUse">
                     <stop offset="0%" stop-color="#E60012" />
@@ -721,33 +760,36 @@
                   <rect x="116" y="48" width="28" height="18" rx="7" fill="#FFF2B2" stroke="#D4AF37" stroke-width="1.5" />
                 </g>
               </svg>
-            </div>
+            </button>
 
-            <div class="mt-4 space-y-1.5 max-w-xl">
-              <p class="text-[11px] font-normal uppercase tracking-[0.26em] text-champagne-light/85">
-                24K GOLDEN SPOTLIGHT STAGE
-              </p>
-              <h3 class="text-2xl md:text-3xl font-semibold gold-text">
-                คลิกปุ่มด้านล่างเพื่อเปิดเวทีสปอตไลท์สุ่มผู้โชคดีเต็มจอ
-              </h3>
-              <p id="idlePoolSubText" class="text-sm font-light text-silver">
+            <!-- ข้อความกระชับใต้กล่อง (ไม่มีบรรทัดภาษาอังกฤษคั่นให้สับสน) -->
+            <div class="mt-6 space-y-2 max-w-xl">
+              <div class="flex flex-wrap items-center justify-center gap-2.5">
+                <h3 id="idleStageHeading" class="text-2xl md:text-3xl font-semibold gold-text tracking-tight">
+                  คลิกกล่องของขวัญเพื่อสุ่มผู้โชคดี
+                </h3>
+                <!-- ป้ายทองแจ้งเตือนอัตโนมัติเฉพาะเมื่อเลือกโหมดสุ่มพร้อมกันหลายรางวัล -->
+                <span
+                  id="idleBatchModePill"
+                  class="hidden gold-pill text-xs font-semibold px-3 py-0.5 rounded-full tracking-wide"
+                >
+                  พร้อมกัน 2 รางวัล
+                </span>
+              </div>
+
+              <p id="idlePoolSubText" class="text-sm font-light text-silver/90">
                 เฉพาะผู้ลงทะเบียนร่วมงานและสแกน Checked-In หน้างานแล้วเท่านั้น
               </p>
             </div>
           </div>
 
-          <!-- ปุ่มกดเริ่มสุ่มหลัก -->
-          <div class="relative z-10 pt-5 border-t border-champagne/20 flex flex-col items-center gap-2.5">
-            <button
-              type="button"
-              id="btnStartSpin"
-              onclick="startLuckyDrawSpin()"
-              class="btn-true-stage w-full max-w-xl py-4 md:py-5 px-8 rounded-2xl text-lg md:text-2xl font-semibold text-white tracking-wide"
+          <!-- ข้อความแนะนำคีย์ลัดแบบจางๆ ด้านล่างสุด (ไม่รบกวนสายตาบนจอใหญ่) -->
+          <div class="relative z-10 pt-2 flex justify-center">
+            <p
+              id="idleSpacebarHint"
+              class="text-[11px] font-light text-silver/40 hover:text-silver/70 transition-colors tracking-wide text-center select-none"
             >
-              กดสุ่มเปิดกล่องของขวัญ
-            </button>
-            <p class="text-xs font-light text-silver/85 text-center">
-              เคล็ดลับสำหรับทีมงานเวที: กดปุ่ม <kbd class="px-2 py-0.5 rounded bg-white/10 border border-champagne/35 text-champagne-light font-mono font-normal">Spacebar</kbd> เพื่อตัดเข้าสู่หน้าสุ่มเต็มจอได้ทันที
+              หรือกดปุ่ม <kbd class="px-1.5 py-0.5 mx-0.5 rounded bg-white/[0.04] border border-champagne/20 text-champagne-light/55 font-mono font-normal text-[10px]">Spacebar</kbd> เพื่อเริ่มสุ่มได้ทันที
             </p>
           </div>
         </div>
@@ -1307,6 +1349,9 @@
       MAP_URL: 'https://maps.app.goo.gl/85FVz4J4Ai2xE8h88',
       STAFF_PIN: '2026',
 
+      // ข้อความหัวข้อใต้กล่องของขวัญหน้าหลัก (แบบ B: กระชับ อ่านเข้าใจทันที)
+      IDLE_HEADLINE_TEXT: 'คลิกกล่องของขวัญเพื่อสุ่มผู้โชคดี',
+
       // ระยะเวลาส่องสปอตไลท์ค้นหาผู้โชคดีบนเวที (มิลลิวินาที)
       SPIN_DURATION_MS: 3200
     };
@@ -1372,7 +1417,7 @@
     });
 
     function triggerGiftBoxClick() {
-      if (!stageState.isSpinning && stageState.drawnCandidates.length === 0) {
+      if (!stageState.isSpinning && !stageState.isConfirming && stageState.drawnCandidates.length === 0) {
         startLuckyDrawSpin();
       }
     }
@@ -1794,7 +1839,6 @@
       const grpEl = document.getElementById('prizeGroupLabel');
       const titleEl = document.getElementById('prizeTitleLabel');
       const stageHeaderEl = document.getElementById('stageActivePrizeHeader');
-      const spinBtn = document.getElementById('btnStartSpin');
 
       if (!prize) {
         badgeEl.textContent = 'คงเหลือ 0 / 0';
@@ -1802,7 +1846,7 @@
         grpEl.textContent = '-';
         titleEl.textContent = 'ไม่พบรายการของรางวัล';
         stageHeaderEl.textContent = 'กรุณาเพิ่มข้อมูลของรางวัลในชีท Prizes';
-        spinBtn.disabled = true;
+        updateSpinButtonState();
         return;
       }
 
@@ -1913,37 +1957,50 @@
       updateSpinButtonState();
     }
 
+    /**
+     * อัปเดตสถานะกล่องของขวัญกลางเวที ข้อความใต้กล่อง ป้ายสุ่มหลายคน และข้อความ Spacebar จางๆ
+     */
     function updateSpinButtonState() {
       const prize = getSelectedPrize();
       const activePool = getActivePool();
-      const spinBtn = document.getElementById('btnStartSpin');
+      const giftTrigger = document.getElementById('idleGiftBoxTrigger');
+      const headingEl = document.getElementById('idleStageHeading');
+      const batchPillEl = document.getElementById('idleBatchModePill');
+      const spacebarHintEl = document.getElementById('idleSpacebarHint');
+
+      if (!giftTrigger || !headingEl) return;
 
       if (!prize || prize.remainingQty <= 0 || activePool.length === 0) {
-        spinBtn.disabled = true;
+        giftTrigger.disabled = true;
+        if (batchPillEl) batchPillEl.classList.add('hidden');
+        if (spacebarHintEl) spacebarHintEl.classList.add('opacity-0', 'pointer-events-none');
+
         if (prize && prize.remainingQty <= 0) {
-          spinBtn.textContent = 'แจกรางวัลรายการนี้ครบจำนวนแล้ว';
+          headingEl.textContent = 'แจกรางวัลรายการนี้ครบจำนวนแล้ว';
         } else if (activePool.length === 0) {
-          spinBtn.textContent = 'ไม่มีรายชื่อผู้มีสิทธิ์คงเหลือใน Pool นี้';
+          headingEl.textContent = 'ไม่มีรายชื่อผู้มีสิทธิ์คงเหลือใน Pool นี้';
         } else {
-          spinBtn.textContent = 'กรุณาเลือกรายการของรางวัล';
+          headingEl.textContent = 'กรุณาเลือกรายการของรางวัล';
         }
         return;
       }
 
-      spinBtn.disabled = false;
-      if (stageState.drawMode === 'SINGLE') {
-        spinBtn.innerHTML =
-          'กดสุ่มเปิดกล่องของขวัญ 1 รางวัล <span class="text-sm md:text-base font-light text-white/80 ml-1">• SPIN NOW</span>';
-      } else {
+      giftTrigger.disabled = false;
+      headingEl.textContent = CONFIG.IDLE_HEADLINE_TEXT;
+      if (spacebarHintEl) spacebarHintEl.classList.remove('opacity-0', 'pointer-events-none');
+
+      if (stageState.drawMode === 'BATCH') {
         const count = Math.min(
           parseInt(document.getElementById('batchCountInput').value || '1', 10),
           prize.remainingQty,
           activePool.length
         );
-        spinBtn.innerHTML =
-          'กดสุ่มเปิดกล่องพร้อมกัน ' +
-          count +
-          ' รางวัล <span class="text-sm md:text-base font-light text-white/80 ml-1">• SPIN NOW</span>';
+        if (batchPillEl) {
+          batchPillEl.textContent = 'พร้อมกัน ' + count + ' รางวัล';
+          batchPillEl.classList.remove('hidden');
+        }
+      } else if (batchPillEl) {
+        batchPillEl.classList.add('hidden');
       }
     }
 
