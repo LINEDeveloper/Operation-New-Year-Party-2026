@@ -196,55 +196,55 @@
     }
 
     /* ========================================================================
-       MINIMAL CENTER SPOTLIGHT (EXACT SIMULATOR MATCH: SIGNAL WAVE + TOP BAR)
+       MINIMAL CENTER SPOTLIGHT & 3D GALA GIFT BOX ANIMATIONS (STYLE 2)
        ======================================================================== */
     #focusSpinStage {
       background:
-        radial-gradient(circle at 50% 22%, rgba(212, 175, 55, 0.18) 0%, rgba(230, 0, 18, 0.16) 32%, rgba(20, 7, 10, 0.98) 68%),
+        radial-gradient(circle at 50% 24%, rgba(212, 175, 55, 0.20) 0%, rgba(230, 0, 18, 0.18) 32%, rgba(20, 7, 10, 0.98) 68%),
         linear-gradient(180deg, #1B070B 0%, #0E0406 100%);
     }
 
     .focus-arena-frame {
       background:
-        radial-gradient(circle at 50% 68%, rgba(230, 0, 18, 0.26) 0%, rgba(120, 8, 16, 0.16) 34%, rgba(18, 6, 9, 0.96) 72%);
-      border: 1px solid rgba(212, 175, 55, 0.45);
+        radial-gradient(circle at 50% 45%, rgba(212, 175, 55, 0.12) 0%, rgba(230, 0, 18, 0.14) 38%, rgba(18, 6, 9, 0.95) 75%);
+      border: 1.5px solid rgba(245, 215, 127, 0.48);
       box-shadow:
         0 28px 70px rgba(0, 0, 0, 0.82),
-        inset 0 0 55px rgba(212, 175, 55, 0.08);
+        inset 0 0 60px rgba(212, 175, 55, 0.10);
     }
 
-    /* เสาแสงทองคำส่องตรงจากปากกล่องผ่านรูปโปรไฟล์ขึ้นสู่แถบชื่อด้านบน */
+    /* เสาแสงทองคำ 24K แนวตั้งส่องจากปากกล่องขึ้นสู่รูปโปรไฟล์ตรงกลาง (Minimal Center Spotlight) */
     .center-spotlight-pillar {
       position: absolute;
-      top: 48px;
-      bottom: 88px;
+      top: 0;
+      bottom: 85px;
       left: 50%;
       transform: translateX(-50%);
-      width: 185px;
+      width: 240px;
       background: linear-gradient(
         0deg,
-        rgba(255, 242, 178, 0.42) 0%,
-        rgba(245, 215, 127, 0.22) 45%,
-        rgba(212, 175, 55, 0.08) 82%,
+        rgba(255, 242, 178, 0.50) 0%,
+        rgba(245, 215, 127, 0.24) 38%,
+        rgba(212, 175, 55, 0.10) 75%,
         rgba(212, 175, 55, 0) 100%
       );
-      filter: blur(14px);
+      filter: blur(18px);
       pointer-events: none;
-      animation: spotlightPillarBreathe 1.1s infinite alternate ease-in-out;
+      animation: spotlightPillarBreathe 0.9s infinite alternate ease-in-out;
     }
 
-    /* แสงออร่ากลมหลังรูปโปรไฟล์และเหนือปากกล่อง */
+    /* แกนแสงคมชัดกึ่งกลางเสาสปอตไลท์ */
     .center-spotlight-core {
       position: absolute;
-      top: 90px;
-      bottom: 92px;
+      top: 12%;
+      bottom: 95px;
       left: 50%;
       transform: translateX(-50%);
-      width: 110px;
+      width: 96px;
       background: linear-gradient(
         0deg,
-        rgba(255, 248, 214, 0.46) 0%,
-        rgba(245, 215, 127, 0.18) 55%,
+        rgba(255, 250, 220, 0.55) 0%,
+        rgba(245, 215, 127, 0.20) 55%,
         rgba(245, 215, 127, 0) 100%
       );
       filter: blur(10px);
@@ -252,96 +252,49 @@
     }
 
     @keyframes spotlightPillarBreathe {
-      from { opacity: 0.82; transform: translateX(-50%) scaleX(0.95); }
-      to   { opacity: 1;    transform: translateX(-50%) scaleX(1.05); }
+      from { opacity: 0.78; transform: translateX(-50%) scaleX(0.92); }
+      to   { opacity: 1;    transform: translateX(-50%) scaleX(1.08); }
     }
 
-    /* วงกลมเส้นทึบบางๆ ล้อมรอบเหมือนคลื่นสัญญาณแผ่ออกจากรูปโปรไฟล์ (ไม่มีเส้นปะ 100%) */
-    .signal-static-ring-inner {
-      position: absolute;
-      inset: -14px;
-      border-radius: 9999px;
-      border: 1px solid rgba(245, 215, 127, 0.26);
-      box-shadow: 0 0 28px rgba(212, 175, 55, 0.16);
-      pointer-events: none;
+    /* วงแหวนรัศมีทองคำ 24K หมุนช้าๆ รอบรูปโปรไฟล์ผู้มีสิทธิ์ตรงกลางลำแสง */
+    @keyframes haloSlowSpin {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+    .spotlight-halo-ring {
+      border: 1.5px dashed rgba(245, 215, 127, 0.55);
+      box-shadow: 0 0 40px rgba(212, 175, 55, 0.22), inset 0 0 24px rgba(245, 215, 127, 0.14);
+      animation: haloSlowSpin 14s linear infinite;
     }
 
-    .signal-static-ring-outer {
-      position: absolute;
-      inset: -30px;
-      border-radius: 9999px;
-      border: 1px solid rgba(245, 215, 127, 0.12);
-      pointer-events: none;
-    }
-
-    .signal-wave-ring {
-      position: absolute;
-      inset: 0;
-      border-radius: 9999px;
-      border: 1.25px solid rgba(245, 215, 127, 0.58);
-      box-shadow: 0 0 18px rgba(245, 215, 127, 0.18);
-      pointer-events: none;
-      opacity: 0;
-      will-change: transform, opacity;
-      animation: signalWaveRipple 2.4s cubic-bezier(0.22, 0.61, 0.36, 1) infinite;
-    }
-    .signal-wave-delay-1 {
-      animation-delay: 0s;
-    }
-    .signal-wave-delay-2 {
-      animation-delay: 0.8s;
-    }
-    .signal-wave-delay-3 {
-      animation-delay: 1.6s;
-    }
-
-    @keyframes signalWaveRipple {
-      0% {
-        transform: scale(1);
-        opacity: 0.72;
-      }
-      70% {
-        opacity: 0.24;
-      }
-      100% {
-        transform: scale(1.78);
-        opacity: 0;
-      }
-    }
-
-    /* กรอบทองทึบเรียบหรูรอบรูปโปรไฟล์ผู้มีสิทธิ์ตรงกลาง */
     .spotlight-medallion-frame {
       background: radial-gradient(circle at 35% 25%, #3A121B 0%, #170609 100%);
-      border: 2.5px solid #F5D77F;
+      border: 2.5px solid #FFF2B2;
       box-shadow:
-        0 0 36px rgba(245, 215, 127, 0.40),
-        0 14px 32px rgba(0, 0, 0, 0.75);
+        0 0 42px rgba(245, 215, 127, 0.52),
+        0 14px 34px rgba(0, 0, 0, 0.75),
+        inset 0 0 18px rgba(212, 175, 55, 0.35);
     }
 
-    /* แถบชื่อมินิมอลด้านบนสุด (ตามแบบจำลอง 100%) */
-    .minimal-top-name-bar {
-      background: linear-gradient(180deg, rgba(24, 9, 12, 0.92) 0%, rgba(15, 5, 8, 0.95) 100%);
-      border: 1px solid rgba(212, 175, 55, 0.52);
-      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.68), inset 0 1px 0 rgba(255, 242, 178, 0.14);
-    }
-
-    /* ละอองแสงทองกลมเล็กๆ ลอยขึ้นจากปากกล่องผ่านลำแสง */
+    /* ละอองแสงทองขนาดจิ๋วลอยขึ้นในลำแสงอย่างนุ่มนวล (ใช้ GPU ล้วน ไม่กินสเปกเครื่อง) */
     .spotlight-mote {
       position: absolute;
-      bottom: 105px;
+      bottom: 110px;
+      width: 5px;
+      height: 5px;
       border-radius: 9999px;
-      background: #F5D77F;
-      box-shadow: 0 0 8px rgba(255, 242, 178, 0.85);
+      background: #FFF2B2;
+      box-shadow: 0 0 10px #F5D77F;
       pointer-events: none;
       opacity: 0;
-      animation: moteFloatUp 2.4s linear infinite;
+      animation: moteFloatUp 2.2s linear infinite;
     }
 
     @keyframes moteFloatUp {
-      0%   { transform: translateY(0) scale(0.7); opacity: 0; }
-      18%  { opacity: 0.78; }
-      82%  { opacity: 0.42; }
-      100% { transform: translateY(-320px) scale(1.05); opacity: 0; }
+      0%   { transform: translateY(0) scale(0.6); opacity: 0; }
+      20%  { opacity: 0.85; }
+      80%  { opacity: 0.55; }
+      100% { transform: translateY(-300px) scale(1.15); opacity: 0; }
     }
 
     /* กล่องของขวัญลอยตัวนุ่มนวลในหน้าเตรียมพร้อม */
@@ -353,25 +306,26 @@
       animation: floatGiftIdle 3.2s ease-in-out infinite;
     }
 
-    /* แอนิเมชันเขย่ากล่องของขวัญและฝากล่องลอยปล่อยแสงทอง */
+    /* แอนิเมชันเขย่ากล่องของขวัญอย่างเร้าใจ */
     @keyframes vigorousGiftShake {
-      0%   { transform: translate(0, 0) rotate(0deg); }
-      25%  { transform: translate(-4px, 1px) rotate(-2deg); }
-      50%  { transform: translate(4px, -3px) rotate(2deg); }
-      75%  { transform: translate(-3px, 1px) rotate(-1.5deg); }
-      100% { transform: translate(0, 0) rotate(0deg); }
+      0%   { transform: translate(0, 0) rotate(0deg) scale(1, 1); }
+      18%  { transform: translate(-6px, 2px) rotate(-3.5deg) scale(1.03, 0.97); }
+      36%  { transform: translate(6px, -5px) rotate(3.5deg) scale(0.97, 1.04); }
+      54%  { transform: translate(-7px, 2px) rotate(-4deg) scale(1.04, 0.96); }
+      72%  { transform: translate(5px, -5px) rotate(3deg) scale(0.98, 1.03); }
+      100% { transform: translate(0, 0) rotate(0deg) scale(1, 1); }
     }
     @keyframes rattleGiftLid {
-      0%, 100% { transform: translateY(-10px) rotate(-1.5deg); }
-      50%      { transform: translateY(-20px) rotate(2.5deg); }
+      0%, 100% { transform: translateY(-6px) rotate(-2.5deg); }
+      50%      { transform: translateY(-24px) rotate(4deg); }
     }
 
     .gift-box-shaking {
-      animation: vigorousGiftShake 0.42s infinite ease-in-out;
+      animation: vigorousGiftShake 0.34s infinite ease-in-out;
     }
     .gift-box-shaking .svg-gift-lid {
       transform-origin: 120px 84px;
-      animation: rattleGiftLid 0.34s infinite ease-in-out;
+      animation: rattleGiftLid 0.26s infinite ease-in-out;
     }
 
     /* จังหวะฝากล่องระเบิดแสงทองก่อนโชว์การ์ดผู้โชคดี */
@@ -977,76 +931,50 @@
     <div class="relative z-20 flex-1 max-w-6xl w-full mx-auto my-3 flex flex-col items-center justify-center min-h-0 overflow-y-auto no-scrollbar">
 
       <!-- ================================================================ -->
-      <!-- PHASE A: STYLE 2 — MINIMAL CENTER SPOTLIGHT (เหมือนตัวอย่าง 100%) -->
-      <!-- แถบชื่อมินิมอลด้านบน + วงคลื่นสัญญาณเส้นทึบกลมล้อมรอบรูปโปรไฟล์      -->
+      <!-- PHASE A: STYLE 2 — MINIMAL CENTER SPOTLIGHT (ลำแสงทอง + รูปโปรไฟล์) -->
       <!-- ================================================================ -->
       <div
         id="phaseShakingArena"
-        class="focus-arena-frame relative w-full h-full min-h-[410px] max-h-[640px] rounded-[28px] overflow-hidden flex flex-col items-center justify-between py-5 px-5 md:py-7 md:px-10"
+        class="focus-arena-frame relative w-full h-full min-h-[390px] max-h-[640px] rounded-[32px] overflow-hidden flex flex-col items-center justify-between py-5 px-6 md:py-7 md:px-10"
       >
-        <!-- เสาแสงสีทองส่องตรงจากปากกล่องผ่านรูปโปรไฟล์ขึ้นสู่แถบชื่อด้านบน -->
+        <!-- เสาแสงสีทอง 24K พุ่งตรงจากปากกล่องของขวัญขึ้นสู่เหรียญสปอตไลท์ตรงกลาง -->
         <div class="center-spotlight-pillar"></div>
         <div class="center-spotlight-core"></div>
 
-        <!-- ละอองแสงกลมสีทองลอยขึ้นรอบเสาแสงและรูปโปรไฟล์ -->
+        <!-- ละอองแสงทองขนาดเล็กเรียบหรู ลอยขึ้นเบาๆ ภายในลำแสงสปอตไลท์ -->
         <div class="absolute inset-0 pointer-events-none overflow-hidden z-10">
-          <span class="spotlight-mote" style="left: 45%; width: 5px; height: 5px; animation-delay: 0s; animation-duration: 2.2s;"></span>
-          <span class="spotlight-mote" style="left: 48%; width: 4px; height: 4px; animation-delay: 0.45s; animation-duration: 2.5s;"></span>
-          <span class="spotlight-mote" style="left: 52%; width: 6px; height: 6px; animation-delay: 0.85s; animation-duration: 2.0s;"></span>
-          <span class="spotlight-mote" style="left: 55%; width: 4px; height: 4px; animation-delay: 0.25s; animation-duration: 2.4s;"></span>
-          <span class="spotlight-mote" style="left: 43%; width: 3.5px; height: 3.5px; animation-delay: 1.2s; animation-duration: 2.6s;"></span>
-          <span class="spotlight-mote" style="left: 57%; width: 5px; height: 5px; animation-delay: 1.55s; animation-duration: 2.1s;"></span>
-          <span class="spotlight-mote" style="left: 50%; width: 4.5px; height: 4.5px; animation-delay: 1.0s; animation-duration: 2.3s;"></span>
-          <span class="spotlight-mote" style="left: 39%; width: 3.5px; height: 3.5px; animation-delay: 1.8s; animation-duration: 2.8s;"></span>
-          <span class="spotlight-mote" style="left: 60%; width: 4px; height: 4px; animation-delay: 0.65s; animation-duration: 2.7s;"></span>
+          <span class="spotlight-mote" style="left: 44%; animation-delay: 0s; animation-duration: 2.1s;"></span>
+          <span class="spotlight-mote" style="left: 48%; animation-delay: 0.4s; animation-duration: 2.5s;"></span>
+          <span class="spotlight-mote" style="left: 52%; animation-delay: 0.8s; animation-duration: 1.9s;"></span>
+          <span class="spotlight-mote" style="left: 56%; animation-delay: 0.2s; animation-duration: 2.3s;"></span>
+          <span class="spotlight-mote" style="left: 46%; animation-delay: 1.2s; animation-duration: 2.4s;"></span>
+          <span class="spotlight-mote" style="left: 54%; animation-delay: 1.5s; animation-duration: 2.0s;"></span>
+          <span class="spotlight-mote" style="left: 50%; animation-delay: 1.0s; animation-duration: 2.2s;"></span>
+          <span class="spotlight-mote" style="left: 42%; animation-delay: 1.7s; animation-duration: 2.6s;"></span>
+          <span class="spotlight-mote" style="left: 58%; animation-delay: 0.6s; animation-duration: 2.5s;"></span>
         </div>
 
-        <!-- 1. แถบชื่อมินิมอลด้านบนสุด (SEARCHING LUCKY WINNER... + รหัสคู่ชื่อในบรรทัดเดียวกัน) -->
-        <div
-          id="rollingTickerCard"
-          class="minimal-top-name-bar relative z-20 w-full max-w-[490px] rounded-2xl px-6 py-3 md:px-8 md:py-3.5 text-center transition-transform duration-75"
-        >
-          <p class="text-[9px] md:text-[10px] font-normal uppercase tracking-[0.28em] text-champagne-light/80">
-            SEARCHING LUCKY WINNER...
-          </p>
-          <div class="flex items-baseline justify-center gap-2.5 mt-1 min-w-0">
-            <span
-              id="rollingEmpId"
-              class="text-lg sm:text-xl md:text-2xl font-mono font-medium text-champagne-light tracking-wider shrink-0"
-            >
-              • • • • • •
-            </span>
-            <h3
-              id="rollingFullName"
-              class="text-xl sm:text-2xl md:text-[26px] font-bold text-white leading-snug tracking-tight truncate"
-            >
-              กำลังค้นหาผู้โชคดี...
-            </h3>
-          </div>
-          <p id="rollingTeam" class="text-xs md:text-[13px] font-light text-silver/80 mt-0.5 truncate">
-            ทีม: -
-          </p>
-        </div>
+        <!-- ป้ายหัวข้อเล็กด้านบนสุดของลำแสง -->
+        <p class="relative z-20 text-[10px] md:text-[11px] font-light uppercase tracking-[0.28em] text-champagne-light/85">
+          24K CENTER SPOTLIGHT • กำลังค้นหาผู้โชคดี
+        </p>
 
-        <!-- 2. จุดโฟกัสกึ่งกลางลำแสง: รูปโปรไฟล์ล้อมรอบด้วยวงกลมคลื่นสัญญาณสีทองเส้นทึบ -->
+        <!-- จุดโฟกัสกลางเสาแสง: วงแหวนทองคำ 24K + รูปโปรไฟล์ผู้มีสิทธิ์ + แถบชื่อมินิมอล -->
         <div
           id="spotlightCenterPiece"
-          class="relative z-20 flex items-center justify-center my-auto transition-transform duration-75"
+          class="relative z-20 flex flex-col items-center justify-center my-auto transition-transform duration-75"
         >
-          <div class="relative w-28 h-28 sm:w-32 sm:h-32 md:w-[138px] md:h-[138px] flex items-center justify-center">
-            <!-- แสงออร่าสีทองนุ่มนวลหลังรูปโปรไฟล์ -->
-            <div class="absolute -inset-5 rounded-full bg-champagne/20 blur-xl pointer-events-none"></div>
+          <!-- วงแหวนสปอตไลท์ทองคำคู่พร้อมรูปโปรไฟล์ -->
+          <div class="relative w-32 h-32 sm:w-36 sm:h-36 md:w-44 md:h-44 flex items-center justify-center">
+            <!-- รัศมีแสงทองฟุ้งหลังเหรียญโปรไฟล์ -->
+            <div class="absolute -inset-3 rounded-full bg-champagne/25 blur-xl pointer-events-none"></div>
 
-            <!-- วงกลมเส้นทึบคงที่และวงคลื่นสัญญาณแผ่ขยายต่อเนื่อง 3 ระลอก (ไม่มีเส้นปะ) -->
-            <div class="signal-static-ring-inner"></div>
-            <div class="signal-static-ring-outer"></div>
-            <div class="signal-wave-ring signal-wave-delay-1"></div>
-            <div class="signal-wave-ring signal-wave-delay-2"></div>
-            <div class="signal-wave-ring signal-wave-delay-3"></div>
+            <!-- วงแหวนประดับทองคำหมุนช้าๆ รอบนอก -->
+            <div class="spotlight-halo-ring absolute inset-0 rounded-full pointer-events-none"></div>
 
-            <!-- กรอบวงกลมทอง 24K แสดงรูปโปรไฟล์ LINE (พร้อมเหรียญตรา VIP สำรองอัตโนมัติ) -->
-            <div class="spotlight-medallion-frame relative w-full h-full rounded-full overflow-hidden flex items-center justify-center">
-              <!-- เหรียญตราสำรอง 24K Gold VIP Monogram (กรณีพนักงานไม่มีรูปโปรไฟล์) -->
+            <!-- เหรียญกรอบทองคำ 24K แสดงรูปโปรไฟล์ LINE (พร้อมเหรียญตรา VIP สำรองอัตโนมัติ) -->
+            <div class="spotlight-medallion-frame relative w-24 h-24 sm:w-28 sm:h-28 md:w-36 md:h-36 rounded-full overflow-hidden flex items-center justify-center">
+              <!-- เหรียญตราสำรอง 24K Gold VIP Monogram (แสดงทันทีหากพนักงานไม่มีรูปโปรไฟล์) -->
               <div
                 id="spotlightAvatarFallback"
                 class="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-b from-[#351018] to-[#140508] text-champagne-light select-none"
@@ -1068,20 +996,36 @@
               />
             </div>
           </div>
+
+          <!-- ป้ายชื่อมินิมอลโปร่งแสงใต้เหรียญโปรไฟล์ -->
+          <div
+            id="rollingTickerCard"
+            class="mt-3 bg-velvet-950/85 backdrop-blur-md border border-champagne/45 rounded-2xl px-6 py-2.5 md:px-9 md:py-3 text-center min-w-[260px] sm:min-w-[340px] max-w-xl shadow-[0_14px_34px_rgba(0,0,0,0.75)]"
+          >
+            <p id="rollingEmpId" class="text-xs md:text-sm font-mono font-medium text-champagne-light tracking-[0.20em]">
+              • • • • • •
+            </p>
+            <h3 id="rollingFullName" class="text-xl sm:text-2xl md:text-3xl font-semibold text-white leading-snug mt-0.5 truncate max-w-md mx-auto">
+              กำลังค้นหาผู้โชคดี...
+            </h3>
+            <p id="rollingTeam" class="text-xs md:text-sm font-light text-silver/85 mt-0.5 truncate max-w-md mx-auto">
+              ทีมปฏิบัติการ
+            </p>
+          </div>
         </div>
 
-        <!-- 3. กล่องของขวัญกำมะหยี่แดงด้านล่างสุด ฝากล่องลอยปล่อยลำแสงทอง -->
+        <!-- กล่องของขวัญกำมะหยี่แดงฐานด้านล่าง ส่งลำแสงสีทองขึ้นสู่ด้านบน -->
         <div class="relative z-20 flex flex-col items-center justify-end">
           <div id="focusGiftBoxWrapper" class="gift-box-shaking relative w-32 h-32 sm:w-36 sm:h-36 md:w-40 md:h-40">
             <svg class="w-full h-full drop-shadow-[0_20px_35px_rgba(0,0,0,0.85)]" viewBox="0 0 240 220" fill="none">
               <defs>
                 <linearGradient id="spinVelvetBody" x1="40" y1="88" x2="200" y2="205" gradientUnits="userSpaceOnUse">
-                  <stop offset="0%" stop-color="#E60012" />
+                  <stop offset="0%" stop-color="#FF1F30" />
                   <stop offset="55%" stop-color="#9E000C" />
-                  <stop offset="100%" stop-color="#520006" />
+                  <stop offset="100%" stop-color="#4A0005" />
                 </linearGradient>
                 <linearGradient id="spinVelvetLid" x1="30" y1="55" x2="210" y2="92" gradientUnits="userSpaceOnUse">
-                  <stop offset="0%" stop-color="#FF2E3D" />
+                  <stop offset="0%" stop-color="#FF3B4A" />
                   <stop offset="55%" stop-color="#C20010" />
                   <stop offset="100%" stop-color="#680008" />
                 </linearGradient>
@@ -1091,27 +1035,27 @@
                   <stop offset="100%" stop-color="#B88A14" />
                 </linearGradient>
                 <radialGradient id="boxMouthGlow" cx="50%" cy="50%" r="50%">
-                  <stop offset="0%" stop-color="#FFFBEB" stop-opacity="0.95" />
-                  <stop offset="50%" stop-color="#F5D77F" stop-opacity="0.65" />
+                  <stop offset="0%" stop-color="#FFFBEB" stop-opacity="1" />
+                  <stop offset="55%" stop-color="#F5D77F" stop-opacity="0.72" />
                   <stop offset="100%" stop-color="#E60012" stop-opacity="0" />
                 </radialGradient>
               </defs>
 
-              <!-- แสงทองสว่างเรืองรองระหว่างปากกล่องกับฝากล่อง -->
-              <ellipse cx="120" cy="86" rx="92" ry="30" fill="url(#boxMouthGlow)" />
+              <!-- แสงทองสว่างเรืองรองปากกล่อง -->
+              <ellipse cx="120" cy="86" rx="92" ry="34" fill="url(#boxMouthGlow)" />
 
               <!-- ตัวกล่องกำมะหยี่แดง -->
-              <rect x="48" y="92" width="144" height="112" rx="14" fill="url(#spinVelvetBody)" stroke="#F5D77F" stroke-width="2" />
-              <rect x="106" y="92" width="28" height="112" fill="url(#spinGoldRibbon)" />
-              <rect x="48" y="138" width="144" height="22" fill="url(#spinGoldRibbon)" opacity="0.95" />
+              <rect x="44" y="88" width="152" height="114" rx="16" fill="url(#spinVelvetBody)" stroke="#F5D77F" stroke-width="2.2" />
+              <rect x="105" y="88" width="30" height="114" fill="url(#spinGoldRibbon)" />
+              <rect x="44" y="135" width="152" height="22" fill="url(#spinGoldRibbon)" opacity="0.95" />
 
-              <!-- ฝากล่องลอยแง้มปล่อยลำแสงสปอตไลท์ -->
+              <!-- ฝากล่องกระเพื่อมเปิดปล่อยเสาแสงสปอตไลท์ -->
               <g class="svg-gift-lid">
-                <path d="M120 56 C92 22, 62 34, 76 58 C88 63, 108 60, 120 56 Z" fill="url(#spinGoldRibbon)" stroke="#FFF2B2" stroke-width="1" />
-                <path d="M120 56 C148 22, 178 34, 164 58 C152 63, 132 60, 120 56 Z" fill="url(#spinGoldRibbon)" stroke="#FFF2B2" stroke-width="1" />
-                <rect x="38" y="56" width="164" height="32" rx="9" fill="url(#spinVelvetLid)" stroke="#FFF2B2" stroke-width="1.8" />
-                <rect x="105" y="56" width="30" height="32" fill="url(#spinGoldRibbon)" />
-                <rect x="109" y="46" width="22" height="14" rx="5" fill="#FFF2B2" />
+                <path d="M120 56 C90 18, 56 32, 72 58 C84 64, 108 60, 120 56 Z" fill="url(#spinGoldRibbon)" stroke="#FFF2B2" stroke-width="1" />
+                <path d="M120 56 C150 18, 184 32, 168 58 C156 64, 132 60, 120 56 Z" fill="url(#spinGoldRibbon)" stroke="#FFF2B2" stroke-width="1" />
+                <rect x="34" y="56" width="172" height="34" rx="10" fill="url(#spinVelvetLid)" stroke="#FFF2B2" stroke-width="2" />
+                <rect x="103" y="56" width="34" height="34" fill="url(#spinGoldRibbon)" />
+                <rect x="108" y="45" width="24" height="16" rx="6" fill="#FFF2B2" />
               </g>
             </svg>
           </div>
@@ -1181,7 +1125,7 @@
                 <span class="w-1.5 h-1.5 rotate-45 bg-champagne-light"></span>
               </div>
 
-              <!-- รูปโปรไฟล์ผู้โชคดีในกรอบวงแหวนทองคำ 24K -->
+              <!-- รูปโปรไฟล์ผู้โชคดีในกรอบวงแหวนทองคำ 24K (ต่อเนื่องจากลำแสงสปอตไลท์) -->
               <div class="relative w-20 h-20 md:w-24 md:h-24 rounded-full p-[2.5px] bg-gradient-to-tr from-[#D4AF37] via-[#FFF2B2] to-[#D4AF37] shadow-[0_0_28px_rgba(245,215,127,0.35)]">
                 <div class="relative w-full h-full rounded-full overflow-hidden bg-velvet-950 flex items-center justify-center">
                   <div
@@ -1202,7 +1146,7 @@
               </div>
 
               <div class="space-y-2 w-full">
-                <!-- รหัสพนักงาน -->
+                <!-- รหัสพนักงาน: font-medium โปร่งหรู -->
                 <p
                   id="slotEmpId"
                   class="text-2xl sm:text-3xl md:text-4xl font-mono font-medium text-champagne-light tracking-[0.16em]"
@@ -1210,7 +1154,7 @@
                   EMP001
                 </p>
 
-                <!-- ชื่อ-นามสกุลผู้โชคดี -->
+                <!-- ชื่อ-นามสกุลผู้โชคดี: จุดโฟกัสหลัก font-bold -->
                 <h3
                   id="slotFullName"
                   class="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-snug tracking-tight break-words"
@@ -1218,7 +1162,7 @@
                   ชื่อ-นามสกุลผู้โชคดี
                 </h3>
 
-                <!-- ชื่อทีม -->
+                <!-- ชื่อทีม: คำว่า "ทีม:" ใช้ font-light ส่วนชื่อทีมใช้ font-normal -->
                 <p id="slotTeam" class="text-base sm:text-lg md:text-2xl font-light text-silver/80 pt-0.5">
                   ทีม: <span class="font-normal text-silver">-</span>
                 </p>
@@ -1264,7 +1208,7 @@
         กำลังส่องสปอตไลท์ค้นหาผู้โชคดี กรุณารอสักครู่...
       </p>
 
-      <!-- ปุ่มตัดสินผลหลังเปิดกล่อง: [ได้รับรางวัล] vs [สุ่มใหม่ / สละสิทธิ์] -->
+      <!-- ปุ่มตัดสินผลหลังเปิดกล่อง: [ได้รับรางวัล] (ไอคอนเครื่องหมายถูกเส้นเรียบหรู) vs [สุ่มใหม่ / สละสิทธิ์] -->
       <div id="decisionActionGroup" class="hidden w-full flex flex-col sm:flex-row items-center justify-center gap-3.5">
         <button
           type="button"
@@ -1533,6 +1477,7 @@
         }
       }
 
+      // ทยอยโหลดทีละชุดย่อยเบื้องหลัง ไม่กระทบแบนด์วิดท์แม้มี 400+ รายชื่อ
       let idx = 0;
       function loadNextBatch() {
         const limit = Math.min(idx + 8, urlsToPreload.length);
@@ -1807,3 +1752,824 @@
       const titleEl = document.getElementById('prizeTitleLabel');
       const stageHeaderEl = document.getElementById('stageActivePrizeHeader');
       const spinBtn = document.getElementById('btnStartSpin');
+
+      if (!prize) {
+        badgeEl.textContent = 'คงเหลือ 0 / 0';
+        overlayQtyEl.textContent = '0 / 0 รางวัล';
+        grpEl.textContent = '-';
+        titleEl.textContent = 'ไม่พบรายการของรางวัล';
+        stageHeaderEl.textContent = 'กรุณาเพิ่มข้อมูลของรางวัลในชีท Prizes';
+        spinBtn.disabled = true;
+        return;
+      }
+
+      const remText = 'คงเหลือ ' + prize.remainingQty + ' / ' + prize.totalQty;
+      badgeEl.textContent = remText;
+      overlayQtyEl.textContent = prize.remainingQty + ' / ' + prize.totalQty + ' รางวัล';
+      imgEl.src = prize.prizeImageUrl || CONFIG.DEFAULT_PRIZE_IMAGE_URL;
+      grpEl.textContent = prize.prizeGroup;
+      titleEl.textContent = prize.prizeName;
+      stageHeaderEl.innerHTML =
+        escapeHtml(prize.prizeName) +
+        ' <span class="text-base md:text-xl font-light text-champagne-light/90">(' +
+        escapeHtml(remText) +
+        ')</span>';
+
+      clampBatchInput();
+      refreshAllCountersUI();
+    }
+
+    function setDrawMode(mode) {
+      if (stageState.isSpinning || stageState.drawnCandidates.length > 0) return;
+      stageState.drawMode = mode;
+
+      const singleBtn = document.getElementById('modeSingleBtn');
+      const batchBtn = document.getElementById('modeBatchBtn');
+      const batchBox = document.getElementById('batchCountBox');
+
+      if (mode === 'SINGLE') {
+        singleBtn.className = 'py-2.5 px-3 rounded-xl text-xs font-semibold border gold-pill border-white shadow';
+        batchBtn.className = 'py-2.5 px-3 rounded-xl text-xs font-normal border border-champagne/35 bg-velvet-950/75 text-silver hover:text-white';
+        batchBox.classList.add('hidden');
+      } else {
+        batchBtn.className = 'py-2.5 px-3 rounded-xl text-xs font-semibold border gold-pill border-white shadow';
+        singleBtn.className = 'py-2.5 px-3 rounded-xl text-xs font-normal border border-champagne/35 bg-velvet-950/75 text-silver hover:text-white';
+        batchBox.classList.remove('hidden');
+        clampBatchInput();
+      }
+      updateSpinButtonState();
+    }
+
+    function clampBatchInput() {
+      const input = document.getElementById('batchCountInput');
+      const prize = getSelectedPrize();
+      const maxByPrize = prize ? Math.max(1, prize.remainingQty) : 1;
+      const maxByPool = Math.max(1, getActivePool().length);
+      const maxAllowed = Math.min(maxByPrize, maxByPool);
+
+      let val = parseInt(input.value, 10);
+      if (isNaN(val) || val < 1) val = 1;
+      if (val > maxAllowed) val = maxAllowed;
+      input.value = val;
+      updateSpinButtonState();
+    }
+
+    function fillMaxRemainingBatch() {
+      const prize = getSelectedPrize();
+      if (!prize) return;
+      const maxAllowed = Math.max(1, Math.min(prize.remainingQty, getActivePool().length));
+      document.getElementById('batchCountInput').value = maxAllowed;
+      updateSpinButtonState();
+    }
+
+    function refreshAllCountersUI() {
+      const activePoolCount = getActivePool().length;
+      const isAllRegMode = stageState.activePoolMode === 'ALL_REGISTERED';
+
+      document.getElementById('statTotalCheckedIn').textContent =
+        stageState.stats.totalCheckedIn.toLocaleString();
+      document.getElementById('statTotalRegisteredSub').textContent =
+        'ลงทะเบียนรวมทั้งหมด: ' + stageState.stats.totalAllRegistered.toLocaleString() + ' ท่าน';
+
+      document.getElementById('statEligiblePool').textContent =
+        activePoolCount.toLocaleString();
+      document.getElementById('statWinnersCount').textContent =
+        stageState.stats.totalWinners.toLocaleString();
+
+      document.getElementById('statPoolTitleLabel').textContent = isAllRegMode
+        ? 'มีสิทธิ์ลุ้นรางวัลคงเหลือ (Pool ลงทะเบียนทั้งหมด)'
+        : 'มีสิทธิ์ลุ้นรางวัลคงเหลือ (Pool เช็คอินหน้างาน)';
+
+      document.getElementById('statPoolRuleSub').textContent = isAllRegMode
+        ? 'รวมผู้แจ้งร่วมงาน + ไม่ร่วมงาน (หักผู้ได้รางวัลแล้ว)'
+        : 'เฉพาะผู้สแกน Checked-In หน้างาน (หักผู้ได้รางวัลแล้ว)';
+
+      document.getElementById('statPoolModePill').textContent = isAllRegMode
+        ? 'ชุดที่ 2 • ทั้งหมด'
+        : 'ชุดที่ 1 • เช็คอิน';
+
+      document.getElementById('stageStatusLabel').textContent = isAllRegMode
+        ? 'READY FOR LUCKY DRAW • ชุดที่ 2 (ผู้ลงทะเบียนร่วมงาน + ไม่ร่วมงาน)'
+        : 'READY FOR LUCKY DRAW • ชุดที่ 1 (เฉพาะผู้เช็คอินหน้างาน)';
+
+      document.getElementById('idlePoolSubText').textContent = isAllRegMode
+        ? 'ผู้มีสิทธิ์ในกล่องรอบนี้ ' + activePoolCount.toLocaleString() + ' ท่าน (ผู้ลงทะเบียนร่วมงาน + ไม่ร่วมงาน ที่ยังไม่ได้รางวัล)'
+        : 'ผู้มีสิทธิ์ในกล่องรอบนี้ ' + activePoolCount.toLocaleString() + ' ท่าน (เฉพาะผู้สแกน Checked-In หน้างานที่ยังไม่ได้รางวัล)';
+
+      const skippedBtn = document.getElementById('btnRestoreSkipped');
+      if (stageState.skippedEmpIds.size > 0) {
+        skippedBtn.textContent =
+          'พักชื่อผู้สละสิทธิ์ชั่วคราว ' +
+          stageState.skippedEmpIds.size +
+          ' คน (คลิกเพื่อคืนสิทธิ์เข้า Pool)';
+        skippedBtn.classList.remove('hidden');
+      } else {
+        skippedBtn.classList.add('hidden');
+      }
+
+      updateSpinButtonState();
+    }
+
+    function updateSpinButtonState() {
+      const prize = getSelectedPrize();
+      const activePool = getActivePool();
+      const spinBtn = document.getElementById('btnStartSpin');
+
+      if (!prize || prize.remainingQty <= 0 || activePool.length === 0) {
+        spinBtn.disabled = true;
+        if (prize && prize.remainingQty <= 0) {
+          spinBtn.textContent = 'แจกรางวัลรายการนี้ครบจำนวนแล้ว';
+        } else if (activePool.length === 0) {
+          spinBtn.textContent = 'ไม่มีรายชื่อผู้มีสิทธิ์คงเหลือใน Pool นี้';
+        } else {
+          spinBtn.textContent = 'กรุณาเลือกรายการของรางวัล';
+        }
+        return;
+      }
+
+      spinBtn.disabled = false;
+      if (stageState.drawMode === 'SINGLE') {
+        spinBtn.innerHTML =
+          'กดสุ่มเปิดกล่องของขวัญ 1 รางวัล <span class="text-sm md:text-base font-light text-white/80 ml-1">• SPIN NOW</span>';
+      } else {
+        const count = Math.min(
+          parseInt(document.getElementById('batchCountInput').value || '1', 10),
+          prize.remainingQty,
+          activePool.length
+        );
+        spinBtn.innerHTML =
+          'กดสุ่มเปิดกล่องพร้อมกัน ' +
+          count +
+          ' รางวัล <span class="text-sm md:text-base font-light text-white/80 ml-1">• SPIN NOW</span>';
+      }
+    }
+
+    /**
+     * สร้างข้อมูลป้ายสถานะผู้โชคดีพร้อมไอคอน SVG เส้นเรียบคมสำหรับพิธีกรบนเวที
+     */
+    function getCandidateAttendanceTagInfo(person) {
+      const sleekCheckSvg =
+        '<svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+      const subtleDotHtml =
+        '<span class="w-1.5 h-1.5 rounded-full bg-champagne-light shrink-0"></span>';
+
+      if (person && person.checkInStatus === 'Checked-In') {
+        return {
+          iconHtml: sleekCheckSvg,
+          text: 'เช็คอินอยู่ในงาน',
+          className: 'bg-emerald-500/15 border-emerald-400/45 text-emerald-300'
+        };
+      }
+      if (person && person.regStatus === 'ไม่ร่วมงาน') {
+        return {
+          iconHtml: subtleDotHtml,
+          text: 'แจ้งสถานะ: ไม่ร่วมงาน (ยืนยันส่งสิทธิ์ทาง LINE)',
+          className: 'bg-amber-950/85 border-champagne/65 text-champagne-light'
+        };
+      }
+      return {
+        iconHtml: subtleDotHtml,
+        text: 'ลงทะเบียนร่วมงาน • ยังไม่สแกนเช็คอินหน้างาน',
+        className: 'bg-amber-950/75 border-champagne/55 text-champagne-light'
+      };
+    }
+
+    /**
+     * ========================================================================
+     * 4. FULL-SCREEN MINIMAL CENTER SPOTLIGHT SPIN & WINNER REVEAL
+     * ========================================================================
+     */
+    function openFocusSpinStage(prize, targetDrawCount) {
+      stageState.isFocusStageOpen = true;
+      document.getElementById('focusPrizeGroupPill').textContent = prize.prizeGroup || 'LUCKY DRAW';
+      document.getElementById('focusPrizeTitle').textContent = prize.prizeName;
+      document.getElementById('focusPoolModeBadge').textContent =
+        stageState.activePoolMode === 'ALL_REGISTERED'
+          ? 'ชุดที่ 2 • ผู้ลงทะเบียนทั้งหมด (ร่วมงาน+ไม่ร่วมงาน)'
+          : 'ชุดที่ 1 • เฉพาะผู้เช็คอินหน้างาน';
+      document.getElementById('focusDrawTargetBadge').textContent =
+        targetDrawCount === 1
+          ? 'สุ่มผู้โชคดี 1 รางวัล'
+          : 'สุ่มพร้อมกัน ' + targetDrawCount + ' รางวัล';
+
+      // อัปเดตรูปและชื่อของรางวัลในฝั่งซ้ายของการ์ด Unified Royal Gala Card
+      const revealPrizeImg = document.getElementById('focusRevealPrizeImg');
+      if (revealPrizeImg) {
+        revealPrizeImg.src = prize.prizeImageUrl || CONFIG.DEFAULT_PRIZE_IMAGE_URL;
+        revealPrizeImg.alt = prize.prizeName || 'Prize Showcase';
+      }
+      document.getElementById('focusRevealPrizeSubGroup').textContent = prize.prizeGroup || 'PRIZE ITEM';
+      document.getElementById('focusRevealPrizeSubName').textContent = prize.prizeName || '';
+
+      const focusEl = document.getElementById('focusSpinStage');
+      document.body.classList.add('focus-mode-active');
+      focusEl.classList.remove('hidden');
+      void focusEl.offsetWidth;
+    }
+
+    function closeFocusSpinStage() {
+      stageState.isFocusStageOpen = false;
+      document.getElementById('focusSpinStage').classList.add('hidden');
+      document.body.classList.remove('focus-mode-active');
+    }
+
+    function cancelAndReturnToDashboard() {
+      if (stageState.isSpinning || stageState.isConfirming) return;
+      resetStageToIdle();
+    }
+
+    /**
+     * สุ่มคัดเลือกผู้โชคดีอย่างโปร่งใส 100% จากรายชื่อทั้งหมดในกองสุ่ม (รองรับ 400+ รายชื่อเท่าเทียมกันทุกคน)
+     */
+    function pickRandomUniqueCandidates(pool, count) {
+      const copy = pool.slice();
+      const randBuf = new Uint32Array(copy.length);
+      if (window.crypto && window.crypto.getRandomValues) {
+        window.crypto.getRandomValues(randBuf);
+      } else {
+        for (let i = 0; i < copy.length; i++) {
+          randBuf[i] = Math.floor(Math.random() * 0xffffffff);
+        }
+      }
+
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = randBuf[i] % (i + 1);
+        const temp = copy[i];
+        copy[i] = copy[j];
+        copy[j] = temp;
+      }
+
+      return copy.slice(0, count);
+    }
+
+    async function startLuckyDrawSpin() {
+      if (stageState.isSpinning || stageState.isConfirming) return;
+
+      const prize = getSelectedPrize();
+      const activePool = getActivePool();
+
+      if (!prize || prize.remainingQty <= 0) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'ของรางวัลรายการนี้แจกครบแล้ว',
+          text: 'กรุณาเลือกรายการของรางวัลถัดไปจากแท่นของรางวัลด้านขวามือ',
+          confirmButtonColor: '#E60012'
+        });
+        return;
+      }
+
+      if (activePool.length === 0) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'ไม่มีผู้มีสิทธิ์เหลืออยู่ในกองสุ่มนี้',
+          text:
+            stageState.activePoolMode === 'ALL_REGISTERED'
+              ? 'ตรวจสอบว่ามีพนักงานลงทะเบียนเข้ามาแล้ว หรือคืนสิทธิ์ผู้สละสิทธิ์ชั่วคราว'
+              : 'ตรวจสอบว่ามีพนักงานสแกน Checked-In เข้างานแล้ว หรือคืนสิทธิ์ผู้สละสิทธิ์ชั่วคราว',
+          confirmButtonColor: '#E60012'
+        });
+        return;
+      }
+
+      ensureAudio();
+
+      let targetDrawCount = 1;
+      if (stageState.drawMode === 'BATCH') {
+        clampBatchInput();
+        targetDrawCount = parseInt(document.getElementById('batchCountInput').value || '1', 10);
+      }
+      targetDrawCount = Math.min(targetDrawCount, prize.remainingQty, activePool.length);
+
+      // 1. สุ่มผู้โชคดีล่วงหน้าอย่างยุติธรรมด้วย Cryptographic Fisher-Yates Shuffle
+      const selectedWinners = pickRandomUniqueCandidates(activePool, targetDrawCount);
+
+      // Preload รูปของผู้โชคดีที่ถูกสุ่มได้ทันทีเพื่อให้ตอนเปิดการ์ดแบบ B แสดงผลคมชัดเสี้ยววินาทีแรก
+      selectedWinners.forEach((w) => {
+        const u = String(w.pictureUrl || '').trim();
+        if (u.indexOf('https://') === 0 && !stageState.cachedAvatarUrls.has(u)) {
+          const preloadImg = new Image();
+          preloadImg.onload = () => stageState.cachedAvatarUrls.add(u);
+          preloadImg.onerror = () => stageState.failedAvatarUrls.add(u);
+          preloadImg.src = u;
+        }
+      });
+
+      stageState.isSpinning = true;
+      stageState.drawnCandidates = [];
+
+      // 2. ตัดเข้าสู่หน้า Minimal Center Spotlight เต็มจอทันที
+      openFocusSpinStage(prize, targetDrawCount);
+
+      const shakingArena = document.getElementById('phaseShakingArena');
+      const winnerReveal = document.getElementById('phaseWinnerReveal');
+      const giftBoxWrapper = document.getElementById('focusGiftBoxWrapper');
+      const backBtn = document.getElementById('btnBackToDashboard');
+      const spinningHint = document.getElementById('spinningFooterHint');
+      const decisionGroup = document.getElementById('decisionActionGroup');
+
+      backBtn.classList.add('hidden');
+      winnerReveal.classList.add('hidden');
+      decisionGroup.classList.add('hidden');
+      spinningHint.classList.remove('hidden');
+      shakingArena.classList.remove('hidden');
+
+      giftBoxWrapper.classList.remove('gift-box-burst');
+      giftBoxWrapper.classList.add('gift-box-shaking');
+
+      // 3. รันแอนิเมชันเสาแสงสปอตไลท์สลับรูปโปรไฟล์พร้อมเสียงจังหวะชะลอตัว 3.2 วินาที
+      await runMinimalSpotlightAnimation(activePool, CONFIG.SPIN_DURATION_MS);
+
+      // 4. เปิดฝากล่องพร้อมเสียง Fanfare และพลุเฉลิมฉลองสีแดง-ทอง 24K
+      stageState.isSpinning = false;
+
+      giftBoxWrapper.classList.remove('gift-box-shaking');
+      giftBoxWrapper.classList.add('gift-box-burst');
+
+      playWinnerFanfare();
+      launchLuxuryConfetti();
+
+      await new Promise((resolve) => setTimeout(resolve, 250));
+
+      stageState.drawnCandidates = selectedWinners;
+      shakingArena.classList.add('hidden');
+      spinningHint.classList.add('hidden');
+
+      renderDrawnWinnersOnStage();
+    }
+
+    /**
+     * แอนิเมชัน Minimal Center Spotlight: สลับรูปโปรไฟล์และชื่อกลางเสาแสงสีทองพร้อมชะลอจังหวะอย่างนุ่มนวล
+     */
+    function runMinimalSpotlightAnimation(pool, totalDurationMs) {
+      return new Promise((resolve) => {
+        const startTime = performance.now();
+        let lastTickAt = 0;
+
+        const idEl = document.getElementById('rollingEmpId');
+        const nameEl = document.getElementById('rollingFullName');
+        const teamEl = document.getElementById('rollingTeam');
+        const centerPiece = document.getElementById('spotlightCenterPiece');
+        const avatarImg = document.getElementById('spotlightAvatarImg');
+        const fallbackInitial = document.getElementById('spotlightFallbackInitial');
+
+        function step(now) {
+          const elapsed = now - startTime;
+          const progress = Math.min(1, elapsed / totalDurationMs);
+
+          // ค่อยๆ ชะลอจังหวะการสลับใบหน้าและรายชื่อช่วงท้ายให้น่าลุ้นและดูหรู
+          const dynamicInterval = 48 + Math.pow(progress, 2.55) * 235;
+
+          if (now - lastTickAt >= dynamicInterval) {
+            lastTickAt = now;
+            const randomPerson = pool[Math.floor(Math.random() * pool.length)];
+
+            idEl.textContent = randomPerson.empId;
+            nameEl.textContent = randomPerson.fullName;
+            teamEl.textContent = 'ทีม: ' + randomPerson.team;
+
+            applyAvatarToElements(avatarImg, fallbackInitial, randomPerson);
+
+            centerPiece.style.transform = 'scale(1.028)';
+            setTimeout(() => {
+              centerPiece.style.transform = 'scale(1)';
+            }, 42);
+
+            playSlotTick(560 + Math.floor((1 - progress) * 320));
+          }
+
+          if (progress < 1) {
+            requestAnimationFrame(step);
+          } else {
+            resolve();
+          }
+        }
+
+        requestAnimationFrame(step);
+      });
+    }
+
+    /**
+     * แสดงการ์ดแบบ B (Unified Royal Gala Card — แบ่งซ้ายรูปของรางวัล / ขวาข้อมูลผู้โชคดี + รูปโปรไฟล์)
+     */
+    function renderDrawnWinnersOnStage() {
+      const winners = stageState.drawnCandidates;
+      const prize = getSelectedPrize();
+      const revealSection = document.getElementById('phaseWinnerReveal');
+      const unifiedCard = document.getElementById('unifiedRoyalCard');
+      const leftCol = document.getElementById('royalLeftPrizeCol');
+      const rightCol = document.getElementById('royalRightWinnerCol');
+      const revealPrizeImg = document.getElementById('focusRevealPrizeImg');
+      const singleBox = document.getElementById('singleStageDisplay');
+      const multiWrapper = document.getElementById('multiStageWrapper');
+      const multiBox = document.getElementById('multiStageDisplay');
+
+      revealSection.classList.remove('hidden');
+      document.getElementById('btnBackToDashboard').classList.remove('hidden');
+
+      if (revealPrizeImg) {
+        revealPrizeImg.src =
+          (prize && prize.prizeImageUrl) ? prize.prizeImageUrl : CONFIG.DEFAULT_PRIZE_IMAGE_URL;
+      }
+      if (prize) {
+        document.getElementById('focusRevealPrizeSubGroup').textContent = prize.prizeGroup || 'PRIZE ITEM';
+        document.getElementById('focusRevealPrizeSubName').textContent = prize.prizeName || '';
+      }
+
+      // รีเซ็ตแอนิเมชันการ์ดใบใหญ่ให้เด้งเปิดตัวนุ่มนวล
+      unifiedCard.classList.remove('winner-pop-enter');
+      void unifiedCard.offsetWidth;
+      unifiedCard.classList.add('winner-pop-enter');
+
+      if (winners.length === 1) {
+        const w = winners[0];
+        const attTag = getCandidateAttendanceTagInfo(w);
+
+        // สัดส่วน 5 : 7 สำหรับผู้โชคดีเดี่ยว 1 รางวัล
+        unifiedCard.className =
+          'unified-royal-card winner-glow winner-pop-enter w-full max-w-5xl rounded-[32px] overflow-hidden grid grid-cols-1 md:grid-cols-12 items-stretch';
+        leftCol.className =
+          'royal-prize-chamber md:col-span-5 relative p-6 md:p-8 flex flex-col items-center justify-between border-b md:border-b-0 md:border-r border-champagne/25';
+        rightCol.className =
+          'md:col-span-7 flex flex-col justify-center p-6 sm:p-8 md:p-10 min-w-0';
+
+        multiWrapper.classList.add('hidden');
+        singleBox.classList.remove('hidden');
+
+        // แสดงรูปโปรไฟล์ผู้โชคดีในกรอบทองคำ 24K
+        applyAvatarToElements(
+          document.getElementById('winnerSingleAvatarImg'),
+          document.getElementById('winnerSingleInitial'),
+          w
+        );
+
+        document.getElementById('slotTopTag').textContent = 'CONGRATULATIONS • ผู้โชคดี';
+        document.getElementById('slotEmpId').textContent = w.empId;
+        document.getElementById('slotFullName').textContent = w.fullName;
+        document.getElementById('slotTeam').innerHTML =
+          'ทีม: <span class="font-normal text-white/90">' + escapeHtml(w.team) + '</span>';
+
+        const attBadgeEl = document.getElementById('slotAttendanceBadge');
+        attBadgeEl.innerHTML = attTag.iconHtml + '<span>' + escapeHtml(attTag.text) + '</span>';
+        attBadgeEl.className =
+          'inline-flex items-center gap-2 text-xs md:text-[13px] font-normal px-4 py-1.5 rounded-full border ' +
+          attTag.className;
+      } else {
+        // สัดส่วน 4 : 8 สำหรับสุ่มพร้อมกันหลายรางวัล
+        unifiedCard.className =
+          'unified-royal-card winner-glow winner-pop-enter w-full max-w-6xl rounded-[32px] overflow-hidden grid grid-cols-1 md:grid-cols-12 items-stretch';
+        leftCol.className =
+          'royal-prize-chamber md:col-span-4 relative p-5 md:p-7 flex flex-col items-center justify-between border-b md:border-b-0 md:border-r border-champagne/25';
+        rightCol.className =
+          'md:col-span-8 flex flex-col justify-center p-5 sm:p-6 md:p-8 min-w-0';
+
+        singleBox.classList.add('hidden');
+        multiWrapper.classList.remove('hidden');
+        document.getElementById('multiWinnerCountTag').textContent = 'รวม ' + winners.length + ' ท่าน';
+
+        multiBox.innerHTML = winners
+          .map((w, idx) => {
+            const attTag = getCandidateAttendanceTagInfo(w);
+            const rawAvatar = String(w.pictureUrl || '').trim();
+            const hasValidAvatar =
+              rawAvatar.indexOf('https://') === 0 && !stageState.failedAvatarUrls.has(rawAvatar);
+            const initial = escapeHtml(getPersonInitial(w.fullName));
+
+            const miniAvatarHtml = hasValidAvatar
+              ? '<div class="relative w-9 h-9 rounded-full p-[1.5px] bg-gradient-to-tr from-[#D4AF37] to-[#FFF2B2] shrink-0">' +
+                '<div class="relative w-full h-full rounded-full overflow-hidden bg-velvet-950 flex items-center justify-center">' +
+                '<span class="text-xs font-semibold text-champagne-light">' + initial + '</span>' +
+                '<img src="' + escapeHtml(rawAvatar) + '" alt="" onerror="this.style.display=\'none\'" class="absolute inset-0 w-full h-full object-cover rounded-full" />' +
+                '</div></div>'
+              : '<div class="w-9 h-9 rounded-full border border-champagne/60 bg-velvet-950 flex items-center justify-center shrink-0">' +
+                '<span class="text-xs font-semibold text-champagne-light">' + initial + '</span></div>';
+
+            return (
+              '<div class="batch-winner-item rounded-2xl p-4 flex flex-col justify-between gap-2.5">' +
+              '<div class="flex items-center justify-between gap-2">' +
+              '<div class="flex items-center gap-2 min-w-0">' +
+              miniAvatarHtml +
+              '<span class="gold-pill text-[11px] font-semibold px-2.5 py-0.5 rounded-full font-mono truncate">#' +
+              (idx + 1) +
+              ' • ' +
+              escapeHtml(w.empId) +
+              '</span>' +
+              '</div>' +
+              '<button type="button" onclick="redrawSingleSlotInBatch(' +
+              idx +
+              ')" class="inline-flex items-center gap-1 text-[11px] font-normal px-2.5 py-1 rounded-lg bg-velvet-950/90 border border-champagne/35 text-champagne-light hover:border-white hover:text-white transition shrink-0" title="สุ่มเปลี่ยนเฉพาะคนนี้">' +
+              '<svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>' +
+              '<span>เปลี่ยนคนนี้</span></button>' +
+              '</div>' +
+              '<div>' +
+              '<p class="text-lg font-bold text-white leading-snug">' +
+              escapeHtml(w.fullName) +
+              '</p>' +
+              '<p class="text-xs font-light text-silver/85 mt-0.5">ทีม: <span class="font-normal text-silver">' +
+              escapeHtml(w.team) +
+              '</span></p>' +
+              '<span class="inline-flex items-center gap-1.5 mt-2 text-[11px] font-normal px-2.5 py-0.5 rounded-full border ' +
+              attTag.className +
+              '">' +
+              attTag.iconHtml +
+              '<span>' +
+              escapeHtml(attTag.text) +
+              '</span></span>' +
+              '</div>' +
+              '</div>'
+            );
+          })
+          .join('');
+      }
+
+      document.getElementById('btnConfirmMainLabel').textContent =
+        winners.length === 1
+          ? 'ได้รับรางวัล'
+          : 'ได้รับรางวัลทั้งหมด ' + winners.length + ' ท่าน';
+      document.getElementById('btnConfirmSubLabel').textContent = '• ยืนยันรับสิทธิ์ & ส่ง LINE';
+
+      document.getElementById('decisionActionGroup').classList.remove('hidden');
+    }
+
+    /**
+     * สุ่มเปลี่ยนเฉพาะรายบุคคลในโหมดสุ่มหลายคน (กรณีมีบางคนสละสิทธิ์)
+     */
+    function redrawSingleSlotInBatch(slotIndex) {
+      const forfeitedPerson = stageState.drawnCandidates[slotIndex];
+      if (!forfeitedPerson) return;
+
+      stageState.skippedEmpIds.add(normalizeId(forfeitedPerson.empId));
+
+      const currentlyDisplayedIds = new Set(
+        stageState.drawnCandidates.map((c) => normalizeId(c.empId))
+      );
+      const replacementPool = getActivePool().filter(
+        (p) => !currentlyDisplayedIds.has(normalizeId(p.empId))
+      );
+
+      if (replacementPool.length === 0) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'ไม่มีรายชื่ออื่นเหลือใน Pool สำหรับเปลี่ยนตัว',
+          text: 'ระบบจะตัดรายการที่สละสิทธิ์นี้ออกจากการยืนยันรอบนี้',
+          confirmButtonColor: '#E60012'
+        });
+        stageState.drawnCandidates.splice(slotIndex, 1);
+        refreshAllCountersUI();
+        if (stageState.drawnCandidates.length === 0) {
+          resetStageToIdle();
+        } else {
+          renderDrawnWinnersOnStage();
+        }
+        return;
+      }
+
+      const [newCandidate] = pickRandomUniqueCandidates(replacementPool, 1);
+      stageState.drawnCandidates[slotIndex] = newCandidate;
+      playWinnerFanfare();
+      refreshAllCountersUI();
+      renderDrawnWinnersOnStage();
+    }
+
+    /**
+     * กดปุ่ม [สุ่มใหม่ / สละสิทธิ์]: พักชื่อคนที่สละสิทธิ์ไว้ แล้วส่องสปอตไลท์สุ่มใหม่ทันทีในหน้า Focus Stage
+     */
+    async function forfeitAndRedrawAll() {
+      if (stageState.drawnCandidates.length === 0) return;
+
+      stageState.drawnCandidates.forEach((person) => {
+        stageState.skippedEmpIds.add(normalizeId(person.empId));
+      });
+      stageState.drawnCandidates = [];
+      refreshAllCountersUI();
+
+      if (getActivePool().length === 0) {
+        resetStageToIdle();
+        Swal.fire({
+          icon: 'info',
+          title: 'ไม่มีรายชื่อคงเหลือในกองสุ่ม',
+          text: 'หากต้องการนำรายชื่อผู้สละสิทธิ์กลับมาสุ่มใหม่ สามารถกดปุ่มคืนสิทธิ์ด้านบนเวทีหลักได้',
+          confirmButtonColor: '#E60012'
+        });
+        return;
+      }
+
+      await startLuckyDrawSpin();
+    }
+
+    function restoreSkippedCandidates() {
+      stageState.skippedEmpIds.clear();
+      refreshAllCountersUI();
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: 'success',
+        title: 'คืนสิทธิ์รายชื่อที่พักไว้กลับเข้าสู่ Pool เรียบร้อยแล้ว',
+        showConfirmButton: false,
+        timer: 2000
+      });
+    }
+
+    function resetStageToIdle() {
+      stageState.isSpinning = false;
+      stageState.drawnCandidates = [];
+      closeFocusSpinStage();
+
+      refreshAllCountersUI();
+      updatePrizeShowcaseUI();
+    }
+
+    /**
+     * ========================================================================
+     * 5. กดปุ่ม [ได้รับรางวัล] -> บันทึก Winners + ตัดสิทธิ์ทั้ง 2 Pool ทันที + ส่ง LINE
+     * ========================================================================
+     */
+    async function confirmCurrentWinners() {
+      if (stageState.isConfirming || stageState.drawnCandidates.length === 0) return;
+
+      const prize = getSelectedPrize();
+      if (!prize) return;
+
+      const winnerEmpIds = stageState.drawnCandidates.map((w) => w.empId);
+      stageState.isConfirming = true;
+      showStageLoading('กำลังบันทึกสิทธิ์ผู้โชคดีและส่งการ์ดแจ้งเตือนทาง LINE...');
+
+      try {
+        const res = await callGasApi({
+          action: 'confirmWinners',
+          prizeId: prize.prizeId,
+          empIds: winnerEmpIds,
+          poolMode: stageState.activePoolMode
+        });
+
+        hideStageLoading();
+        stageState.isConfirming = false;
+
+        if (!res.success) {
+          Swal.fire({
+            icon: 'error',
+            title: 'บันทึกผู้โชคดีไม่สำเร็จ',
+            text: res.message || 'กรุณาซิงก์ข้อมูลล่าสุดแล้วลองอีกครั้ง',
+            confirmButtonColor: '#E60012'
+          });
+          return;
+        }
+
+        // 1. ตัดรายชื่อผู้โชคดีออกจากทั้ง Pool ชุดที่ 1 และ Pool ชุดที่ 2 ทันที 100% (1 คน ได้ 1 รางวัลเท่านั้น)
+        const confirmedSet = new Set(winnerEmpIds.map((id) => normalizeId(id)));
+        stageState.eligiblePool = stageState.eligiblePool.filter(
+          (p) => !confirmedSet.has(normalizeId(p.empId))
+        );
+        stageState.allRegisteredPool = stageState.allRegisteredPool.filter(
+          (p) => !confirmedSet.has(normalizeId(p.empId))
+        );
+
+        // 2. อัปเดตยอดคงเหลือของรางวัลในหน้าเว็บทันที
+        const targetPrizeObj = stageState.prizes.find((p) => p.prizeId === prize.prizeId);
+        if (targetPrizeObj && res.prize) {
+          targetPrizeObj.remainingQty = res.prize.remainingQty;
+        }
+        stageState.stats.totalWinners += winnerEmpIds.length;
+
+        // 3. สลับกลับสู่หน้าตั้งค่าหลักอัตโนมัติเพื่อเตรียมเลือกรางวัลรอบถัดไป
+        populatePrizeItemsByGroup(true);
+        resetStageToIdle();
+
+        Swal.fire({
+          icon: 'success',
+          title: 'ยืนยันสิทธิ์และส่ง LINE สำเร็จ!',
+          text: res.message,
+          timer: 2200,
+          showConfirmButton: false
+        });
+      } catch (err) {
+        hideStageLoading();
+        stageState.isConfirming = false;
+        Swal.fire({
+          icon: 'error',
+          title: 'การเชื่อมต่อขัดข้อง',
+          text: err.message || 'ไม่สามารถบันทึกผลรางวัลได้',
+          confirmButtonColor: '#E60012'
+        });
+      }
+    }
+
+    /**
+     * ========================================================================
+     * 6. ปุ่มแอดมิน: ส่ง Flex แบบที่ 4 ขอบคุณผู้พลาดรางวัลทั้งหมด (Multicast API)
+     * ========================================================================
+     */
+    async function promptSendConsolationFlex() {
+      const nonWinnerCount = stageState.eligiblePool.length;
+
+      const confirmStep = await Swal.fire({
+        icon: 'question',
+        title: 'ส่ง Flex ขอบคุณผู้พลาดรางวัลทั้งหมด?',
+        html:
+          '<div class="text-left text-sm space-y-2.5">' +
+          '<p>ระบบจะคัดกรองเฉพาะพนักงานที่ <b class="font-medium text-white">สแกน Checked-In เข้างานแล้ว</b> แต่ <b class="font-medium text-white">ไม่มีรายชื่อได้รับรางวัลในชีท Winners</b></p>' +
+          '<div class="p-3 rounded-xl bg-velvet-950 border border-champagne/45 text-center">' +
+          '<span class="text-xs text-silver block font-light">จำนวนผู้เช็คอินที่พลาดรางวัลในขณะนี้</span>' +
+          '<span class="text-2xl font-bold text-champagne-light">' +
+          nonWinnerCount.toLocaleString() +
+          ' ท่าน</span>' +
+          '</div>' +
+          '<p class="text-xs text-silver font-light">กรุณากรอกรหัส <b class="font-medium text-white">Staff PIN</b> เพื่อยืนยันการส่ง LINE Multicast ทันที:</p>' +
+          '</div>',
+        input: 'password',
+        inputPlaceholder: 'กรอกรหัส Staff PIN (เช่น 2026)',
+        inputAttributes: {
+          maxlength: 10,
+          autocapitalize: 'off',
+          autocorrect: 'off'
+        },
+        showCancelButton: true,
+        confirmButtonColor: '#E60012',
+        cancelButtonColor: '#260D13',
+        confirmButtonText: 'ยืนยันส่ง Flex ทันที',
+        cancelButtonText: 'ยกเลิก',
+        preConfirm: (pinVal) => {
+          if (!pinVal || String(pinVal).trim() !== String(CONFIG.STAFF_PIN).trim()) {
+            Swal.showValidationMessage('รหัส Staff PIN ไม่ถูกต้อง');
+            return false;
+          }
+          return String(pinVal).trim();
+        }
+      });
+
+      if (!confirmStep.isConfirmed) return;
+
+      showStageLoading('กำลังส่ง LINE Multicast Flex หาผู้พลาดรางวัลทั้งหมด...');
+      try {
+        const res = await callGasApi({
+          action: 'sendConsolationFlex',
+          pin: confirmStep.value
+        });
+
+        hideStageLoading();
+
+        if (res.success) {
+          Swal.fire({
+            icon: 'success',
+            title: 'ส่ง Flex ขอบคุณผู้พลาดรางวัลสำเร็จ!',
+            text: res.message,
+            confirmButtonColor: '#E60012',
+            confirmButtonText: 'เรียบร้อย'
+          });
+        } else {
+          Swal.fire({
+            icon: 'warning',
+            title: 'แจ้งผลการส่งข้อความ',
+            text:
+              (res.message || 'พบข้อผิดพลาดบางส่วน') +
+              (res.errors && res.errors.length ? '\n' + res.errors.join('\n') : ''),
+            confirmButtonColor: '#E60012'
+          });
+        }
+      } catch (err) {
+        hideStageLoading();
+        Swal.fire({
+          icon: 'error',
+          title: 'ส่งข้อความไม่สำเร็จ',
+          text: err.message,
+          confirmButtonColor: '#E60012'
+        });
+      }
+    }
+
+    /**
+     * ========================================================================
+     * 7. UTILITY FUNCTIONS
+     * ========================================================================
+     */
+    function toggleFullScreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else if (document.exitFullscreen) {
+        document.exitFullscreen();
+      }
+    }
+
+    function normalizeId(val) {
+      return String(val || '').trim().toUpperCase();
+    }
+
+    function showStageLoading(msg) {
+      document.getElementById('stageLoadingText').textContent = msg || 'กำลังประมวลผล...';
+      document.getElementById('stageLoading').classList.remove('hidden');
+    }
+
+    function hideStageLoading() {
+      document.getElementById('stageLoading').classList.add('hidden');
+    }
+
+    function escapeHtml(str) {
+      return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+  </script>
+</body>
+</html>
