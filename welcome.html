@@ -58,6 +58,8 @@
       overflow: hidden;
       font-family: 'Prompt', sans-serif;
       -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: geometricPrecision;
       background-color: #110608;
       background-image:
         radial-gradient(ellipse at 50% -12%, rgba(230, 0, 18, 0.38) 0%, rgba(104, 0, 8, 0.20) 44%, rgba(17, 6, 8, 0) 74%),
@@ -116,17 +118,56 @@
       to   { transform: rotate(10deg); opacity: 0.9; }
     }
 
-    /* ป้ายทองคำ 24K และตัวอักษรไล่เฉดทอง */
+    /* ป้ายแคปซูลทองคำ 24K ทึบแสงตรงตามภาพตัวอย่าง */
     .gold-pill {
-      background: linear-gradient(90deg, #D4AF37 0%, #F5D77F 50%, #D4AF37 100%);
-      color: #140709;
-      box-shadow: 0 4px 16px rgba(212, 175, 55, 0.35);
+      background: linear-gradient(90deg, #CEA234 0%, #F5D77F 50%, #CEA234 100%);
+      color: #16080A;
+      box-shadow: 0 4px 20px rgba(212, 175, 55, 0.35);
     }
 
-    .gold-text {
-      background: linear-gradient(90deg, #FFF2B2 0%, #F5D77F 38%, #D4AF37 72%, #FFF2B2 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+    /* ไฮไลท์คำสำคัญสีทองคำ 24K แบบไม่ตัดสระ/วรรณยุกต์ภาษาไทย 100% */
+    .hl-gold {
+      color: #F4CF67;
+      text-shadow: 0 2px 16px rgba(245, 215, 127, 0.28);
+    }
+
+    /* หัวข้อหลักภาษาไทย: เผื่อระยะสระบน-ล่างเต็มที่ ป้องกันตัวอักษรแหว่งทุกเบราว์เซอร์ */
+    .thai-stage-headline {
+      color: #FFFFFF;
+      line-height: 1.52;
+      letter-spacing: 0.01em;
+      padding-top: 0.14em;
+      padding-bottom: 0.14em;
+      overflow: visible;
+      text-shadow: 0 3px 18px rgba(0, 0, 0, 0.45);
+    }
+
+    /* ข้อความรองสีทองแชมเปญนวลตาตรงตามตัวอย่าง */
+    .thai-stage-subline {
+      color: #E6C875;
+      line-height: 1.65;
+      letter-spacing: 0.01em;
+      padding-top: 0.08em;
+      padding-bottom: 0.08em;
+      overflow: visible;
+    }
+
+    /* แถบเส้นเวลาสีทองวิ่งด้านล่างข้อความต้อนรับ */
+    .greeting-progress-track {
+      width: min(78%, 540px);
+      height: 2px;
+      background: rgba(212, 175, 55, 0.22);
+      border-radius: 9999px;
+      overflow: hidden;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .greeting-progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #D4AF37 0%, #FFF2B2 100%);
+      border-radius: 9999px;
+      box-shadow: 0 0 10px rgba(245, 215, 127, 0.55);
     }
 
     /* ปุ่มควบคุมด้านบน (ซ่อนอัตโนมัติเมื่อฉายเต็มจอ) */
@@ -158,29 +199,29 @@
 
     /* การ์ดเวทีหลักตรงกลาง (Center Welcome Stage) */
     .center-welcome-stage {
-      width: min(52vw, 860px);
+      width: min(56vw, 900px);
       min-width: 320px;
       background:
-        radial-gradient(circle at 50% 0%, rgba(230, 0, 18, 0.30) 0%, rgba(230, 0, 18, 0) 62%),
-        linear-gradient(160deg, rgba(34, 11, 17, 0.88) 0%, rgba(16, 5, 8, 0.94) 100%);
+        radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.12) 0%, rgba(230, 0, 18, 0.14) 38%, rgba(24, 9, 12, 0) 70%),
+        linear-gradient(180deg, rgba(44, 18, 22, 0.92) 0%, rgba(24, 9, 12, 0.96) 100%);
       backdrop-filter: blur(22px);
       -webkit-backdrop-filter: blur(22px);
-      border: 1.5px solid rgba(245, 215, 127, 0.62);
+      border: 1.5px solid rgba(212, 175, 55, 0.62);
       border-radius: clamp(24px, 2.4vw, 40px);
       box-shadow:
         0 30px 80px rgba(0, 0, 0, 0.82),
-        0 0 55px rgba(212, 175, 55, 0.18),
-        inset 0 1px 0 rgba(255, 242, 178, 0.35);
-      padding: clamp(1.3rem, 2.8vh, 2.75rem) clamp(1.4rem, 2.8vw, 3.25rem);
+        0 0 55px rgba(212, 175, 55, 0.16),
+        inset 0 1px 0 rgba(255, 242, 178, 0.32);
+      padding: clamp(1.5rem, 3.2vh, 2.9rem) clamp(1.5rem, 3vw, 3.5rem);
     }
 
     /* แอนิเมชันสลับข้อความ AI นุ่มนวล */
     .greeting-fade {
-      transition: opacity 0.48s ease, transform 0.48s cubic-bezier(0.22, 1, 0.36, 1);
+      transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
     }
     .greeting-hidden {
       opacity: 0;
-      transform: translateY(10px) scale(0.985);
+      transform: translateY(8px);
     }
 
     /* เหรียญโปรไฟล์พนักงานที่ลอยรอบเวที (Floating Galaxy Orbs) */
@@ -210,11 +251,11 @@
 
     .orb-name-pill {
       margin-top: 6px;
-      max-width: clamp(120px, 11vw, 185px);
-      background: rgba(18, 6, 9, 0.88);
+      max-width: clamp(124px, 11.5vw, 190px);
+      background: rgba(18, 6, 9, 0.90);
       border: 1px solid rgba(245, 215, 127, 0.45);
       border-radius: 9999px;
-      padding: 3px 11px;
+      padding: 4px 12px;
       text-align: center;
       box-shadow: 0 6px 16px rgba(0, 0, 0, 0.65);
     }
@@ -251,7 +292,7 @@
   <!-- TOP BAR: ป้ายยอดผู้เช็คอินจริง + แถบปุ่มควบคุมสำหรับทีมงานหน้าเวที      -->
   <!-- ==================================================================== -->
   <header class="fixed top-0 inset-x-0 z-[35] px-5 md:px-8 py-4 flex items-start justify-between gap-4 pointer-events-none">
-    <!-- มุมซ้ายบน: โลโก้ True + ยอด Checked-In เรียลไทม์ (แสดงตลอดเวลา) -->
+    <!-- มุมซ้ายบน: โลโก้ True + ยอด Checked-In เรียลไทม์ -->
     <div class="pointer-events-auto flex items-center gap-3.5 bg-[#160609]/80 backdrop-blur-md border border-champagne/45 rounded-2xl px-4 py-2.5 shadow-[0_12px_32px_rgba(0,0,0,0.65)]">
       <img
         src="https://img2.pic.in.th/True--W9082df0ce2da3b92.png"
@@ -267,13 +308,13 @@
             Checked-In Live
           </span>
         </div>
-        <p class="text-sm md:text-lg font-bold text-white leading-tight">
+        <p class="text-sm md:text-lg font-bold text-white leading-normal">
           เข้าร่วมงานแล้ว <span id="checkedInCounter" class="text-champagne-bright">0</span> ท่าน
         </p>
       </div>
     </div>
 
-    <!-- มุมขวาบน: ปุ่มควบคุม (ซ่อนอัตโนมัติเมื่อกดเต็มจอและเมาส์นิ่ง 4 วินาที) -->
+    <!-- มุมขวาบน: ปุ่มควบคุม -->
     <div id="topControlBar" class="pointer-events-auto flex flex-wrap items-center justify-end gap-2">
       <button
         type="button"
@@ -331,52 +372,54 @@
   </header>
 
   <!-- ==================================================================== -->
-  <!-- CENTER STAGE: ป้ายต้อนรับหลัก + ระบบ AI สุ่มวนข้อความต้อนรับอัตโนมัติ   -->
+  <!-- CENTER STAGE: ป้ายต้อนรับหลักตรงตามภาพตัวอย่าง 100%                   -->
   <!-- ==================================================================== -->
   <main class="relative z-[20] w-full h-full flex items-center justify-center px-4 pointer-events-none">
-    <section class="center-welcome-stage text-center relative overflow-hidden">
-      <!-- ประกายแสงมุมการ์ด -->
-      <div class="absolute -top-20 left-1/2 -translate-x-1/2 w-80 h-36 rounded-full bg-champagne/15 blur-2xl pointer-events-none"></div>
+    <section class="center-welcome-stage text-center relative">
+      <!-- ประกายแสงนุ่มด้านบนการ์ด -->
+      <div class="absolute -top-12 left-1/2 -translate-x-1/2 w-72 h-28 rounded-full bg-champagne/15 blur-2xl pointer-events-none"></div>
 
-      <!-- ป้ายหมวดหมู่ด้านบน -->
-      <div class="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-velvet-950/85 border border-champagne/55 mb-3">
-        <span class="w-1.5 h-1.5 rotate-45 bg-champagne-light"></span>
-        <span id="aiCategoryTag" class="text-[11px] md:text-xs font-semibold uppercase tracking-[0.22em] text-champagne-light">
-          WELCOME TO EXECUTIVE GALA NIGHT
-        </span>
-        <span class="w-1.5 h-1.5 rotate-45 bg-champagne-light"></span>
-      </div>
+      <!-- เนื้อหาที่สลับหมุนเวียน (ป้ายทอง ✦ + หัวข้อขาวไฮไลท์ทอง + ซับไลน์ทองแชมเปญ) -->
+      <div id="greetingContentBox" class="greeting-fade relative z-10 flex flex-col items-center justify-center min-h-[168px] md:min-h-[196px]">
+        <!-- ป้ายแคปซูลทองคำ 24K ด้านบน -->
+        <div class="gold-pill inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-4">
+          <span class="text-[11px] leading-none">✦</span>
+          <span id="aiCategoryTag" class="text-[11px] md:text-xs font-bold uppercase tracking-[0.18em] leading-none">
+            WELCOME TO EXECUTIVE GALA
+          </span>
+          <span class="text-[11px] leading-none">✦</span>
+        </div>
 
-      <!-- ชื่องานหลัก -->
-      <p id="stageEventSubTitle" class="text-xs md:text-sm font-medium tracking-[0.18em] uppercase text-silver/90">
-        New Year Operations Party 2027
-      </p>
-
-      <!-- ข้อความต้อนรับหลักที่ AI สุ่มหมุนเวียน -->
-      <div id="greetingContentBox" class="greeting-fade my-3 md:my-4 min-h-[108px] md:min-h-[136px] flex flex-col items-center justify-center">
+        <!-- หัวข้อหลักสีขาวบริสุทธิ์ + ไฮไลท์คำสำคัญสีทอง 24K (ไม่ตัดสระไทย) -->
         <h1
           id="aiHeadlineText"
-          class="text-2xl sm:text-3xl md:text-4xl lg:text-[2.65rem] font-bold gold-text leading-[1.26] tracking-tight"
+          class="thai-stage-headline text-2xl sm:text-3xl md:text-4xl lg:text-[2.5rem] font-bold max-w-3xl"
         >
-          ขอต้อนรับเพื่อนพนักงานทุกท่านสู่งานเลี้ยงส่งท้ายปีเก่าต้อนรับปีใหม่
+          ขอต้อนรับเพื่อนพนักงานสู่งาน <span class="hl-gold">New Year Operations Party 2027</span>
         </h1>
+
+        <!-- ข้อความรองสีทองแชมเปญ -->
         <p
           id="aiSublineText"
-          class="mt-2.5 text-sm md:text-lg font-light text-white/90 max-w-2xl leading-relaxed"
+          class="thai-stage-subline mt-2 text-sm md:text-lg font-normal max-w-2xl"
         >
-          ค่ำคืนแห่งรอยยิ้ม ความสุข และรางวัลสุดพิเศษสำหรับครอบครัว Operations ทุกคน
+          ค่ำคืนแห่งรอยยิ้ม ความสุข และรางวัลสุดพิเศษสำหรับครอบครัว Operations ทุกคนครับ
         </p>
       </div>
 
-      <!-- เส้นคั่นเพชรทองคำ 24K -->
-      <div class="flex items-center justify-center gap-3 pt-1">
-        <div class="h-[1px] w-16 md:w-28 bg-gradient-to-r from-transparent to-champagne/60"></div>
-        <span class="text-xs text-champagne-light">✦</span>
-        <span id="bottomVenueLabel" class="text-[11px] md:text-xs font-normal text-champagne-light/90 tracking-wider">
-          สแกน QR เช็คอินหน้างานเพื่อลุ้นรางวัลใหญ่บนเวทีตลอดค่ำคืนนี้
-        </span>
-        <span class="text-xs text-champagne-light">✦</span>
-        <div class="h-[1px] w-16 md:w-28 bg-gradient-to-l from-transparent to-champagne/60"></div>
+      <!-- เส้นเวลาวิ่งสีทอง (Progress Bar) + ข้อความกำกับด้านล่างสุดของการ์ด -->
+      <div class="relative z-10 mt-5 pt-1 space-y-3">
+        <div class="greeting-progress-track">
+          <div id="greetingProgressBar" class="greeting-progress-fill"></div>
+        </div>
+
+        <div class="flex items-center justify-center gap-2.5">
+          <span class="text-xs text-champagne-light">✦</span>
+          <span id="bottomVenueLabel" class="text-[10px] md:text-xs font-medium uppercase tracking-[0.22em] text-silver/75">
+            TRUE CORPORATION • OPERATIONS GALA 2027
+          </span>
+          <span class="text-xs text-champagne-light">✦</span>
+        </div>
       </div>
     </section>
   </main>
@@ -407,10 +450,10 @@
       <div class="inline-flex items-center gap-1.5 gold-pill text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
         <span>★ NEW VIP CHECKED-IN</span>
       </div>
-      <h3 id="arrivalFullName" class="text-lg md:text-2xl font-bold text-white truncate mt-1">
+      <h3 id="arrivalFullName" class="text-lg md:text-2xl font-bold text-white leading-normal py-[1px] truncate mt-1">
         ยินดีต้อนรับผู้เข้าร่วมงาน
       </h3>
-      <p id="arrivalTeamMeta" class="text-xs md:text-sm font-normal text-champagne-light truncate">
+      <p id="arrivalTeamMeta" class="text-xs md:text-sm font-normal text-champagne-light leading-normal py-[1px] truncate">
         ทีม Operations
       </p>
     </div>
@@ -424,94 +467,93 @@
      */
     const CONFIG = {
       GAS_WEB_APP_URL: 'https://script.google.com/macros/s/AKfycbzL9SNCIhSiDC2hgaQ8xSiVqbT9GpEFErE2UAJX5CM1tleziGBfLT2eGdASj7pD_eg/exec',
-      EVENT_NAME: 'New Year Operations Party 2027',
-      VENUE_SUBTEXT: 'โรงแรม เอส รัชดา เลเชอร์ • ขอให้ทุกท่านโชคดีในการลุ้นรางวัลค่ำคืนนี้',
+      BOTTOM_SIGNATURE_TEXT: 'TRUE CORPORATION • OPERATIONS GALA 2027',
 
-      POLL_INTERVAL_MS: 9000,       // ซิงก์รายชื่อผู้เช็คอินทุก 9 วินาที (ปลอดภัยต่อโควตา Google 100%)
+      POLL_INTERVAL_MS: 9000,       // ซิงก์รายชื่อผู้เช็คอินทุก 9 วินาที
       GREETING_INTERVAL_MS: 6500,   // สลับข้อความต้อนรับ AI ทุก 6.5 วินาที
-      MAX_FLOATING_ORBS: 14,        // จำนวนเหรียญโปรไฟล์ที่ลอยพร้อมกันบนจอ (สลับคิวครบทุกคนอัตโนมัติ)
+      MAX_FLOATING_ORBS: 14,        // จำนวนเหรียญโปรไฟล์ที่ลอยพร้อมกันบนจอ
       STORAGE_CACHE_KEY: 'ny2027_welcome_checkedin_v1'
     };
 
     /**
-     * คลังข้อความ AI Dynamic Greeting (4 โหมด สลับอารมณ์ไม่ซ้ำจำเจ)
+     * คลังข้อความ AI Dynamic Greeting (ตัวหนังสือขาว + ไฮไลท์สีทอง 24K เฉพาะจุดสำคัญ)
      */
     const AI_GREETING_POOL = {
       generalWelcome: [
         {
           tag: 'WELCOME TO GALA NIGHT',
-          title: 'ขอต้อนรับเพื่อนพนักงานทุกท่านสู่งาน New Year Operations Party 2027',
+          titleHtml: 'ขอต้อนรับเพื่อนพนักงานสู่งาน <span class="hl-gold">New Year Operations Party 2027</span>',
           sub: 'ค่ำคืนสุดพิเศษที่รวมพลังหัวใจชาว Operations ไว้ด้วยกัน ขอให้สนุกเต็มที่ตลอดงานครับ!'
         },
         {
+          tag: 'TOGETHER WE SHINE',
+          titleHtml: 'รวมพลังหลากหลายทีมกว่า <span class="hl-gold">14 สายงาน</span> ไว้ในค่ำคืนเดียว!',
+          sub: 'โอกาสดีที่จะได้ทักทายพูดคุยและส่งมอบคำอวยพรปีใหม่ให้เพื่อนต่างแผนกครับ'
+        },
+        {
           tag: 'SPARKLING CELEBRATION',
-          title: 'ยินดีต้อนรับสู่ค่ำคืนแห่งรอยยิ้ม เสียงเพลง และการเฉลิมฉลองส่งท้ายปี',
+          titleHtml: 'ยินดีต้อนรับสู่ค่ำคืนแห่ง <span class="hl-gold">รอยยิ้ม เสียงเพลง</span> และการเฉลิมฉลอง!',
           sub: 'พักเรื่องงานไว้ชั่วคราว แล้วมาเก็บภาพความประทับใจร่วมกับเพื่อนๆ ทุกทีมกันนะครับ'
         },
         {
           tag: 'THANK YOU FOR YOUR DEDICATION',
-          title: 'ขอบคุณทุกความทุ่มเทตลอดทั้งปี ค่ำคืนนี้คือรางวัลของพวกเราทุกคน!',
+          titleHtml: 'ขอบคุณทุกความทุ่มเทตลอดทั้งปี <span class="hl-gold">ค่ำคืนนี้คือรางวัล</span> ของพวกเราทุกคน!',
           sub: 'เพราะพลังของทุกคนคือหัวใจสำคัญที่ทำให้ทีมของเราแข็งแกร่งและก้าวไปข้างหน้าอย่างงดงาม'
         },
         {
           tag: 'VIP CHECK-IN STAGE',
-          title: 'สแกน QR เช็คอินเรียบร้อยแล้ว เตรียมลุ้นรางวัลใหญ่บนเวทีคืนนี้!',
-          sub: 'รูปโปรไฟล์ของเพื่อนๆ ที่เช็คอินแล้วกำลังเปล่งประกายอยู่บนหน้าจอแห่งความสุขนี้'
-        },
-        {
-          tag: 'OPERATIONS FAMILY',
-          title: 'อบอุ่นทุกครั้งที่ได้เจอกัน ขอต้อนรับครอบครัว Operations สู่ค่ำคืนสุดปัง!',
-          sub: 'อิ่มอร่อยกับอาหารมื้อพิเศษ ดนตรีสนุกๆ และมิตรภาพดีๆ รอบตัวคุณในค่ำคืนนี้'
+          titleHtml: 'สแกน QR เช็คอินเรียบร้อย เตรียมลุ้น <span class="hl-gold">รางวัลใหญ่บนเวที</span> คืนนี้!',
+          sub: 'รูปโปรไฟล์ของเพื่อนๆ ที่เช็คอินแล้วกำลังเปล่งประกายอยู่บนหน้าจอแห่งความสุขนี้ครับ'
         }
       ],
       newYearWishes: [
         {
           tag: 'HAPPY NEW YEAR 2027',
-          title: 'สวัสดีปีใหม่ล่วงหน้า 2027 ขอให้เป็นปีที่เฮง ปัง และเติบโตยิ่งกว่าเดิม!',
+          titleHtml: 'สวัสดีปีใหม่ล่วงหน้า <span class="hl-gold">ปี 2027</span> ขอให้เฮง ปัง และเติบโตยิ่งกว่าเดิม!',
           sub: 'ขอให้เพื่อนพนักงานทุกท่านมีสุขภาพแข็งแรง มีความสุข และสมหวังในทุกเป้าหมายตลอดปีใหม่ครับ'
         },
         {
           tag: 'LUCKY DRAW TONIGHT',
-          title: 'คืนนี้ดวงเศรษฐีอาจเป็นของคุณ! เตรียมเสียงกรี๊ดรอรับของรางวัลบนเวทีได้เลย',
-          sub: 'ทุกท่านที่สแกนเข้างานแล้วมีสิทธิ์ลุ้นรางวัลพิเศษมากมายตลอดค่ำคืนนี้ ขอให้โชคดีครับ!'
+          titleHtml: 'คืนนี้ดวงเศรษฐีอาจเป็นของคุณ เตรียมลุ้น <span class="hl-gold">Lucky Draw</span> ตลอดงาน!',
+          sub: 'ทุกท่านที่สแกนเข้างานแล้วมีสิทธิ์ลุ้นของรางวัลพิเศษมากมาย ขอให้โชคดีครับ!'
         },
         {
           tag: 'SHINE BRIGHT IN 2027',
-          title: 'เปล่งประกายรับปี 2027 ไปด้วยกัน ก้าวสู่ปีใหม่ด้วยพลังบวกแบบคูณสอง!',
-          sub: 'ขอให้ความสำเร็จและโชคดีอยู่เคียงข้างเพื่อนๆ ชาว True Operations ทุกท่านตลอดทั้งปี'
+          titleHtml: 'เปล่งประกายรับ <span class="hl-gold">ศักราชใหม่ 2027</span> ด้วยพลังบวกแบบคูณสอง!',
+          sub: 'ขอให้ความสำเร็จและโชคดีอยู่เคียงข้างเพื่อนๆ ชาว True Operations ทุกท่านตลอดทั้งปีครับ'
         },
         {
           tag: 'CHEERS TO OUR SUCCESS',
-          title: 'ฉลองให้กับทุกความสำเร็จที่ผ่านมา และเริ่มต้นปี 2027 อย่างสง่างาม!',
-          sub: 'ร่วมส่งต่อรอยยิ้มและเสียงหัวเราะให้ค่ำคืนนี้เป็นอีกหนึ่งความทรงจำที่ดีที่สุดของพวกเรา'
+          titleHtml: 'ฉลองให้กับทุกความสำเร็จ และเริ่มต้น <span class="hl-gold">ปี 2027</span> อย่างสง่างาม!',
+          sub: 'ร่วมส่งต่อรอยยิ้มและเสียงหัวเราะให้ค่ำคืนนี้เป็นความทรงจำที่ดีที่สุดของพวกเราครับ'
         }
       ],
       personTemplates: [
-        (name, team) => ({
+        (safeName, safeTeam) => ({
           tag: 'WARM WELCOME • ยินดีต้อนรับ',
-          title: 'ขอต้อนรับ คุณ' + name + ' เข้าสู่งานปาร์ตี้ค่ำคืนนี้ครับ!',
-          sub: 'ตัวแทนพลังบวกจากทีม ' + team + ' เช็คอินเข้าสู่เวทีเรียบร้อย ขอให้โชคดีได้รางวัลใหญ่นะครับ'
+          titleHtml: 'ขอต้อนรับ <span class="hl-gold">คุณ' + safeName + '</span> เข้าสู่งานปาร์ตี้ค่ำคืนนี้ครับ!',
+          sub: 'ตัวแทนพลังบวกจากทีม ' + safeTeam + ' เช็คอินเข้าสู่เวทีเรียบร้อย ขอให้โชคดีได้รางวัลใหญ่นะครับ'
         }),
-        (name, team) => ({
+        (safeName, safeTeam) => ({
           tag: 'VIP GUEST ON STAGE',
-          title: 'สวัสดีครับ คุณ' + name + ' ดีใจที่ได้มาร่วมสนุกด้วยกันในคืนนี้!',
-          sub: 'เพื่อนๆ ทีม ' + team + ' พร้อมส่งเสียงเชียร์ลุ้น Lucky Draw ไปด้วยกันตลอดค่ำคืน'
+          titleHtml: 'สวัสดีครับ <span class="hl-gold">คุณ' + safeName + '</span> ดีใจที่ได้มาร่วมสนุกด้วยกันคืนนี้!',
+          sub: 'เพื่อนๆ ทีม ' + safeTeam + ' พร้อมส่งเสียงเชียร์ลุ้น Lucky Draw ไปด้วยกันตลอดค่ำคืนครับ'
         }),
-        (name, team) => ({
+        (safeName, safeTeam) => ({
           tag: 'SPARKLING MEMBER',
-          title: 'คุณ' + name + ' เช็คอินเข้าร่วมค่ำคืนสุดพิเศษเรียบร้อยแล้ว!',
-          sub: 'ขอบคุณสำหรับความทุ่มเทในทีม ' + team + ' ตลอดปีที่ผ่านมา ขอให้คืนนี้สนุกสุดเหวี่ยงครับ'
+          titleHtml: '<span class="hl-gold">คุณ' + safeName + '</span> เช็คอินเข้าร่วมค่ำคืนสุดพิเศษเรียบร้อยแล้ว!',
+          sub: 'ขอบคุณสำหรับความทุ่มเทในทีม ' + safeTeam + ' ตลอดปีที่ผ่านมา ขอให้คืนนี้สนุกสุดเหวี่ยงครับ'
         })
       ],
       teamTemplates: [
-        (team, count) => ({
+        (safeTeam, count) => ({
           tag: 'TEAM SPIRIT SPOTLIGHT',
-          title: 'เสียงปรบมือต้อนรับเพื่อนๆ จากทีม ' + team + '!',
+          titleHtml: 'เสียงปรบมือต้อนรับเพื่อนๆ จากทีม <span class="hl-gold">' + safeTeam + '</span>!',
           sub: 'ตบเท้าเช็คอินเข้างานกันอย่างคึกคัก (' + count + ' ท่านแล้ว) คืนนี้ขอให้ทีมนี้ดวงเฮงยกทีมครับ!'
         }),
-        (team) => ({
+        (safeTeam) => ({
           tag: 'POWER OF OPERATIONS',
-          title: 'พลังของทีม ' + team + ' ทำให้บรรยากาศในงานคืนนี้สดใสสุดๆ!',
+          titleHtml: 'พลังของทีม <span class="hl-gold">' + safeTeam + '</span> ทำให้ค่ำคืนนี้สดใสสุดๆ!',
           sub: 'ถ่ายรูปเช็คอินกับเพื่อนๆ แล้วเตรียมตัวลุ้นของรางวัลพิเศษบนเวทีด้วยกันนะครับ'
         })
       ]
@@ -527,13 +569,10 @@
       { empId: 'DEMO06', fullName: 'รอยยิ้มแห่งปี 2027', team: 'Operations Support', pictureUrl: '' }
     ];
 
-    /**
-     * สถานะหลักของระบบหน้าจอต้อนรับ
-     */
     const state = {
       isDemoMode: false,
       hasDoneFirstSync: false,
-      knownCheckedInMap: new Map(), // จำทุกคนที่เช็คอินแล้วตลอดคืน แม้ได้รางวัลไปแล้วก็ไม่หายจากจอ
+      knownCheckedInMap: new Map(),
       serverTotalCheckedIn: 0,
       failedAvatars: new Set(),
 
@@ -544,7 +583,7 @@
       isShowingArrival: false,
 
       greetingStep: 0,
-      lastGreetIndex: -1,
+      lastGreetIndex: 0,
 
       soundEnabled: true,
       audioCtx: null,
@@ -555,15 +594,14 @@
        1. เริ่มต้นระบบทั้งหมดเมื่อเปิดหน้าเว็บ
        ======================================================================== */
     document.addEventListener('DOMContentLoaded', () => {
-      document.getElementById('stageEventSubTitle').textContent = CONFIG.EVENT_NAME;
-      document.getElementById('bottomVenueLabel').textContent = CONFIG.VENUE_SUBTEXT;
+      document.getElementById('bottomVenueLabel').textContent = CONFIG.BOTTOM_SIGNATURE_TEXT;
 
       loadCachedAttendeesFromStorage();
       initSparkleCanvas();
       initFloatingOrbs();
       setupAutoHideControls();
+      restartGreetingProgressBar();
 
-      // เริ่มซิงก์ข้อมูลจริงจาก Google Sheets ทันที และซิงก์ซ้ำทุก 9 วินาที
       syncCheckedInAttendees(false);
       setInterval(() => {
         if (!state.isDemoMode) {
@@ -571,9 +609,27 @@
         }
       }, CONFIG.POLL_INTERVAL_MS);
 
-      // เริ่มระบบ AI หมุนเวียนข้อความต้อนรับทุก 6.5 วินาที
       setInterval(rotateAiWelcomeMessage, CONFIG.GREETING_INTERVAL_MS);
     });
+
+    function escapeHtml(str) {
+      return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function restartGreetingProgressBar() {
+      const bar = document.getElementById('greetingProgressBar');
+      if (!bar) return;
+      bar.style.transition = 'none';
+      bar.style.width = '0%';
+      void bar.offsetWidth;
+      bar.style.transition = 'width ' + CONFIG.GREETING_INTERVAL_MS + 'ms linear';
+      bar.style.width = '100%';
+    }
 
     /* ========================================================================
        2. ระบบซิงก์ข้อมูลผู้เช็คอินจริงจาก Google Apps Script
@@ -616,7 +672,6 @@
 
         const totalFromStats = Number((res.stats && res.stats.totalCheckedIn) || 0);
 
-        // หากแอดมินเคลียร์ชีทเริ่มงานใหม่ (ยอดเช็คอินเป็น 0) ให้ล้าง Cache เก่าอัตโนมัติ
         if (totalFromStats === 0) {
           state.knownCheckedInMap.clear();
           localStorage.removeItem(CONFIG.STORAGE_CACHE_KEY);
@@ -655,7 +710,6 @@
         saveCachedAttendeesToStorage();
         refreshOrbRosterAssignments();
 
-        // เด้งการ์ดต้อนรับเฉพาะคนที่เพิ่งสแกนเข้ามาใหม่ระหว่างเปิดจอ
         newlyArrived.slice(0, 5).forEach((vip) => enqueueVipArrival(vip));
         state.hasDoneFirstSync = true;
       } catch (err) {
@@ -702,7 +756,7 @@
     }
 
     /* ========================================================================
-       3. ระบบเหรียญโปรไฟล์ลอยรอบเวทีแบบไม่บังข้อความตรงกลาง (60fps Elliptical Halo)
+       3. ระบบเหรียญโปรไฟล์ลอยรอบเวที (60fps Elliptical Halo)
        ======================================================================== */
     function initFloatingOrbs() {
       const container = document.getElementById('floatingGalaxyLayer');
@@ -721,8 +775,8 @@
           '  </div>' +
           '</div>' +
           '<div class="orb-name-pill">' +
-          '  <p class="orb-name text-[11px] md:text-xs font-semibold text-white truncate"></p>' +
-          '  <p class="orb-team text-[9px] md:text-[10px] font-light text-champagne-light truncate"></p>' +
+          '  <p class="orb-name text-[11px] md:text-xs font-semibold text-white leading-normal py-[1px] truncate"></p>' +
+          '  <p class="orb-team text-[9px] md:text-[10px] font-normal text-champagne-light leading-normal py-[1px] truncate"></p>' +
           '</div>';
 
         container.appendChild(el);
@@ -813,7 +867,6 @@
         slot.el.style.transform =
           'translate3d(' + (x - 52).toFixed(1) + 'px, ' + (y - 52).toFixed(1) + 'px, 0)';
 
-        // กรณีคนเช็คอินมากกว่าจำนวนวงลอย (เช่น 50-300 คน) จะสลับคิวคนถัดไปขึ้นมาโชว์อย่างนุ่มนวล
         if (roster.length > CONFIG.MAX_FLOATING_ORBS && now - slot.lastSwapAt > 14000) {
           slot.lastSwapAt = now;
           slot.el.style.opacity = '0';
@@ -844,30 +897,39 @@
       let nextMsg = null;
 
       if (state.greetingStep === 1 && hasRealPeople) {
-        // โหมดทักทายรายบุคคลจากผู้ที่สแกนเช็คอินเข้างานจริง
         const p = realAttendees[Math.floor(Math.random() * realAttendees.length)];
         const tpl =
           AI_GREETING_POOL.personTemplates[
             Math.floor(Math.random() * AI_GREETING_POOL.personTemplates.length)
           ];
-        nextMsg = tpl(p.fullName, p.team || 'Operations');
+        nextMsg = tpl(escapeHtml(p.fullName), escapeHtml(p.team || 'Operations'));
       } else if (state.greetingStep === 3 && hasRealPeople) {
-        // โหมดส่งเสียงเชียร์รายทีมจากผู้ที่เช็คอินจริง
         const teamCounts = {};
         realAttendees.forEach((p) => {
           const t = p.team || 'Operations';
           teamCounts[t] = (teamCounts[t] || 0) + 1;
         });
         const teams = Object.keys(teamCounts);
-        const randomTeam = teams[Math.floor(Math.random() * teams.length)];
-        const tpl =
-          AI_GREETING_POOL.teamTemplates[
-            Math.floor(Math.random() * AI_GREETING_POOL.teamTemplates.length)
-          ];
-        nextMsg = tpl(randomTeam, teamCounts[randomTeam]);
+        if (teams.length >= 4 && Math.random() < 0.35) {
+          nextMsg = {
+            tag: 'TOGETHER WE SHINE',
+            titleHtml:
+              'รวมพลังหลากหลายทีมกว่า <span class="hl-gold">' +
+              teams.length +
+              ' สายงาน</span> ไว้ในค่ำคืนเดียว!',
+            sub: 'โอกาสดีที่จะได้ทักทายพูดคุยและส่งมอบคำอวยพรปีใหม่ให้เพื่อนต่างแผนกครับ'
+          };
+        } else {
+          const randomTeam = teams[Math.floor(Math.random() * teams.length)];
+          const tpl =
+            AI_GREETING_POOL.teamTemplates[
+              Math.floor(Math.random() * AI_GREETING_POOL.teamTemplates.length)
+            ];
+          nextMsg = tpl(escapeHtml(randomTeam), teamCounts[randomTeam]);
+        }
       } else if (state.greetingStep % 2 === 0) {
         const list = AI_GREETING_POOL.generalWelcome;
-        const idx = (state.lastGreetIndex + 1 + Math.floor(Math.random() * (list.length - 1))) % list.length;
+        const idx = (state.lastGreetIndex + 1) % list.length;
         state.lastGreetIndex = idx;
         nextMsg = list[idx];
       } else {
@@ -875,13 +937,15 @@
         nextMsg = list[Math.floor(Math.random() * list.length)];
       }
 
+      restartGreetingProgressBar();
       box.classList.add('greeting-hidden');
+
       setTimeout(() => {
         tagEl.textContent = nextMsg.tag;
-        titleEl.textContent = nextMsg.title;
+        titleEl.innerHTML = nextMsg.titleHtml;
         subEl.textContent = nextMsg.sub;
         box.classList.remove('greeting-hidden');
-      }, 460);
+      }, 430);
     }
 
     /* ========================================================================
