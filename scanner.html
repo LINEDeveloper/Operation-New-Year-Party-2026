@@ -59,6 +59,13 @@
       overflow-x: hidden;
     }
 
+    /* ปลดล็อกให้ช่องกรอกรหัสพนักงานแตะพิมพ์และวางข้อความบน iOS Safari / LINE ได้ 100% */
+    input,
+    textarea {
+      -webkit-user-select: text !important;
+      user-select: text !important;
+    }
+
     .glass-card {
       background: rgba(28, 28, 36, 0.85);
       backdrop-filter: blur(16px);
@@ -80,6 +87,10 @@
     }
     .btn-true-luxury:active:not(:disabled) {
       transform: scale(0.97);
+    }
+    .btn-true-luxury:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
     }
 
     .gold-badge {
@@ -255,7 +266,7 @@
       </div>
 
       <!-- Camera Scanner Box -->
-      <div class="glass-card rounded-3xl p-3.5 relative overflow-hidden">
+      <div id="cameraViewportBox" class="glass-card rounded-3xl p-3.5 relative overflow-hidden">
         <div class="flex items-center justify-between mb-2.5 px-1">
           <span class="text-xs font-semibold text-champagne-light">กล้องสแกน QR Code อัตโนมัติ</span>
           <div class="flex items-center gap-2">
@@ -269,7 +280,7 @@
             </button>
             <button
               type="button"
-              onclick="refreshStats()"
+              onclick="refreshStats(false)"
               class="text-[11px] px-2.5 py-1 rounded-lg bg-white/10 border border-white/15 text-silver hover:text-white"
             >
               รีเฟรชยอด
@@ -333,9 +344,13 @@
           <input
             type="text"
             id="manualEmpIdInput"
-            placeholder="พิมพ์รหัสพนักงาน เช่น EMP001"
+            placeholder="พิมพ์รหัสพนักงาน เช่น 90006323"
             autocomplete="off"
-            class="flex-1 bg-obsidian-950 border border-champagne/40 rounded-xl px-3.5 py-2.5 text-sm text-white placeholder:text-silver/45 uppercase focus:outline-none focus:border-champagne-light"
+            autocapitalize="characters"
+            autocorrect="off"
+            spellcheck="false"
+            enterkeyhint="done"
+            class="select-text flex-1 min-w-0 bg-obsidian-950 border border-champagne/40 rounded-xl px-3.5 py-2.5 text-sm text-white placeholder:text-silver/45 uppercase focus:outline-none focus:border-champagne-light"
           />
           <button
             type="submit"
@@ -374,10 +389,12 @@
       MAP_URL: 'https://maps.app.goo.gl/85FVz4J4Ai2xE8h88',
       STAFF_PIN: '2026',
 
-      // ตั้งค่าความเร็วหน้างาน
+      // ตั้งค่าความเร็วและความเสถียรหน้างาน
       SUCCESS_CARD_DURATION_MS: 1500, // แสดงการ์ดชื่อ 1.5 วินาทีแล้วสแกนต่อทันที
       DUPLICATE_CARD_DURATION_MS: 2200, // แสดงเตือนสีทองกรณีสแกนซ้ำ
       SAME_QR_COOLDOWN_MS: 4000, // กันกล้องอ่าน QR ใบเดิมซ้ำขณะดึงมือถือออก
+      KEEP_WARM_INTERVAL_MS: 240000, // อุ่นเซิร์ฟเวอร์ GAS ทุก 4 นาที ป้องกันอาการหมุนช้าจาก Cold Start
+      API_TIMEOUT_MS: 14000, // ป้องกันหน้าจอหมุนค้างถาวรกรณีสัญญาณเน็ตหลุด
       SESSION_PIN_KEY: 'NY2026_VERIFIED_STAFF_PIN'
     };
 
@@ -396,11 +413,13 @@
       audioCtx: null,
       lastScannedCode: '',
       lastScannedAt: 0,
+      keepWarmTimer: null,
+      wakeLockSentinel: null,
       recentScans: []
     };
 
     /**
-     * ตรวจสอบ sessionStorage เมื่อโหลดหน้าเว็บ (หากเคยปลดล็อก PIN แล้วเข้าหน้าสแกนทันที)
+     * ตรวจสอบ sessionStorage และผูก Event เมื่อโหลดหน้าเว็บ
      */
     document.addEventListener('DOMContentLoaded', async () => {
       // รองรับการกดคีย์บอร์ดตัวเลขในหน้า PIN
@@ -417,14 +436,57 @@
         }
       });
 
+      // พักการถอดรหัสภาพ QR ชั่วคราวขณะแตะช่องพิมพ์รหัสพนักงาน เพื่อให้มือถือพิมพ์ลื่นไม่หน่วง
+      const manualInput = document.getElementById('manualEmpIdInput');
+      if (manualInput) {
+        manualInput.addEventListener('focus', () => {
+          pauseScannerDecoding();
+        });
+        manualInput.addEventListener('blur', () => {
+          if (!scannerState.isBusy) {
+            resumeScannerDecoding();
+          }
+        });
+      }
+
+      // ขอ Screen Wake Lock คืนอัตโนมัติเมื่อสตาฟสลับแอปกลับมาหน้าสแกน
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible' && scannerState.verifiedPin) {
+          requestScreenWakeLock();
+        }
+      });
+
       const savedPin = sessionStorage.getItem(CONFIG.SESSION_PIN_KEY);
       if (savedPin && savedPin === String(CONFIG.STAFF_PIN)) {
         scannerState.verifiedPin = savedPin;
         unlockScannerUI();
-        await refreshStats();
+        await refreshStats(true);
         await startContinuousScanner();
       }
     });
+
+    /**
+     * ป้องกันหน้าจอมือถือสตาฟดับเองขณะถือสแกนหน้างาน (รองรับ iOS 16.4+ และ Android Chrome)
+     */
+    async function requestScreenWakeLock() {
+      try {
+        if ('wakeLock' in navigator && !scannerState.wakeLockSentinel) {
+          scannerState.wakeLockSentinel = await navigator.wakeLock.request('screen');
+          scannerState.wakeLockSentinel.addEventListener('release', () => {
+            scannerState.wakeLockSentinel = null;
+          });
+        }
+      } catch (_) {}
+    }
+
+    async function releaseScreenWakeLock() {
+      try {
+        if (scannerState.wakeLockSentinel) {
+          await scannerState.wakeLockSentinel.release();
+          scannerState.wakeLockSentinel = null;
+        }
+      } catch (_) {}
+    }
 
     /**
      * ========================================================================
@@ -453,12 +515,11 @@
         const now = ctx.currentTime;
 
         if (type === 'success') {
-          // เสียงติ๊ดสั้นคมชัด (VIP Gate Pass Beep)
           const osc = ctx.createOscillator();
           const gain = ctx.createGain();
           osc.type = 'sine';
-          osc.frequency.setValueAtTime(1046.5, now); // C6
-          osc.frequency.setValueAtTime(1318.5, now + 0.06); // E6
+          osc.frequency.setValueAtTime(1046.5, now);
+          osc.frequency.setValueAtTime(1318.5, now + 0.06);
           gain.gain.setValueAtTime(0.22, now);
           gain.gain.exponentialRampToValueAtTime(0.001, now + 0.16);
           osc.connect(gain);
@@ -466,7 +527,6 @@
           osc.start(now);
           osc.stop(now + 0.16);
         } else if (type === 'warning') {
-          // เสียงเตือน 2 จังหวะ (เช็คอินซ้ำ หรือยังไม่ได้ลงทะเบียน)
           [0, 0.14].forEach((offset) => {
             const osc = ctx.createOscillator();
             const gain = ctx.createGain();
@@ -480,7 +540,6 @@
             osc.stop(now + offset + 0.1);
           });
         } else {
-          // เสียงทุ้มแจ้งข้อผิดพลาด
           const osc = ctx.createOscillator();
           const gain = ctx.createGain();
           osc.type = 'sawtooth';
@@ -506,7 +565,7 @@
 
     /**
      * ========================================================================
-     * 2. STAFF PIN 4 หลัก & SESSION STORAGE
+     * 2. STAFF PIN 4 หลัก, SESSION STORAGE & KEEP-WARM HEARTBEAT
      * ========================================================================
      */
     function pressPinDigit(digit) {
@@ -544,7 +603,6 @@
     }
 
     async function verifyStaffPin(pin) {
-      // ตรวจสอบกับค่า CONFIG ในหน้าเว็บก่อน
       if (pin !== String(CONFIG.STAFF_PIN).trim()) {
         playBeep('error');
         document.getElementById('pinErrorMsg').textContent = 'รหัส Staff PIN ไม่ถูกต้อง กรุณาลองใหม่';
@@ -555,7 +613,6 @@
         return;
       }
 
-      // หากตั้งค่า GAS_WEB_APP_URL แล้ว ให้ตรวจสอบกับ Backend และดึงยอดผู้เข้าร่วมล่าสุดด้วย
       if (isApiConfigured()) {
         try {
           const res = await callGasApi({ action: 'verifyPin', pin: pin });
@@ -585,9 +642,23 @@
     function unlockScannerUI() {
       document.getElementById('pinLockScreen').classList.add('hidden');
       document.getElementById('scannerAppScreen').classList.remove('hidden');
+
+      requestScreenWakeLock();
+
+      // ส่งสัญญาณอุ่นเครื่อง Google Apps Script ทุก 4 นาที ป้องกัน Cold Start หน้างาน
+      clearInterval(scannerState.keepWarmTimer);
+      scannerState.keepWarmTimer = setInterval(() => {
+        if (!scannerState.isBusy && document.visibilityState === 'visible') {
+          refreshStats(true);
+        }
+      }, CONFIG.KEEP_WARM_INTERVAL_MS);
     }
 
     async function lockScannerSession() {
+      clearInterval(scannerState.keepWarmTimer);
+      scannerState.keepWarmTimer = null;
+      await releaseScreenWakeLock();
+
       sessionStorage.removeItem(CONFIG.SESSION_PIN_KEY);
       scannerState.verifiedPin = '';
       await stopContinuousScanner();
@@ -597,7 +668,7 @@
 
     /**
      * ========================================================================
-     * 3. CONTINUOUS CAMERA SCANNER (html5-qrcode)
+     * 3. CONTINUOUS CAMERA SCANNER & SMART CPU PAUSE/RESUME
      * ========================================================================
      */
     async function startContinuousScanner() {
@@ -623,12 +694,11 @@
           aspectRatio: 1.0
         };
 
-        // พยายามเปิดกล้องหลังเป็นค่าเริ่มต้น
         await scannerState.html5QrCode.start(
           { facingMode: 'environment' },
           qrConfig,
           onQrScanSuccess,
-          () => {} // ข้าม frame error ปกติระหว่างส่องหากล้อง
+          () => {}
         );
 
         scannerState.isScannerRunning = true;
@@ -638,9 +708,44 @@
       }
     }
 
+    function pauseScannerDecoding() {
+      try {
+        if (
+          scannerState.html5QrCode &&
+          scannerState.isScannerRunning &&
+          typeof scannerState.html5QrCode.getState === 'function' &&
+          scannerState.html5QrCode.getState() === 2
+        ) {
+          scannerState.html5QrCode.pause(false); // พักเฉพาะตัวถอดรหัส QR ภาพวิดีโอยังเดินสมูทปกติ
+        }
+      } catch (_) {}
+    }
+
+    function resumeScannerDecoding() {
+      try {
+        const manualInput = document.getElementById('manualEmpIdInput');
+        if (document.activeElement === manualInput) return;
+
+        if (
+          scannerState.html5QrCode &&
+          scannerState.isScannerRunning &&
+          typeof scannerState.html5QrCode.getState === 'function' &&
+          scannerState.html5QrCode.getState() === 3
+        ) {
+          scannerState.html5QrCode.resume();
+        }
+      } catch (_) {}
+    }
+
     async function stopContinuousScanner() {
       if (scannerState.html5QrCode && scannerState.isScannerRunning) {
         try {
+          if (
+            typeof scannerState.html5QrCode.getState === 'function' &&
+            scannerState.html5QrCode.getState() === 3
+          ) {
+            scannerState.html5QrCode.resume();
+          }
           await scannerState.html5QrCode.stop();
         } catch (e) {
           console.warn(e);
@@ -669,16 +774,12 @@
       }
     }
 
-    /**
-     * เมื่อส่องเจอ QR Code จากกล้อง
-     */
     function onQrScanSuccess(decodedText) {
       if (scannerState.isBusy) return;
 
       const empId = extractEmpId(decodedText);
       if (!empId) return;
 
-      // ป้องกันการอ่าน QR Code ใบเดิมซ้ำติดกันในเสี้ยววินาทีขณะพนักงานดึงมือถือออก
       const now = Date.now();
       if (
         empId.toUpperCase() === scannerState.lastScannedCode &&
@@ -693,9 +794,6 @@
       processCheckIn(empId);
     }
 
-    /**
-     * ดึงรหัสพนักงานจากข้อความใน QR Code (รองรับทั้งข้อความรหัสตรงๆ และแบบแนบ URL parameter)
-     */
     function extractEmpId(rawText) {
       const cleaned = String(rawText || '').trim();
       if (!cleaned) return '';
@@ -712,26 +810,56 @@
 
     /**
      * ========================================================================
-     * 4. CHECK-IN WORKFLOW & WALK-IN ONE-CLICK HANDLER
+     * 4. CHECK-IN WORKFLOW & MANUAL CHECK-IN ACCELERATION
      * ========================================================================
      */
     function submitManualCheckIn(event) {
       event.preventDefault();
       ensureAudioContext();
+      if (scannerState.isBusy) return;
+
       const input = document.getElementById('manualEmpIdInput');
-      const empId = input.value.trim();
-      if (!empId || scannerState.isBusy) return;
+      const empId = String(input.value || '').trim().toUpperCase();
+
+      if (!empId) {
+        playBeep('warning');
+        Swal.fire({
+          toast: true,
+          position: 'top',
+          icon: 'warning',
+          title: 'กรุณาพิมพ์รหัสพนักงานก่อนกด Check-in',
+          showConfirmButton: false,
+          timer: 1800
+        });
+        input.focus();
+        return;
+      }
 
       input.value = '';
+      input.blur(); // พับแป้นพิมพ์มือถือลงทันที
+
+      const camBox = document.getElementById('cameraViewportBox');
+      if (camBox) {
+        camBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+
       processCheckIn(empId);
+    }
+
+    function setManualButtonBusy(busy) {
+      const btn = document.getElementById('btnManualSubmit');
+      if (!btn) return;
+      btn.disabled = busy;
+      btn.textContent = busy ? 'รอสักครู่...' : 'Check-in';
     }
 
     async function processCheckIn(empId) {
       scannerState.isBusy = true;
+      pauseScannerDecoding();
       setScannerBadgeBusy(true);
+      setManualButtonBusy(true);
       document.getElementById('scanCheckingOverlay').classList.remove('hidden');
 
-      // ส่งเสียง Beep ทันทีที่จับภาพรหัสได้ตามข้อกำหนดหน้างาน
       playBeep('success');
 
       try {
@@ -773,7 +901,7 @@
           return;
         }
 
-        // กรณีที่ 3: ยังไม่ได้ลงทะเบียนร่วมงานมาก่อน -> แจ้งสตาฟชัดเจน พร้อมปุ่มลงทะเบียนหน้างานและเช็คอินในคลิกเดียว
+        // กรณีที่ 3: ยังไม่ได้ลงทะเบียนร่วมงานมาก่อน -> ปุ่มลงทะเบียนหน้างานและเช็คอินในคลิกเดียว
         if (res.code === 'NOT_REGISTERED_ATTENDING' && res.employee) {
           playBeep('warning');
           const emp = res.employee;
@@ -820,7 +948,7 @@
         await Swal.fire({
           icon: 'error',
           title: 'การเชื่อมต่อขัดข้อง',
-          text: err.message || 'ไม่สามารถติดต่อเซิร์ฟเวอร์ได้',
+          text: err.message || 'ไม่สามารถติดต่อเซิร์ฟเวอร์ได้ กรุณาลองอีกครั้ง',
           confirmButtonColor: '#E60012',
           confirmButtonText: 'ตกลง'
         });
@@ -828,9 +956,6 @@
       }
     }
 
-    /**
-     * ลงทะเบียนหน้างานและเช็คอินในคลิกเดียว (Walk-in Check-in)
-     */
     async function executeWalkInCheckIn(empId) {
       document.getElementById('scanCheckingOverlay').classList.remove('hidden');
       try {
@@ -866,13 +991,17 @@
         }
       } catch (err) {
         document.getElementById('scanCheckingOverlay').classList.add('hidden');
+        playBeep('error');
+        await Swal.fire({
+          icon: 'error',
+          title: 'การเชื่อมต่อขัดข้อง',
+          text: err.message || 'กรุณาลองเช็คอินอีกครั้ง',
+          confirmButtonColor: '#E60012'
+        });
         releaseScannerLock();
       }
     }
 
-    /**
-     * แสดงการ์ดผลลัพธ์บนกรอบกล้อง 1.5 วินาที (หรือ 2.2 วินาทีกรณีซ้ำ) แล้วปลดล็อกสแกนคนต่อไปอัตโนมัติ
-     */
     function showInstantCard({ variant, badge, name, meta, subTime, durationMs }) {
       const overlay = document.getElementById('instantResultOverlay');
       const card = document.getElementById('instantResultCard');
@@ -910,6 +1039,8 @@
       scannerState.isBusy = false;
       scannerState.lastScannedAt = Date.now();
       setScannerBadgeBusy(false);
+      setManualButtonBusy(false);
+      resumeScannerDecoding();
     }
 
     function setScannerBadgeBusy(busy) {
@@ -925,10 +1056,10 @@
 
     /**
      * ========================================================================
-     * 5. STATS, LOGS & API HELPERS
+     * 5. STATS, LOGS & RESILIENT API CLIENT (TIMEOUT + AUTO-RETRY)
      * ========================================================================
      */
-    async function refreshStats() {
+    async function refreshStats(silent = false) {
       if (!isApiConfigured() || !scannerState.verifiedPin) return;
       try {
         const res = await callGasApi({
@@ -939,7 +1070,7 @@
           updateStatsUI(res.stats);
         }
       } catch (e) {
-        console.warn('Stats refresh failed:', e);
+        if (!silent) console.warn('Stats refresh failed:', e);
       }
     }
 
@@ -1004,25 +1135,45 @@
       );
     }
 
-    async function callGasApi(payload) {
+    async function callGasApi(payload, retryCount = 1) {
       if (!isApiConfigured()) {
         throw new Error('กรุณาใส่ลิงก์ GAS_WEB_APP_URL ในส่วน CONFIG ของไฟล์ scanner.html');
       }
 
-      const response = await fetch(CONFIG.GAS_WEB_APP_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'text/plain;charset=utf-8'
-        },
-        body: JSON.stringify(payload),
-        redirect: 'follow'
-      });
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), CONFIG.API_TIMEOUT_MS);
 
-      if (!response.ok) {
-        throw new Error('HTTP Error ' + response.status);
+      try {
+        const response = await fetch(CONFIG.GAS_WEB_APP_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'text/plain;charset=utf-8'
+          },
+          body: JSON.stringify(payload),
+          redirect: 'follow',
+          signal: controller.signal
+        });
+        clearTimeout(timeoutId);
+
+        if (!response.ok) {
+          throw new Error('HTTP Error ' + response.status);
+        }
+
+        return await response.json();
+      } catch (err) {
+        clearTimeout(timeoutId);
+
+        // หากสัญญาณเน็ตมือถือสลับเสากะทันหัน (ไม่ใช่ Timeout 14 วินาที) ให้ส่งซ้ำอัตโนมัติทันที 1 ครั้ง
+        if (retryCount > 0 && err.name !== 'AbortError') {
+          await new Promise((r) => setTimeout(r, 350));
+          return await callGasApi(payload, retryCount - 1);
+        }
+
+        if (err.name === 'AbortError') {
+          throw new Error('สัญญาณอินเทอร์เน็ตตอบสนองช้า กรุณาสแกนหรือกดตรวจสอบอีกครั้ง');
+        }
+        throw err;
       }
-
-      return await response.json();
     }
 
     function escapeHtml(str) {
