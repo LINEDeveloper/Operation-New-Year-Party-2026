@@ -24,11 +24,21 @@
             prompt: ['Prompt', 'sans-serif']
           },
           colors: {
+            obsidian: {
+              950: '#121216',
+              900: '#1C1C24',
+              800: '#282834'
+            },
             truered: {
               DEFAULT: '#E60012',
-              dark: '#8F000B',
+              dark: '#7A000A',
               deep: '#680008'
-            }
+            },
+            champagne: {
+              DEFAULT: '#D4AF37',
+              light: '#F5D77F'
+            },
+            silver: '#B8B8C5'
           }
         }
       }
@@ -38,8 +48,11 @@
   <style>
     body {
       font-family: 'Prompt', sans-serif;
-      background-color: #EEF2F7;
-      color: #0F172A;
+      background-color: #121216;
+      background-image:
+        radial-gradient(circle at 50% -10%, rgba(230, 0, 18, 0.3) 0%, rgba(18, 18, 22, 0) 55%),
+        radial-gradient(circle at 90% 85%, rgba(212, 175, 55, 0.12) 0%, rgba(18, 18, 22, 0) 45%);
+      color: #FFFFFF;
       min-height: 100vh;
       -webkit-tap-highlight-color: transparent;
     }
@@ -49,40 +62,47 @@
       user-select: text !important;
     }
 
-    .hero-true-red {
-      background:
-        radial-gradient(circle at 85% 12%, rgba(255, 115, 95, 0.34) 0%, rgba(230, 0, 18, 0) 48%),
-        linear-gradient(145deg, #E60012 0%, #B8000E 58%, #7A000A 100%);
+    .header-true-luxury {
+      background: linear-gradient(135deg, #E60012 0%, #7A000A 100%);
       border-bottom: 2px solid #D4AF37;
+    }
+
+    .glass-card {
+      background: rgba(28, 28, 36, 0.84);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(212, 175, 55, 0.32);
+      box-shadow: 0 14px 35px rgba(0, 0, 0, 0.55);
     }
 
     /* ป้ายพื้นหลังสีทองเมทัลลิกตัวอักษรดำคมชัด (สำหรับวางบนพื้นแดงด้านบน) */
     .gold-pill-header {
-      background: linear-gradient(90deg, #D4AF37 0%, #F2D572 50%, #D4AF37 100%);
-      color: #14120E;
+      background: linear-gradient(90deg, #D4AF37 0%, #F5D77F 50%, #D4AF37 100%);
+      color: #121216;
       border: 1px solid rgba(255, 245, 200, 0.75);
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.24);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.32);
     }
 
-    /* ป้ายแท็บหมวดหมู่ของรางวัลที่เลือก (พื้นหลังสีทองเมทัลลิกบนการ์ดขาว) */
+    /* ป้ายแท็บหมวดหมู่ของรางวัลที่เลือก */
     .gold-pill-tab {
-      background: linear-gradient(90deg, #CFA630 0%, #F0D26E 50%, #CFA630 100%);
-      color: #14120E;
-      border: 1px solid #B88E22;
-      box-shadow: 0 4px 12px rgba(207, 166, 48, 0.28);
+      background: linear-gradient(90deg, #D4AF37 0%, #F5D77F 50%, #D4AF37 100%);
+      color: #121216;
+      border: 1px solid #F5D77F;
+      box-shadow: 0 4px 14px rgba(212, 175, 55, 0.28);
     }
 
     /* ป้ายหมวดของรางวัลย่อยในการ์ดแต่ละใบ */
     .gold-pill-tag {
-      background: linear-gradient(90deg, #D4AF37 0%, #F3D675 50%, #D4AF37 100%);
-      color: #14120E;
-      border: 1px solid #C49A27;
-      box-shadow: 0 2px 6px rgba(212, 175, 55, 0.2);
+      background: linear-gradient(90deg, #D4AF37 0%, #F5D77F 50%, #D4AF37 100%);
+      color: #121216;
+      border: 1px solid rgba(245, 215, 127, 0.7);
+      box-shadow: 0 2px 8px rgba(212, 175, 55, 0.22);
     }
 
     .prize-icon-ruby {
-      background: linear-gradient(140deg, #FF2A32 0%, #D90011 55%, #8F000B 100%);
-      box-shadow: 0 6px 16px rgba(230, 0, 18, 0.22);
+      background: linear-gradient(140deg, #FF2A32 0%, #D90011 55%, #7A000A 100%);
+      border: 1px solid rgba(212, 175, 55, 0.5);
+      box-shadow: 0 6px 16px rgba(230, 0, 18, 0.28);
     }
 
     .no-scrollbar::-webkit-scrollbar {
@@ -92,6 +112,21 @@
       -ms-overflow-style: none;
       scrollbar-width: none;
     }
+
+    /* SweetAlert2 Dark Luxury Theme */
+    div:where(.swal2-container) div:where(.swal2-popup) {
+      background: #1C1C24 !important;
+      border: 1px solid #D4AF37 !important;
+      border-radius: 1.25rem !important;
+      color: #FFFFFF !important;
+      font-family: 'Prompt', sans-serif !important;
+    }
+    div:where(.swal2-container) .swal2-title {
+      color: #F5D77F !important;
+    }
+    div:where(.swal2-container) .swal2-html-container {
+      color: #B8B8C5 !important;
+    }
   </style>
 </head>
 
@@ -99,7 +134,7 @@
   <!-- ==================================================================== -->
   <!-- HERO HEADER: โลโก้ True เด่นชัด + ป้ายพื้นหลังสีทอง + รองรับจอโปรเจ็คเตอร์ -->
   <!-- ==================================================================== -->
-  <header class="hero-true-red px-4 sm:px-6 pt-4 sm:pt-5 pb-11 sm:pb-12 text-white relative overflow-hidden">
+  <header class="header-true-luxury px-4 sm:px-6 pt-4 sm:pt-5 pb-11 sm:pb-12 text-white shadow-xl relative overflow-hidden">
     <div class="max-w-2xl lg:max-w-5xl mx-auto">
       <!-- แถวบน: โลโก้ True ขนาดสมดุล + ป้ายพื้นหลังสีทอง OFFICIAL WINNERS -->
       <div class="flex items-center justify-between gap-3">
@@ -107,11 +142,11 @@
           src="https://img2.pic.in.th/True--W9082df0ce2da3b92.png"
           alt="True"
           onerror="this.style.display='none'"
-          class="h-[42px] sm:h-[50px] lg:h-[56px] w-auto object-contain object-left -ml-1.5 sm:-ml-2 shrink-0 drop-shadow-[0_2px_8px_rgba(0,0,0,0.22)]"
+          class="h-[42px] sm:h-[50px] lg:h-[56px] w-auto object-contain object-left -ml-1.5 sm:-ml-2 shrink-0 drop-shadow-[0_2px_8px_rgba(0,0,0,0.28)]"
         />
 
         <div class="gold-pill-header inline-flex items-center gap-1.5 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full text-[10px] sm:text-xs font-extrabold tracking-wide uppercase whitespace-nowrap shrink-0">
-          <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#14120E] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1">
+          <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#121216] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1">
             <path stroke-linecap="round" stroke-linejoin="round" d="M8 21h8m-4-4v4m-5.2-9.6L5 11a4 4 0 01-3-3.87V6a1 1 0 011-1h3m11.2 6.4L19 11a4 4 0 003-3.87V6a1 1 0 00-1-1h-3M6 5h12v4a6 6 0 01-12 0V5z" />
           </svg>
           <span id="headerTotalBadgeText">OFFICIAL WINNERS • 251 PRIZES</span>
@@ -134,10 +169,10 @@
           type="button"
           onclick="fetchWinnersData(true)"
           title="แตะเพื่ออัปเดตข้อมูลล่าสุด"
-          class="w-full lg:w-auto lg:min-w-[390px] rounded-2xl bg-black/25 hover:bg-black/35 active:scale-[0.99] transition border border-[#F2D572]/35 px-3.5 py-2.5 sm:px-4 sm:py-3 flex items-center justify-between gap-3 text-left shrink-0"
+          class="w-full lg:w-auto lg:min-w-[390px] rounded-2xl bg-obsidian-950/60 hover:bg-obsidian-950/75 active:scale-[0.99] transition border border-champagne/50 px-3.5 py-2.5 sm:px-4 sm:py-3 flex items-center justify-between gap-3 text-left shrink-0"
         >
           <div class="flex items-center gap-2.5 min-w-0">
-            <span class="w-8 h-8 sm:w-9 sm:h-9 rounded-full gold-pill-tag flex items-center justify-center text-[#14120E] shrink-0">
+            <span class="w-8 h-8 sm:w-9 sm:h-9 rounded-full gold-pill-tag flex items-center justify-center text-[#121216] shrink-0">
               <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1">
                 <rect x="3" y="8" width="18" height="4" rx="1" />
                 <path d="M12 8v13M19 12v7a2 2 0 01-2 2H7a2 2 0 01-2-2v-7M7.5 8a2.5 2.5 0 010-5C10 3 12 8 12 8s2-5 4.5-5a2.5 2.5 0 010 5" />
@@ -145,7 +180,7 @@
             </span>
             <span class="text-xs sm:text-sm font-bold text-white truncate">
               ประกาศผลแล้ว
-              <span id="progressCountText" class="text-[#FDE047] font-extrabold">0 / 251</span>
+              <span id="progressCountText" class="text-champagne-light font-extrabold">0 / 251</span>
               รางวัล
             </span>
           </div>
@@ -161,13 +196,13 @@
   </header>
 
   <!-- ==================================================================== -->
-  <!-- SEARCH & FILTER WHITE CARD: กล่องค้นหาและป้ายแท็บหมวดของรางวัลสีทอง     -->
+  <!-- SEARCH & FILTER GLASS CARD: กล่องค้นหาและป้ายแท็บหมวดของรางวัลสีทอง     -->
   <!-- ==================================================================== -->
   <section class="max-w-2xl lg:max-w-5xl mx-auto px-3.5 sm:px-6 -mt-6 relative z-20">
-    <div class="bg-white rounded-[26px] p-4 sm:p-5 shadow-[0_10px_28px_rgba(15,23,42,0.08)] border border-slate-200/80 space-y-3">
+    <div class="glass-card rounded-[26px] p-4 sm:p-5 space-y-3">
       <!-- ช่องค้นหา -->
       <div class="relative">
-        <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg class="w-4 h-4 text-champagne-light absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35m1.85-5.15a7 7 0 11-14 0 7 7 0 0114 0z" />
         </svg>
         <input
@@ -176,13 +211,13 @@
           oninput="renderFilteredWinners()"
           placeholder="ค้นหารหัสพนักงาน, ชื่อ หรือชื่อรางวัล..."
           autocomplete="off"
-          class="w-full bg-[#F8FAFC] border border-slate-200 rounded-2xl pl-10 pr-9 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-[#D4AF37] focus:bg-white transition"
+          class="w-full bg-obsidian-950/90 border border-champagne/40 rounded-2xl pl-10 pr-9 py-2.5 text-sm text-white placeholder:text-silver/50 focus:outline-none focus:border-champagne-light transition"
         />
         <button
           type="button"
           id="btnClearSearch"
           onclick="clearSearchInput()"
-          class="hidden absolute right-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-slate-200/80 hover:bg-slate-300 text-slate-600 text-xs flex items-center justify-center"
+          class="hidden absolute right-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-white/10 hover:bg-white/20 text-silver hover:text-white text-xs flex items-center justify-center transition"
         >
           ✕
         </button>
@@ -190,7 +225,7 @@
 
       <!-- แถบคำค้นหาลัด (สร้างอัตโนมัติจากข้อมูลผู้โชคดีจริง) -->
       <div id="quickSearchRow" class="hidden items-center gap-1.5 overflow-x-auto no-scrollbar text-xs">
-        <span class="text-slate-400 shrink-0 mr-0.5">ลองค้นหา:</span>
+        <span class="text-silver shrink-0 mr-0.5">ลองค้นหา:</span>
         <div id="quickSearchChips" class="flex items-center gap-1.5 shrink-0"></div>
       </div>
 
@@ -213,46 +248,54 @@
   <main class="max-w-2xl lg:max-w-5xl mx-auto px-3.5 sm:px-6 pt-4">
     <!-- แถบข้อความสรุปจำนวนรางวัลในหมวดที่เลือก -->
     <div id="summaryHintRow" class="hidden items-center justify-between px-1 mb-3 text-xs">
-      <span id="filteredSummaryText" class="font-bold text-slate-600">
+      <span id="filteredSummaryText" class="font-bold text-champagne-light">
         แสดงหมวดนี้รวม 0 รางวัล
       </span>
       <button
         type="button"
         id="btnToggleAllCards"
         onclick="toggleAllPrizeCards()"
-        class="text-slate-500 hover:text-[#B48618] font-semibold transition"
+        class="text-silver hover:text-champagne-light font-medium transition"
       >
         แตะหัวการ์ดเพื่อย่อ/ขยายรายชื่อ
       </button>
     </div>
 
     <!-- Loading State -->
-    <div id="initialLoading" class="bg-white rounded-[26px] border border-slate-200/80 p-12 text-center space-y-3 shadow-sm">
-      <div class="w-10 h-10 rounded-full border-4 border-slate-200 border-t-[#E60012] animate-spin mx-auto"></div>
-      <p class="text-sm text-slate-600 font-semibold">กำลังดึงรายชื่อผู้โชคดีแบบ Real-time...</p>
+    <div id="initialLoading" class="glass-card rounded-[26px] p-12 text-center space-y-3">
+      <div class="w-11 h-11 rounded-full border-4 border-t-truered border-r-champagne-light border-b-transparent border-l-transparent animate-spin mx-auto"></div>
+      <p class="text-sm text-champagne-light font-medium">กำลังดึงรายชื่อผู้โชคดีแบบ Real-time...</p>
     </div>
 
     <!-- รายการการ์ดของรางวัล (แบบที่ 2: ยุบ/ขยายรายชื่อ) -->
     <div id="winnersContainer" class="hidden space-y-3.5"></div>
 
     <!-- Empty State -->
-    <div id="emptyStateBox" class="hidden bg-white rounded-[26px] border border-slate-200/80 p-9 text-center space-y-2.5 shadow-sm">
-      <div class="w-14 h-14 rounded-2xl prize-icon-ruby mx-auto flex items-center justify-center text-[#FDE047]">
+    <div id="emptyStateBox" class="hidden glass-card rounded-[26px] p-9 text-center space-y-2.5">
+      <div class="w-14 h-14 rounded-2xl prize-icon-ruby mx-auto flex items-center justify-center text-champagne-light">
         <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9">
           <path stroke-linecap="round" stroke-linejoin="round" d="M8 21h8m-4-4v4m-5.2-9.6L5 11a4 4 0 01-3-3.87V6a1 1 0 011-1h3m11.2 6.4L19 11a4 4 0 003-3.87V6a1 1 0 00-1-1h-3M6 5h12v4a6 6 0 01-12 0V5z" />
         </svg>
       </div>
-      <h2 id="emptyStateTitle" class="text-base font-extrabold text-slate-800 pt-1">
+      <h2 id="emptyStateTitle" class="text-base font-bold text-champagne-light pt-1">
         ยังไม่มีรายชื่อผู้ได้รับรางวัลในขณะนี้
       </h2>
-      <p id="emptyStateDesc" class="text-xs text-slate-500 leading-relaxed max-w-xs mx-auto">
+      <p id="emptyStateDesc" class="text-xs text-silver leading-relaxed max-w-xs mx-auto">
         รายชื่อผู้โชคดีจะแสดงผลบนหน้านี้แบบ Real-time ทันทีที่มีการยืนยันรับรางวัลบนเวที
       </p>
     </div>
   </main>
 
-  <footer class="max-w-2xl lg:max-w-5xl mx-auto px-4 mt-8 text-center text-[11px] text-slate-400">
-    อัปเดตข้อมูลอัตโนมัติทุก 30 วินาที • Operations New Year Party 2027
+  <!-- ==================================================================== -->
+  <!-- FOOTER: ข้อมูลอัปเดตอัตโนมัติ + ชื่อทีมผู้พัฒนาระบบ                      -->
+  <!-- ==================================================================== -->
+  <footer class="max-w-2xl lg:max-w-5xl mx-auto px-4 mt-10 text-center space-y-1.5">
+    <p class="text-[11px] text-silver/65">
+      อัปเดตข้อมูลอัตโนมัติทุก 30 วินาที • Operations New Year Party 2027
+    </p>
+    <p class="text-xs font-medium text-champagne-light/85 tracking-wide">
+      พัฒนาระบบ : Channel Academy &amp; Communication
+    </p>
   </footer>
 
   <!-- ==================================================================== -->
@@ -261,7 +304,7 @@
   <div
     id="prizeLightboxModal"
     onclick="closePrizeLightbox()"
-    class="hidden fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-sm flex items-center justify-center p-4"
+    class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4"
   >
     <div class="relative max-w-md w-full text-center space-y-3" onclick="event.stopPropagation()">
       <button
@@ -271,10 +314,10 @@
       >
         ✕
       </button>
-      <div class="rounded-3xl overflow-hidden bg-white p-3 shadow-2xl">
+      <div class="rounded-3xl overflow-hidden bg-obsidian-900 border border-champagne/50 p-3 shadow-2xl">
         <img id="lightboxImgEl" src="" alt="" class="w-full max-h-[65vh] object-contain mx-auto rounded-2xl" />
       </div>
-      <p id="lightboxCaptionEl" class="text-sm font-bold text-white px-2"></p>
+      <p id="lightboxCaptionEl" class="text-sm font-bold text-champagne-light px-2"></p>
     </div>
   </div>
 
@@ -430,8 +473,8 @@
         statusTextEl.className = 'text-emerald-300 font-semibold';
         statusTextEl.textContent = timePart ? 'อัปเดต ' + timePart : 'กำลังประกาศผลสด';
       } else {
-        dotEl.className = 'w-2.5 h-2.5 rounded-full bg-[#FDE047]';
-        statusTextEl.className = 'text-[#FDE047] font-medium';
+        dotEl.className = 'w-2.5 h-2.5 rounded-full bg-champagne-light';
+        statusTextEl.className = 'text-champagne-light font-medium';
         statusTextEl.textContent = 'รอเริ่มจับรางวัล';
       }
     }
@@ -490,7 +533,7 @@
           const active = currentQuery.toLowerCase() === chip.toLowerCase();
           const cls = active
             ? 'gold-pill-tag font-bold'
-            : 'bg-[#F1F5F9] border border-transparent text-slate-600 hover:bg-slate-200/70 font-medium';
+            : 'bg-obsidian-950/80 border border-white/15 text-silver hover:text-white hover:border-champagne/50 font-medium';
           return (
             '<button type="button" data-chip="' +
             escapeHtml(chip) +
@@ -547,7 +590,7 @@
           const isSelected = boardState.selectedGroup === item.key;
           const btnClass = isSelected
             ? 'gold-pill-tab px-4 py-2 rounded-full text-xs font-extrabold shrink-0 transition'
-            : 'px-4 py-2 rounded-full text-xs font-semibold bg-[#F8FAFC] border border-slate-200 text-slate-700 hover:border-[#D4AF37]/70 hover:bg-[#FFFDF6] shrink-0 transition';
+            : 'px-4 py-2 rounded-full text-xs font-medium bg-obsidian-950/80 border border-white/15 text-silver hover:text-white hover:border-champagne/50 shrink-0 transition';
           return (
             '<button type="button" data-group="' +
             escapeHtml(item.key) +
@@ -626,14 +669,14 @@
         text.includes('gadget')
       ) {
         return (
-          '<svg class="w-7 h-7 sm:w-8 sm:h-8 text-[#FDE047]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9">' +
+          '<svg class="w-7 h-7 sm:w-8 sm:h-8 text-champagne-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9">' +
           '<path stroke-linecap="round" stroke-linejoin="round" d="M8 21h8m-4-4v4m-5.2-9.6L5 11a4 4 0 01-3-3.87V6a1 1 0 011-1h3m11.2 6.4L19 11a4 4 0 003-3.87V6a1 1 0 00-1-1h-3M6 5h12v4a6 6 0 01-12 0V5z" />' +
           '</svg>'
         );
       }
 
       return (
-        '<svg class="w-7 h-7 sm:w-8 sm:h-8 text-[#FDE047]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9">' +
+        '<svg class="w-7 h-7 sm:w-8 sm:h-8 text-champagne-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9">' +
         '<rect x="3" y="8" width="18" height="4" rx="1" />' +
         '<path stroke-linecap="round" stroke-linejoin="round" d="M12 8v13M19 12v7a2 2 0 01-2 2H7a2 2 0 01-2-2v-7M7.5 8a2.5 2.5 0 010-5C10 3 12 8 12 8s2-5 4.5-5a2.5 2.5 0 010 5" />' +
         '</svg>'
@@ -649,7 +692,7 @@
     }
 
     /**
-     * แสดงผลการ์ดรางวัลแบบที่ 2 (ป้ายหมวดพื้นหลังสีทองเมทัลลิก + ตารางรายชื่อปรับตามขนาดจอ)
+     * แสดงผลการ์ดรางวัลแบบที่ 2 บนโทนสี Obsidian Glass & Champagne Gold
      */
     function renderFilteredWinners() {
       const query = document.getElementById('searchInput').value.trim().toLowerCase();
@@ -773,7 +816,7 @@
               escapeHtml(bucket.customImageUrl) +
               '" data-title="' +
               escapeHtml(bucket.prizeName) +
-              '" onclick="openPrizeLightbox(event, this.dataset.url, this.dataset.title)" class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl overflow-hidden shrink-0 relative border border-slate-200 bg-slate-50 cursor-zoom-in">' +
+              '" onclick="openPrizeLightbox(event, this.dataset.url, this.dataset.title)" class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl overflow-hidden shrink-0 relative border border-champagne/55 bg-obsidian-950 cursor-zoom-in">' +
               '<img src="' +
               escapeHtml(bucket.customImageUrl) +
               '" alt="' +
@@ -801,27 +844,27 @@
                 query.length > 0 &&
                 [w.fullName, w.empId, w.team].join(' ').toLowerCase().includes(query);
               const rowCls = isMatched
-                ? 'bg-[#FFFDF5] border-[#D4AF37]'
-                : 'bg-white border-slate-200/80';
+                ? 'bg-champagne/15 border-champagne-light'
+                : 'bg-obsidian-900/90 border-white/10 hover:border-champagne/35';
               const wonTimeStr = formatWinnerTime(w);
 
               return (
                 '<div class="rounded-2xl border ' +
                 rowCls +
-                ' px-3.5 py-3 sm:px-4 flex items-center justify-between gap-2.5">' +
+                ' px-3.5 py-3 sm:px-4 flex items-center justify-between gap-2.5 transition">' +
                 '<div class="min-w-0 flex-1">' +
-                '<p class="text-sm sm:text-[15px] font-bold text-slate-900 leading-snug truncate">' +
+                '<p class="text-sm sm:text-[15px] font-bold text-white leading-snug py-[1px] truncate">' +
                 escapeHtml(w.fullName) +
                 '</p>' +
-                '<p class="text-xs text-slate-500 mt-0.5 truncate">' +
-                'รหัส ' +
+                '<p class="text-xs text-silver mt-0.5 truncate">' +
+                'รหัส <span class="text-champagne-light font-semibold">' +
                 escapeHtml(w.empId) +
-                ' • ' +
+                '</span> • ' +
                 escapeHtml(w.team || '-') +
                 '</p>' +
                 '</div>' +
                 (wonTimeStr
-                  ? '<span class="text-[11px] text-slate-400 font-medium shrink-0">' +
+                  ? '<span class="text-[11px] text-silver/75 font-medium shrink-0">' +
                     escapeHtml(wonTimeStr) +
                     '</span>'
                   : '') +
@@ -831,32 +874,32 @@
             .join('');
 
           return (
-            '<article class="bg-white rounded-[26px] border border-slate-200/90 shadow-[0_6px_20px_rgba(15,23,42,0.04)] overflow-hidden transition hover:border-[#D4AF37]/60">' +
+            '<article class="glass-card rounded-[26px] overflow-hidden transition hover:border-champagne/70">' +
             // ส่วนหัวการ์ดรางวัล (แตะเพื่อย่อ/ขยาย)
             '<button type="button" data-card-key="' +
             escapeHtml(bucket.key) +
-            '" onclick="togglePrizeCard(this.dataset.cardKey)" class="w-full p-4 sm:p-5 flex items-center gap-3.5 text-left hover:bg-slate-50/70 transition">' +
+            '" onclick="togglePrizeCard(this.dataset.cardKey)" class="w-full p-4 sm:p-5 flex items-center gap-3.5 text-left hover:bg-white/[0.04] transition">' +
             leftMediaHtml +
             '<div class="min-w-0 flex-1">' +
             '<div class="flex flex-wrap items-center gap-2">' +
             '<span class="gold-pill-tag px-3 py-0.5 rounded-full text-[11px] font-extrabold">' +
             escapeHtml(bucket.prizeGroup) +
             '</span>' +
-            '<span class="text-xs font-extrabold text-[#E60012]">' +
+            '<span class="text-xs font-extrabold text-[#FF4D58]">' +
             count.toLocaleString() +
             ' รางวัล</span>' +
             '</div>' +
-            '<h3 class="text-[15px] sm:text-[17px] font-extrabold text-slate-900 mt-1 leading-snug break-words">' +
+            '<h3 class="text-[15px] sm:text-[17px] font-extrabold text-white mt-1 leading-snug py-[1px] break-words">' +
             escapeHtml(bucket.prizeName) +
             '</h3>' +
-            '<p class="text-xs text-slate-500 mt-0.5">' +
+            '<p class="text-xs text-silver mt-0.5">' +
             (isOpen
               ? 'แตะเพื่อย่อรายชื่อผู้โชคดี'
               : 'แตะเพื่อดูรายชื่อผู้โชคดีทั้ง ' + count.toLocaleString() + ' ท่าน') +
             '</p>' +
             '</div>' +
             '<span class="w-8 h-8 rounded-full ' +
-            (isOpen ? 'gold-pill-tag' : 'bg-[#F1F5F9] text-slate-600') +
+            (isOpen ? 'gold-pill-tag' : 'bg-white/10 border border-white/15 text-silver') +
             ' flex items-center justify-center shrink-0 transition">' +
             '<svg class="w-3.5 h-3.5 transition-transform duration-200 ' +
             (isOpen ? '' : 'rotate-180') +
@@ -868,7 +911,7 @@
             // ส่วนรายการผู้โชคดีด้านล่าง
             '<div class="' +
             (isOpen ? '' : 'hidden ') +
-            'border-t border-slate-100 bg-[#FAFBFD] px-3.5 pb-3.5 pt-3 sm:px-4 sm:pb-4">' +
+            'border-t border-champagne/20 bg-obsidian-950/65 px-3.5 pb-3.5 pt-3 sm:px-4 sm:pb-4">' +
             '<div class="grid ' +
             gridColsClass +
             ' gap-2.5">' +
