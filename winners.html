@@ -3,19 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Hall of Winners | Operations New Year Party 2027</title>
+  <title>Hall of Winners | Operations New Year Party 2027 (Preview v2)</title>
 
-  <!-- Google Fonts: Prompt -->
+  <!-- โหลดฟอนต์ Google Fonts: Prompt (300–800) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
 
-  <!-- Tailwind CSS -->
+  <!-- โหลด Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- SweetAlert2 -->
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+  <!-- ตั้งค่าสีธีม Obsidian Dark Luxury & True Red & Champagne Gold -->
   <script>
     tailwind.config = {
       theme: {
@@ -44,6 +42,1393 @@
       }
     };
   </script>
+
+  <style>
+    /* ตั้งค่าพื้นฐานและการเลื่อนหน้าจอแบบนุ่มนวล */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Prompt', sans-serif;
+      background-color: #07070A;
+      color: #FFFFFF;
+      min-height: 100vh;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    input {
+      -webkit-user-select: text !important;
+      user-select: text !important;
+    }
+
+    /* พื้นหลังหลักของหน้า winners.html โทน Obsidian Dark Luxury (เหมือนต้นฉบับ 100%) */
+    .obsidian-page-bg {
+      background-color: #121216;
+      background-image:
+        radial-gradient(circle at 50% -10%, rgba(230, 0, 18, 0.3) 0%, rgba(18, 18, 22, 0) 55%),
+        radial-gradient(circle at 90% 85%, rgba(212, 175, 55, 0.12) 0%, rgba(18, 18, 22, 0) 45%);
+      color: #FFFFFF;
+    }
+
+    /* ส่วนหัวสีแดงทรูตัดขอบล่างสีทองแชมเปญ */
+    .header-true-luxury {
+      background: linear-gradient(135deg, #E60012 0%, #7A000A 100%);
+      border-bottom: 2px solid #D4AF37;
+    }
+
+    /* การ์ดกระจกโปร่งแสงขอบทองแชมเปญ */
+    .glass-card {
+      background: rgba(28, 28, 36, 0.84);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(212, 175, 55, 0.32);
+      box-shadow: 0 14px 35px rgba(0, 0, 0, 0.55);
+    }
+
+    /* ป้ายพื้นหลังสีทองเมทัลลิกตัวอักษรดำคมชัด */
+    .gold-pill-header {
+      background: linear-gradient(90deg, #D4AF37 0%, #F5D77F 50%, #D4AF37 100%);
+      color: #121216;
+      border: 1px solid rgba(255, 245, 200, 0.75);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.32);
+    }
+
+    .gold-pill-tab {
+      background: linear-gradient(90deg, #D4AF37 0%, #F5D77F 50%, #D4AF37 100%);
+      color: #121216;
+      border: 1px solid #F5D77F;
+      box-shadow: 0 4px 14px rgba(212, 175, 55, 0.28);
+    }
+
+    .gold-pill-tag {
+      background: linear-gradient(90deg, #D4AF37 0%, #F5D77F 50%, #D4AF37 100%);
+      color: #121216;
+      border: 1px solid rgba(245, 215, 127, 0.7);
+      box-shadow: 0 2px 8px rgba(212, 175, 55, 0.22);
+    }
+
+    .prize-icon-ruby {
+      background: linear-gradient(140deg, #FF2A32 0%, #D90011 55%, #7A000A 100%);
+      border: 1px solid rgba(212, 175, 55, 0.5);
+      box-shadow: 0 6px 16px rgba(230, 0, 18, 0.28);
+    }
+
+    /* ====================================================================
+       VISUAL UPGRADE 2: เอฟเฟกต์ปาดแสงทอง 24K & ประกายเพชร (Executive Gala)
+       สำหรับข้อความชื่องาน "Operations New Year Party 2027"
+       ==================================================================== */
+    .gala-title-wrap {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      animation: galaGlowBreath 3.6s ease-in-out infinite;
+    }
+
+    .gala-shimmer-title {
+      background-image: linear-gradient(
+        110deg,
+        #FFFFFF 0%,
+        #FFFFFF 34%,
+        #FFF6D1 43%,
+        #FDE047 48%,
+        #FFFFFF 50%,
+        #F5D77F 53%,
+        #FFF6D1 58%,
+        #FFFFFF 67%,
+        #FFFFFF 100%
+      );
+      background-size: 240% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+      animation: galaLightSweep 3.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+      padding-top: 2px;
+      padding-bottom: 2px;
+    }
+
+    @keyframes galaLightSweep {
+      0% {
+        background-position: 115% 50%;
+      }
+      78%, 100% {
+        background-position: -15% 50%;
+      }
+    }
+
+    @keyframes galaGlowBreath {
+      0%, 100% {
+        filter: drop-shadow(0 2px 10px rgba(245, 215, 127, 0.32));
+      }
+      45% {
+        filter: drop-shadow(0 2px 16px rgba(253, 224, 71, 0.56)) drop-shadow(0 0 6px rgba(255, 255, 255, 0.25));
+      }
+    }
+
+    /* ประกายดาวทอง 4 แฉก (24K Star Glints) กระพริบนุ่มนวล */
+    .gala-star-glint {
+      pointer-events: none;
+      animation: starTwinkle 2.8s ease-in-out infinite;
+    }
+    .gala-star-glint.delay-glint {
+      animation-delay: 1.4s;
+    }
+
+    @keyframes starTwinkle {
+      0%, 100% {
+        opacity: 0.3;
+        transform: scale(0.72) rotate(0deg);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.18) rotate(18deg);
+      }
+    }
+
+    /* เส้นแสงทองบางเฉียบด้านล่างชื่องาน วิ่งปาดแสงประสานจังหวะเดียวกับตัวอักษร */
+    .gala-specular-track {
+      position: relative;
+      height: 1.5px;
+      background: linear-gradient(90deg, rgba(245, 215, 127, 0.42) 0%, rgba(212, 175, 55, 0.18) 65%, rgba(212, 175, 55, 0) 100%);
+      overflow: hidden;
+      border-radius: 9999px;
+    }
+
+    .gala-specular-runner {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 38%;
+      background: linear-gradient(90deg, transparent 0%, #FFF9DB 45%, #FDE047 55%, transparent 100%);
+      box-shadow: 0 0 8px rgba(253, 224, 71, 0.9);
+      animation: galaLineSweep 3.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    }
+
+    @keyframes galaLineSweep {
+      0% {
+        left: -40%;
+        opacity: 0.95;
+      }
+      78%, 100% {
+        left: 105%;
+        opacity: 0;
+      }
+    }
+
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* เอฟเฟกต์กรอบชี้ตำแหน่งชั่วคราวเมื่อกดเลื่อนดู Footer */
+    .footer-focus-ring {
+      outline: 1px dashed rgba(245, 215, 127, 0.55);
+      outline-offset: 8px;
+      background-color: rgba(255, 255, 255, 0.02);
+    }
+  </style>
+</head>
+
+<body class="antialiased">
+  <!-- ==================================================================== -->
+  <!-- SIMULATOR CONTROL BAR (แถบควบคุมสำหรับทดสอบพรีวิว - ไม่มีในโค้ดจริง)    -->
+  <!-- ==================================================================== -->
+  <div class="sticky top-0 z-50 bg-black/95 backdrop-blur-md border-b border-white/15 px-4 py-2 text-xs shadow-2xl">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2.5">
+      <!-- 1. สลับขนาดหน้าจอ: คอม/โปรเจ็คเตอร์ vs มือถือ (390px) -->
+      <div class="flex flex-wrap items-center gap-2">
+        <div class="inline-flex items-center rounded-xl bg-obsidian-900 p-0.5 border border-white/15">
+          <button
+            type="button"
+            id="btnViewDesktop"
+            onclick="setViewportMode('DESKTOP')"
+            class="px-2.5 py-1.5 rounded-lg text-[11px] font-bold bg-champagne text-obsidian-950 transition"
+          >
+            🖥️ จอคอม / โปรเจ็คเตอร์
+          </button>
+          <button
+            type="button"
+            id="btnViewMobile"
+            onclick="setViewportMode('MOBILE')"
+            class="px-2.5 py-1.5 rounded-lg text-[11px] font-medium text-silver hover:text-white transition"
+          >
+            📱 จอมือถือ (390px)
+          </button>
+        </div>
+
+        <!-- 2. สลับสถานะข้อมูลจำลอง -->
+        <div class="inline-flex flex-wrap items-center rounded-xl bg-obsidian-900 p-0.5 border border-white/15">
+          <button
+            type="button"
+            id="btnStateFull"
+            onclick="setSimDataState('FULL_251')"
+            class="px-2.5 py-1.5 rounded-lg text-[11px] font-bold bg-white/15 text-white transition"
+          >
+            🏆 จำลองครบ 251 รางวัล
+          </button>
+          <button
+            type="button"
+            id="btnStateLive68"
+            onclick="setSimDataState('LIVE_68')"
+            class="px-2.5 py-1.5 rounded-lg text-[11px] font-medium text-silver hover:text-white transition"
+          >
+            ⚡ จำลองกำลังประกาศสด (68/251)
+          </button>
+          <button
+            type="button"
+            id="btnStateZero"
+            onclick="setSimDataState('ZERO_0')"
+            class="px-2.5 py-1.5 rounded-lg text-[11px] font-medium text-silver hover:text-white transition"
+          >
+            ⏳ รอเริ่มจับรางวัล (0/251)
+          </button>
+        </div>
+      </div>
+
+      <!-- 3. ปุ่มเลื่อนดู Footer + 4. ปุ่มคัดลอกโค้ดจริงพร้อมขึ้น GitHub -->
+      <div class="flex flex-wrap items-center gap-2">
+        <button
+          type="button"
+          onclick="scrollToFooterPreview()"
+          class="px-3 py-1.5 rounded-xl bg-obsidian-900 hover:bg-obsidian-800 border border-white/15 text-silver hover:text-white text-[11px] font-medium transition active:scale-95"
+        >
+          ⬇ เลื่อนดูส่วนท้าย (Footer)
+        </button>
+
+        <button
+          type="button"
+          onclick="copyProductionWinnersHtml()"
+          class="gold-pill-tab px-3.5 py-1.5 rounded-xl text-[11px] font-extrabold tracking-tight hover:brightness-105 active:scale-95 transition flex items-center gap-1.5"
+        >
+          <span>📋 คัดลอกโค้ดจริง (พร้อมขึ้น GitHub)</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- กล่องข้อความแจ้งเตือน Toast (แทน alert/confirm 100%) -->
+  <div
+    id="simToastBox"
+    role="status"
+    aria-live="polite"
+    class="fixed bottom-5 right-5 z-50 pointer-events-none opacity-0 translate-y-2 transition-all duration-200 bg-obsidian-900/95 border border-champagne/60 text-white px-4 py-3 rounded-2xl shadow-2xl text-xs flex items-center gap-2.5 max-w-sm"
+  >
+    <span id="simToastDot" class="w-2.5 h-2.5 rounded-full bg-emerald-400 shrink-0"></span>
+    <span id="simToastText" class="leading-relaxed font-medium">ดำเนินการเรียบร้อยแล้ว</span>
+  </div>
+
+  <!-- ==================================================================== -->
+  <!-- STAGE WRAPPER: รองรับสลับดูทั้งเต็มจอและกรอบจอมือถือ 390px             -->
+  <!-- ==================================================================== -->
+  <div id="previewOuterStage" class="w-full transition-all duration-300">
+    <div id="previewPageRoot" class="obsidian-page-bg min-h-[calc(100vh-49px)] w-full pb-14 transition-all duration-300">
+
+      <!-- ================================================================ -->
+      <!-- HERO HEADER: โลโก้ True ขยายสมดุลแบนเนอร์ + ชื่องานปาดแสงทอง 24K   -->
+      <!-- ================================================================ -->
+      <header id="heroHeaderSection" class="header-true-luxury px-4 sm:px-6 pt-4 sm:pt-5 pb-11 sm:pb-12 text-white shadow-xl relative overflow-hidden">
+        <div id="heroMaxContainer" class="max-w-2xl lg:max-w-5xl mx-auto">
+          <!-- แถวบน: โลโก้ True ความสูงเท่ากับแบนเนอร์ OFFICIAL WINNERS ด้านขวา -->
+          <div class="flex items-center justify-between gap-3">
+            <!-- VISUAL UPGRADE 1: Flex Wrapper คุมแนวความสูงไม่ให้ดันขอบบน-ล่าง แต่ขยายตัวอักษรขาวให้เท่าป้ายทอง -->
+            <div
+              id="trueLogoWrapper"
+              class="h-[38px] sm:h-[44px] lg:h-[48px] flex items-center overflow-visible shrink-0"
+            >
+              <img
+                id="trueLogoImg"
+                src="https://img2.pic.in.th/True--W9082df0ce2da3b92.png"
+                alt="True"
+                onerror="this.style.display='none';document.getElementById('trueWordmarkFallback').classList.remove('hidden');"
+                class="h-[62px] min-[390px]:h-[68px] sm:h-[80px] lg:h-[90px] w-auto max-w-none object-contain object-left -ml-2.5 sm:-ml-3.5 shrink-0 drop-shadow-[0_3px_10px_rgba(0,0,0,0.32)]"
+              />
+              <!-- Fallback คมชัดกรณีเครือข่ายบล็อกโฮสต์รูปภายนอก -->
+              <span id="trueWordmarkFallback" class="hidden font-extrabold text-[32px] sm:text-[38px] tracking-tighter leading-none text-white">
+                true
+              </span>
+            </div>
+
+            <!-- ป้ายทองเมทัลลิก OFFICIAL WINNERS ความสูงสมดุลกับตัวอักษรโลโก้ True -->
+            <div
+              id="officialWinnersBadge"
+              class="gold-pill-header h-[36px] sm:h-[42px] lg:h-[46px] inline-flex items-center gap-1.5 px-3 sm:px-4 rounded-full text-[10px] sm:text-xs font-extrabold tracking-wide uppercase whitespace-nowrap shrink-0"
+            >
+              <svg id="officialTrophySvg" class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#121216] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8 21h8m-4-4v4m-5.2-9.6L5 11a4 4 0 01-3-3.87V6a1 1 0 011-1h3m11.2 6.4L19 11a4 4 0 003-3.87V6a1 1 0 00-1-1h-3M6 5h12v4a6 6 0 01-12 0V5z" />
+              </svg>
+              <span id="headerTotalBadgeText">OFFICIAL WINNERS • 251 PRIZES</span>
+            </div>
+          </div>
+
+          <!-- แถวล่าง: ชื่องานปาดแสงทองอลังการ + แถบสถานะประกาศผลรางวัล -->
+          <div id="heroBottomFlex" class="mt-3.5 sm:mt-4 lg:mt-4 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 lg:gap-6">
+            <div class="min-w-0">
+              <!-- VISUAL UPGRADE 2: ชื่องานปาดแสงทอง 24K + ประกายดาว + เส้นแสงวิ่งประสานจังหวะ -->
+              <div class="gala-title-wrap">
+                <!-- ประกายดาวทองมุมซ้ายบน -->
+                <svg class="gala-star-glint w-3.5 h-3.5 text-[#FDE047] -ml-0.5 mr-1 -mt-2 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M12 1L14.6 9.4L23 12L14.6 14.6L12 23L9.4 14.6L1 12L9.4 9.4L12 1Z" />
+                </svg>
+
+                <h1
+                  id="eventTitleHeader"
+                  class="gala-shimmer-title text-[18px] sm:text-[21px] lg:text-[24px] font-extrabold tracking-tight leading-snug"
+                >
+                  Operations New Year Party 2027
+                </h1>
+
+                <!-- ประกายดาวทองมุมขวาบนของปี 2027 -->
+                <svg class="gala-star-glint delay-glint w-4 h-4 text-[#FFF6D1] ml-1 -mt-2.5 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M12 1L14.6 9.4L23 12L14.6 14.6L12 23L9.4 14.6L1 12L9.4 9.4L12 1Z" />
+                </svg>
+              </div>
+
+              <!-- เส้นลำแสงทองบางเฉียบวิ่งประสานจังหวะใต้ชื่องาน -->
+              <div id="titleLightTrack" class="gala-specular-track w-full max-w-[265px] sm:max-w-[320px] lg:max-w-[365px] mt-0.5">
+                <span class="gala-specular-runner"></span>
+              </div>
+
+              <p id="eventSubtitleText" class="text-[11.5px] sm:text-[13px] text-white/85 mt-1 leading-relaxed">
+                ตรวจสอบรายชื่อผู้โชคดีและของรางวัลประจำค่ำคืนสุดพิเศษ
+              </p>
+            </div>
+
+            <!-- แถบสถานะประกาศผลรางวัล (แตะเพื่อรีเฟรชข้อมูลได้) -->
+            <button
+              type="button"
+              id="statusActionBtn"
+              onclick="triggerPreviewRefresh()"
+              title="แตะเพื่ออัปเดตข้อมูลล่าสุด"
+              class="w-full lg:w-auto lg:min-w-[390px] rounded-2xl bg-obsidian-950/60 hover:bg-obsidian-950/75 active:scale-[0.99] transition border border-champagne/50 px-3.5 py-2.5 sm:px-4 sm:py-3 flex items-center justify-between gap-3 text-left shrink-0"
+            >
+              <div class="flex items-center gap-2.5 min-w-0">
+                <span id="statusGiftBadge" class="w-8 h-8 sm:w-9 sm:h-9 rounded-full gold-pill-tag flex items-center justify-center text-[#121216] shrink-0">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1">
+                    <rect x="3" y="8" width="18" height="4" rx="1" />
+                    <path d="M12 8v13M19 12v7a2 2 0 01-2 2H7a2 2 0 01-2-2v-7M7.5 8a2.5 2.5 0 010-5C10 3 12 8 12 8s2-5 4.5-5a2.5 2.5 0 010 5" />
+                  </svg>
+                </span>
+                <span id="progressTextWrap" class="text-xs sm:text-sm font-bold text-white truncate">
+                  ประกาศผลแล้ว
+                  <span id="progressCountText" class="text-champagne-light font-extrabold">251 / 251</span>
+                  รางวัล
+                </span>
+              </div>
+
+              <div class="flex items-center gap-1.5 shrink-0 text-xs font-bold">
+                <span id="statusDot" class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+                <span id="statusLabelText" class="text-emerald-300">ครบทุกรางวัล</span>
+                <span id="refreshSpinner" class="inline-block text-white/80 text-xs ml-0.5">↻</span>
+              </div>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- ================================================================ -->
+      <!-- SEARCH & FILTER GLASS CARD (-mt-6 เหมือนต้นฉบับ 100%)            -->
+      <!-- ================================================================ -->
+      <section id="searchOuterSection" class="max-w-2xl lg:max-w-5xl mx-auto px-3.5 sm:px-6 -mt-6 relative z-20">
+        <div id="searchInnerCard" class="glass-card rounded-[26px] p-4 sm:p-5 space-y-3">
+          <!-- ช่องค้นหา -->
+          <div class="relative">
+            <svg class="w-4 h-4 text-champagne-light absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35m1.85-5.15a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <input
+              type="text"
+              id="searchInput"
+              oninput="renderFilteredWinners()"
+              placeholder="ค้นหารหัสพนักงาน, ชื่อ หรือชื่อรางวัล..."
+              autocomplete="off"
+              class="w-full bg-obsidian-950/90 border border-champagne/40 rounded-2xl pl-10 pr-9 py-2.5 text-sm text-white placeholder:text-silver/50 focus:outline-none focus:border-champagne-light transition"
+            />
+            <button
+              type="button"
+              id="btnClearSearch"
+              onclick="clearSearchInput()"
+              class="hidden absolute right-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-white/10 hover:bg-white/20 text-silver hover:text-white text-xs flex items-center justify-center transition"
+            >
+              ✕
+            </button>
+          </div>
+
+          <!-- แถบคำค้นหาลัด ("ลองค้นหา:") -->
+          <div id="quickSearchRow" class="hidden items-center gap-1.5 overflow-x-auto no-scrollbar text-xs">
+            <span class="text-silver shrink-0 mr-0.5">ลองค้นหา:</span>
+            <div id="quickSearchChips" class="flex items-center gap-1.5 shrink-0"></div>
+          </div>
+
+          <!-- แถบปุ่มหมวดหมู่รางวัล (PrizeGroup Tabs พื้นหลังสีทองเมทัลลิกเมื่อเลือก) -->
+          <div id="groupFilterBar" class="flex items-center gap-2 overflow-x-auto no-scrollbar pt-0.5"></div>
+        </div>
+      </section>
+
+      <!-- ================================================================ -->
+      <!-- MAIN CONTENT: แถบสรุปหมวด + การ์ดรางวัลแบบที่ 2 (ย่อ/ขยายรายชื่อ) -->
+      <!-- ================================================================ -->
+      <main id="mainWinnersSection" class="max-w-2xl lg:max-w-5xl mx-auto px-3.5 sm:px-6 pt-4">
+        <!-- แถบข้อความสรุปจำนวนรางวัลในหมวดที่เลือก -->
+        <div id="summaryHintRow" class="hidden items-center justify-between px-1 mb-3 text-xs">
+          <span id="filteredSummaryText" class="font-bold text-champagne-light">
+            แสดงหมวดนี้รวม 251 รางวัล
+          </span>
+          <button
+            type="button"
+            id="btnToggleAllCards"
+            onclick="toggleAllPrizeCards()"
+            class="text-silver hover:text-champagne-light font-medium transition"
+          >
+            แตะหัวการ์ดเพื่อย่อ/ขยายรายชื่อ
+          </button>
+        </div>
+
+        <!-- รายการการ์ดของรางวัล (Type 2 Collapsible) -->
+        <div id="winnersContainer" class="space-y-3.5"></div>
+
+        <!-- Empty State -->
+        <div id="emptyStateBox" class="hidden glass-card rounded-[26px] p-9 text-center space-y-2.5">
+          <div class="w-14 h-14 rounded-2xl prize-icon-ruby mx-auto flex items-center justify-center text-champagne-light">
+            <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8 21h8m-4-4v4m-5.2-9.6L5 11a4 4 0 01-3-3.87V6a1 1 0 011-1h3m11.2 6.4L19 11a4 4 0 003-3.87V6a1 1 0 00-1-1h-3M6 5h12v4a6 6 0 01-12 0V5z" />
+            </svg>
+          </div>
+          <h2 id="emptyStateTitle" class="text-base font-bold text-champagne-light pt-1">
+            ยังไม่มีรายชื่อผู้ได้รับรางวัลในขณะนี้
+          </h2>
+          <p id="emptyStateDesc" class="text-xs text-silver leading-relaxed max-w-xs mx-auto">
+            รายชื่อผู้โชคดีจะแสดงผลบนหน้านี้แบบ Real-time ทันทีที่มีการยืนยันรับรางวัลบนเวที
+          </p>
+        </div>
+      </main>
+
+      <!-- ================================================================ -->
+      <!-- FOOTER: ฟอนต์ ขนาด น้ำหนัก และสีทั้ง 2 บรรทัดเหมือนกัน 100%        -->
+      <!-- ================================================================ -->
+      <footer id="pageFooterEl" class="max-w-2xl lg:max-w-5xl mx-auto px-4 mt-10 text-center space-y-1 rounded-2xl transition-all duration-300">
+        <p class="text-[11px] font-normal text-silver/65">
+          อัปเดตข้อมูลอัตโนมัติทุก 30 วินาที • Operations New Year Party 2027
+        </p>
+        <p class="text-[11px] font-normal text-silver/65">
+          พัฒนาระบบ : Channel Academy &amp; Communication
+        </p>
+      </footer>
+
+    </div>
+  </div>
+
+  <!-- ==================================================================== -->
+  <!-- LIGHTBOX MODAL: ซูมดูภาพของรางวัลขนาดใหญ่เมื่อแตะที่รูปสินค้า            -->
+  <!-- ==================================================================== -->
+  <div
+    id="prizeLightboxModal"
+    onclick="closePrizeLightbox()"
+    class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4"
+  >
+    <div class="relative max-w-md w-full text-center space-y-3" onclick="event.stopPropagation()">
+      <button
+        type="button"
+        onclick="closePrizeLightbox()"
+        class="ml-auto flex items-center justify-center w-9 h-9 rounded-full bg-white/15 border border-white/25 text-white text-sm hover:bg-white/25"
+      >
+        ✕
+      </button>
+      <div class="rounded-3xl overflow-hidden bg-obsidian-900 border border-champagne/50 p-3 shadow-2xl">
+        <img
+          id="lightboxImgEl"
+          src="https://placehold.co/600x600/1C1C24/F5D77F?text=Prize"
+          alt="ภาพของรางวัล"
+          onerror="this.src='https://placehold.co/600x600/1C1C24/F5D77F?text=Prize'"
+          class="w-full max-h-[65vh] object-contain mx-auto rounded-2xl"
+        />
+      </div>
+      <p id="lightboxCaptionEl" class="text-sm font-bold text-champagne-light px-2"></p>
+    </div>
+  </div>
+
+  <script>
+    /**
+     * ========================================================================
+     * CONFIG & SIMULATOR STATE
+     * ========================================================================
+     */
+    const CONFIG = {
+      LIFF_ID: '1656846002-2BvPPmrM',
+      GAS_WEB_APP_URL: 'https://script.google.com/macros/s/AKfycbzL9SNCIhSiDC2hgaQ8xSiVqbT9GpEFErE2UAJX5CM1tleziGBfLT2eGdASj7pD_eg/exec',
+      WINNERS_PAGE_URL: 'https://linedeveloper.github.io/Operation-New-Year-Party-2026/winners.html',
+      SOUVENIR_IMAGE_URL: 'https://images.unsplash.com/photo-1513885535751-8b9238bd345a?auto=format&fit=crop&w=1000&q=80',
+      DEFAULT_PRIZE_IMAGE_URL: 'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&w=800&q=80',
+      MAP_URL: 'https://maps.app.goo.gl/85FVz4J4Ai2xE8h88',
+      STAFF_PIN: '2026',
+
+      TOTAL_PRIZES_TARGET: 251,
+      AUTO_REFRESH_INTERVAL_MS: 30000,
+      AUTO_COLLAPSE_THRESHOLD: 5
+    };
+
+    const boardState = {
+      viewportMode: 'DESKTOP',  // 'DESKTOP' | 'MOBILE'
+      simDataState: 'FULL_251', // 'FULL_251' | 'LIVE_68' | 'ZERO_0'
+      winners: [],
+      prizeGroups: ['รางวัลใหญ่', 'ทองคำ & Gadget', 'เครื่องใช้ไฟฟ้า & IT', 'บัตรกำนัลพิเศษ'],
+      totalTarget: CONFIG.TOTAL_PRIZES_TARGET,
+      selectedGroup: 'ALL',
+      cardOpenState: new Map(),
+      renderedOpenMap: new Map(),
+      allExpandedOverride: null
+    };
+
+    /**
+     * สร้างข้อมูลผู้โชคดีจำลองสมจริงครบ 251 รางวัล ตามหมวดหมู่จริง:
+     * - รางวัลใหญ่ (6)
+     * - ทองคำ & Gadget (25)
+     * - เครื่องใช้ไฟฟ้า & IT (50)
+     * - บัตรกำนัลพิเศษ (170)
+     * รวมทั้งหมด = 251 รางวัล
+     */
+    const FULL_MOCK_DATA = (function buildMockDataset() {
+      const catalog = [
+        {
+          prizeGroup: 'รางวัลใหญ่',
+          prizeName: 'iPhone 16 Pro Max (256GB)',
+          count: 2,
+          prizeImageUrl: ''
+        },
+        {
+          prizeGroup: 'รางวัลใหญ่',
+          prizeName: 'iPad Air M2 Wi-Fi (256GB)',
+          count: 4,
+          prizeImageUrl: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&w=600&q=80'
+        },
+        {
+          prizeGroup: 'ทองคำ & Gadget',
+          prizeName: 'สร้อยคอทองคำแท้หนัก 1 สลึง',
+          count: 12,
+          prizeImageUrl: ''
+        },
+        {
+          prizeGroup: 'ทองคำ & Gadget',
+          prizeName: 'Apple Watch Series 10',
+          count: 13,
+          prizeImageUrl: 'https://images.unsplash.com/photo-1579586337278-3befd40fd17a?auto=format&fit=crop&w=600&q=80'
+        },
+        {
+          prizeGroup: 'เครื่องใช้ไฟฟ้า & IT',
+          prizeName: 'เครื่องฟอกอากาศอัจฉริยะ Dyson Purifier',
+          count: 20,
+          prizeImageUrl: ''
+        },
+        {
+          prizeGroup: 'เครื่องใช้ไฟฟ้า & IT',
+          prizeName: 'หูฟังไร้สาย AirPods 4 & Smart Home Set',
+          count: 30,
+          prizeImageUrl: ''
+        },
+        {
+          prizeGroup: 'บัตรกำนัลพิเศษ',
+          prizeName: 'Central Gift Voucher มูลค่า 2,000 บาท',
+          count: 60,
+          prizeImageUrl: ''
+        },
+        {
+          prizeGroup: 'บัตรกำนัลพิเศษ',
+          prizeName: 'True & Lotus\'s Gift Voucher 1,000 บาท',
+          count: 110,
+          prizeImageUrl: ''
+        }
+      ];
+
+      const firstNames = [
+        'พิมพ์ชนก', 'ชลธิชา', 'กิตติพงศ์', 'ธนภัทร', 'ณัฐวุฒิ',
+        'ศิริพร', 'วรัญญา', 'ปวีณา', 'อภิวัฒน์', 'กมลชนก',
+        'ธีรภัทร', 'สุพัตรา', 'นันทวัฒน์', 'จิราภรณ์', 'พงศกร',
+        'แพรวพรรณ', 'ศุภชัย', 'กัญญาณัฐ', 'อานนท์', 'ชญานิศ'
+      ];
+
+      const lastNames = [
+        'วัฒนากูล', 'วงศ์สุวรรณ', 'รัตนโชติ', 'ศรีสวัสดิ์', 'เจริญสุข',
+        'อัศวเมธี', 'เกียรติดำรง', 'ทองดี', 'พิพัฒน์ผล', 'ตั้งเจริญ',
+        'รุ่งเรืองกิจ', 'ชัยมงคล', 'เลิศวิทยา', 'สมบูรณ์ทรัพย์', 'อินทรโชติ'
+      ];
+
+      const opsTeams = [
+        'True Shop WW',
+        'dtac Shop',
+        'AM Retail Synergy',
+        'OM Postpaid',
+        'OM Prepaid',
+        'OM TOL',
+        'PBH',
+        'RSM',
+        'True Sphere & Branding Shop'
+      ];
+
+      const allWinners = [];
+      let seq = 0;
+
+      catalog.forEach((item) => {
+        for (let i = 0; i < item.count; i++) {
+          const empNum = seq === 0 ? 90001001 : 90001001 + seq * 17;
+          const fName = firstNames[seq % firstNames.length];
+          const lName = lastNames[(seq * 3 + i) % lastNames.length];
+          const team = seq === 0 ? 'True Shop WW' : opsTeams[(seq + i) % opsTeams.length];
+
+          const totalMinutes = 21 * 60 + 58 - Math.floor(seq * 0.52);
+          const hh = String(Math.floor(totalMinutes / 60)).padStart(2, '0');
+          const mm = String(totalMinutes % 60).padStart(2, '0');
+
+          allWinners.push({
+            empId: String(empNum),
+            fullName: 'คุณ' + fName + ' ' + lName,
+            team: team,
+            prizeGroup: item.prizeGroup,
+            prizeName: item.prizeName,
+            prizeImageUrl: item.prizeImageUrl,
+            wonAt: hh + ':' + mm
+          });
+          seq++;
+        }
+      });
+
+      return allWinners;
+    })();
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closePrizeLightbox();
+      });
+
+      applyViewportLayout();
+      setSimDataState('FULL_251');
+    });
+
+    /**
+     * ========================================================================
+     * 1. ระบบสลับมุมมองพรีวิว (เต็มจอคอม/โปรเจ็คเตอร์ vs กรอบจอมือถือ 390px)
+     * ========================================================================
+     */
+    function setViewportMode(mode) {
+      boardState.viewportMode = mode === 'MOBILE' ? 'MOBILE' : 'DESKTOP';
+
+      const btnDesktop = document.getElementById('btnViewDesktop');
+      const btnMobile = document.getElementById('btnViewMobile');
+
+      if (boardState.viewportMode === 'MOBILE') {
+        btnMobile.className = 'px-2.5 py-1.5 rounded-lg text-[11px] font-bold bg-champagne text-obsidian-950 transition';
+        btnDesktop.className = 'px-2.5 py-1.5 rounded-lg text-[11px] font-medium text-silver hover:text-white transition';
+      } else {
+        btnDesktop.className = 'px-2.5 py-1.5 rounded-lg text-[11px] font-bold bg-champagne text-obsidian-950 transition';
+        btnMobile.className = 'px-2.5 py-1.5 rounded-lg text-[11px] font-medium text-silver hover:text-white transition';
+      }
+
+      applyViewportLayout();
+      renderFilteredWinners();
+    }
+
+    /**
+     * บังคับคลาสให้แสดงสัดส่วนจอมือถือ 390px แม่นยำ 100% แม้กำลังเปิดดูบนจอคอมพิวเตอร์
+     */
+    function applyViewportLayout() {
+      const isMobile = boardState.viewportMode === 'MOBILE';
+
+      const outerStage = document.getElementById('previewOuterStage');
+      const pageRoot = document.getElementById('previewPageRoot');
+      const heroSection = document.getElementById('heroHeaderSection');
+      const heroContainer = document.getElementById('heroMaxContainer');
+      const logoWrapper = document.getElementById('trueLogoWrapper');
+      const logoImg = document.getElementById('trueLogoImg');
+      const officialBadge = document.getElementById('officialWinnersBadge');
+      const officialTrophy = document.getElementById('officialTrophySvg');
+      const heroBottomFlex = document.getElementById('heroBottomFlex');
+      const eventTitle = document.getElementById('eventTitleHeader');
+      const lightTrack = document.getElementById('titleLightTrack');
+      const eventSub = document.getElementById('eventSubtitleText');
+      const statusBtn = document.getElementById('statusActionBtn');
+      const statusGift = document.getElementById('statusGiftBadge');
+      const progressWrap = document.getElementById('progressTextWrap');
+      const searchOuter = document.getElementById('searchOuterSection');
+      const searchInner = document.getElementById('searchInnerCard');
+      const mainSection = document.getElementById('mainWinnersSection');
+      const footerEl = document.getElementById('pageFooterEl');
+
+      if (isMobile) {
+        outerStage.className = 'w-full py-5 px-2 transition-all duration-300';
+        pageRoot.className =
+          'obsidian-page-bg max-w-[390px] mx-auto rounded-[40px] border-[7px] border-[#262633] shadow-[0_26px_75px_rgba(0,0,0,0.88)] pb-12 overflow-hidden transition-all duration-300';
+        heroSection.className = 'header-true-luxury px-4 pt-4 pb-11 text-white shadow-xl relative overflow-hidden';
+        heroContainer.className = 'max-w-full mx-auto';
+        logoWrapper.className = 'h-[38px] flex items-center overflow-visible shrink-0';
+        logoImg.className = 'h-[68px] w-auto max-w-none object-contain object-left -ml-2.5 shrink-0 drop-shadow-[0_3px_10px_rgba(0,0,0,0.32)]';
+        officialBadge.className = 'gold-pill-header h-[36px] inline-flex items-center gap-1.5 px-3 rounded-full text-[10px] font-extrabold tracking-wide uppercase whitespace-nowrap shrink-0';
+        officialTrophy.className = 'w-3.5 h-3.5 text-[#121216] shrink-0';
+        heroBottomFlex.className = 'mt-3.5 flex flex-col gap-3';
+        eventTitle.className = 'gala-shimmer-title text-[18px] font-extrabold tracking-tight leading-snug';
+        lightTrack.className = 'gala-specular-track w-full max-w-[265px] mt-0.5';
+        eventSub.className = 'text-[11.5px] text-white/85 mt-1 leading-relaxed';
+        statusBtn.className = 'w-full rounded-2xl bg-obsidian-950/60 hover:bg-obsidian-950/75 active:scale-[0.99] transition border border-champagne/50 px-3.5 py-2.5 flex items-center justify-between gap-2.5 text-left shrink-0';
+        statusGift.className = 'w-8 h-8 rounded-full gold-pill-tag flex items-center justify-center text-[#121216] shrink-0';
+        progressWrap.className = 'text-xs font-bold text-white truncate';
+        searchOuter.className = 'max-w-full mx-auto px-3.5 -mt-6 relative z-20';
+        searchInner.className = 'glass-card rounded-[26px] p-4 space-y-3';
+        mainSection.className = 'max-w-full mx-auto px-3.5 pt-4';
+        footerEl.className = 'max-w-full mx-auto px-4 mt-10 text-center space-y-1 rounded-2xl transition-all duration-300';
+      } else {
+        outerStage.className = 'w-full transition-all duration-300';
+        pageRoot.className = 'obsidian-page-bg min-h-[calc(100vh-49px)] w-full pb-14 transition-all duration-300';
+        heroSection.className = 'header-true-luxury px-4 sm:px-6 pt-4 sm:pt-5 pb-11 sm:pb-12 text-white shadow-xl relative overflow-hidden';
+        heroContainer.className = 'max-w-2xl lg:max-w-5xl mx-auto';
+        logoWrapper.className = 'h-[38px] sm:h-[44px] lg:h-[48px] flex items-center overflow-visible shrink-0';
+        logoImg.className = 'h-[62px] min-[390px]:h-[68px] sm:h-[80px] lg:h-[90px] w-auto max-w-none object-contain object-left -ml-2.5 sm:-ml-3.5 shrink-0 drop-shadow-[0_3px_10px_rgba(0,0,0,0.32)]';
+        officialBadge.className = 'gold-pill-header h-[36px] sm:h-[42px] lg:h-[46px] inline-flex items-center gap-1.5 px-3 sm:px-4 rounded-full text-[10px] sm:text-xs font-extrabold tracking-wide uppercase whitespace-nowrap shrink-0';
+        officialTrophy.className = 'w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#121216] shrink-0';
+        heroBottomFlex.className = 'mt-3.5 sm:mt-4 lg:mt-4 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 lg:gap-6';
+        eventTitle.className = 'gala-shimmer-title text-[18px] sm:text-[21px] lg:text-[24px] font-extrabold tracking-tight leading-snug';
+        lightTrack.className = 'gala-specular-track w-full max-w-[265px] sm:max-w-[320px] lg:max-w-[365px] mt-0.5';
+        eventSub.className = 'text-[11.5px] sm:text-[13px] text-white/85 mt-1 leading-relaxed';
+        statusBtn.className = 'w-full lg:w-auto lg:min-w-[390px] rounded-2xl bg-obsidian-950/60 hover:bg-obsidian-950/75 active:scale-[0.99] transition border border-champagne/50 px-3.5 py-2.5 sm:px-4 sm:py-3 flex items-center justify-between gap-3 text-left shrink-0';
+        statusGift.className = 'w-8 h-8 sm:w-9 sm:h-9 rounded-full gold-pill-tag flex items-center justify-center text-[#121216] shrink-0';
+        progressWrap.className = 'text-xs sm:text-sm font-bold text-white truncate';
+        searchOuter.className = 'max-w-2xl lg:max-w-5xl mx-auto px-3.5 sm:px-6 -mt-6 relative z-20';
+        searchInner.className = 'glass-card rounded-[26px] p-4 sm:p-5 space-y-3';
+        mainSection.className = 'max-w-2xl lg:max-w-5xl mx-auto px-3.5 sm:px-6 pt-4';
+        footerEl.className = 'max-w-2xl lg:max-w-5xl mx-auto px-4 mt-10 text-center space-y-1 rounded-2xl transition-all duration-300';
+      }
+    }
+
+    /**
+     * ========================================================================
+     * 2. ระบบสลับสถานะข้อมูลจำลอง (ครบ 251 รางวัล / กำลังประกาศสด 68/251 / 0/251)
+     * ========================================================================
+     */
+    function setSimDataState(stateKey) {
+      boardState.simDataState = stateKey;
+      boardState.selectedGroup = 'ALL';
+      boardState.cardOpenState.clear();
+      boardState.allExpandedOverride = null;
+      document.getElementById('searchInput').value = '';
+
+      const btnFull = document.getElementById('btnStateFull');
+      const btnLive = document.getElementById('btnStateLive68');
+      const btnZero = document.getElementById('btnStateZero');
+
+      const activeCls = 'px-2.5 py-1.5 rounded-lg text-[11px] font-bold bg-white/15 text-white transition';
+      const idleCls = 'px-2.5 py-1.5 rounded-lg text-[11px] font-medium text-silver hover:text-white transition';
+
+      btnFull.className = stateKey === 'FULL_251' ? activeCls : idleCls;
+      btnLive.className = stateKey === 'LIVE_68' ? activeCls : idleCls;
+      btnZero.className = stateKey === 'ZERO_0' ? activeCls : idleCls;
+
+      if (stateKey === 'FULL_251') {
+        boardState.winners = FULL_MOCK_DATA.slice();
+        updateHeaderProgressUI('21:58');
+      } else if (stateKey === 'LIVE_68') {
+        // คัดเลือก 68 รางวัลจากหลายหมวดหมู่เพื่อจำลองบรรยากาศกำลังประกาศผลสดบนเวที
+        const liveSubset = []
+          .concat(FULL_MOCK_DATA.slice(0, 1))     // รางวัลใหญ่ 1 รางวัล
+          .concat(FULL_MOCK_DATA.slice(6, 13))    // ทองคำ 7 รางวัล
+          .concat(FULL_MOCK_DATA.slice(31, 51))   // เครื่องใช้ไฟฟ้า 20 รางวัล
+          .concat(FULL_MOCK_DATA.slice(81, 121)); // บัตรกำนัลพิเศษ 40 รางวัล (รวม 68 รางวัล)
+        boardState.winners = liveSubset;
+        updateHeaderProgressUI('20:35 น.');
+      } else {
+        boardState.winners = [];
+        updateHeaderProgressUI('');
+      }
+
+      renderQuickSearchSuggestions();
+      renderGroupFilterChips();
+      renderFilteredWinners();
+    }
+
+    function triggerPreviewRefresh() {
+      const spinner = document.getElementById('refreshSpinner');
+      spinner.classList.add('animate-spin');
+      setTimeout(() => {
+        spinner.classList.remove('animate-spin');
+        showSimToast('อัปเดตข้อมูลผู้โชคดีล่าสุดเรียบร้อยแล้ว (' + boardState.winners.length + ' / 251 รางวัล)');
+      }, 360);
+    }
+
+    function scrollToFooterPreview() {
+      const footer = document.getElementById('pageFooterEl');
+      if (!footer) return;
+      footer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      footer.classList.add('footer-focus-ring');
+      showSimToast('ส่วนท้าย (Footer): ทั้ง 2 บรรทัดใช้ฟอนต์และสี text-[11px] font-normal text-silver/65 เหมือนกัน 100%');
+      setTimeout(() => {
+        footer.classList.remove('footer-focus-ring');
+      }, 1600);
+    }
+
+    function showSimToast(message, isError = false) {
+      const box = document.getElementById('simToastBox');
+      const dot = document.getElementById('simToastDot');
+      const txt = document.getElementById('simToastText');
+
+      dot.className = isError
+        ? 'w-2.5 h-2.5 rounded-full bg-[#FF4D58] shrink-0'
+        : 'w-2.5 h-2.5 rounded-full bg-emerald-400 shrink-0';
+      txt.textContent = message;
+
+      box.classList.remove('opacity-0', 'translate-y-2');
+      box.classList.add('opacity-100', 'translate-y-0');
+
+      clearTimeout(window.__simToastTimer);
+      window.__simToastTimer = setTimeout(() => {
+        box.classList.add('opacity-0', 'translate-y-2');
+        box.classList.remove('opacity-100', 'translate-y-0');
+      }, 2800);
+    }
+
+    /**
+     * ========================================================================
+     * 3. ฟังก์ชันแสดงผล UI ของหน้า Hall of Winners
+     * ========================================================================
+     */
+    function updateHeaderProgressUI(updatedAtStr) {
+      const wonCount = boardState.winners.length;
+      const target = boardState.totalTarget;
+
+      document.getElementById('headerTotalBadgeText').textContent =
+        'OFFICIAL WINNERS • ' + target.toLocaleString() + ' PRIZES';
+      document.getElementById('progressCountText').textContent =
+        wonCount.toLocaleString() + ' / ' + target.toLocaleString();
+
+      const dotEl = document.getElementById('statusDot');
+      const statusTextEl = document.getElementById('statusLabelText');
+
+      if (wonCount >= target && target > 0) {
+        dotEl.className = 'w-2.5 h-2.5 rounded-full bg-emerald-400';
+        statusTextEl.className = 'text-emerald-300 font-bold';
+        statusTextEl.textContent = 'ครบทุกรางวัล';
+      } else if (wonCount > 0) {
+        dotEl.className = 'w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse';
+        statusTextEl.className = 'text-emerald-300 font-semibold';
+        statusTextEl.textContent = updatedAtStr ? 'อัปเดต ' + updatedAtStr : 'กำลังประกาศผลสด';
+      } else {
+        dotEl.className = 'w-2.5 h-2.5 rounded-full bg-champagne-light';
+        statusTextEl.className = 'text-champagne-light font-medium';
+        statusTextEl.textContent = 'รอเริ่มจับรางวัล';
+      }
+    }
+
+    function renderQuickSearchSuggestions() {
+      const row = document.getElementById('quickSearchRow');
+      const box = document.getElementById('quickSearchChips');
+
+      if (!boardState.winners || boardState.winners.length === 0) {
+        row.classList.add('hidden');
+        row.classList.remove('flex');
+        return;
+      }
+
+      const suggestions = [];
+      const addUnique = (val) => {
+        const clean = String(val || '').trim();
+        if (clean && !suggestions.includes(clean) && suggestions.length < 4) {
+          suggestions.push(clean);
+        }
+      };
+
+      if (boardState.winners[0] && boardState.winners[0].empId) {
+        addUnique(boardState.winners[0].empId);
+      }
+
+      const allPrizeText = boardState.winners.map((w) => w.prizeName || '').join(' ');
+      ['ทองคำ', 'iPhone', 'iPad', 'Dyson', 'Apple', 'Voucher'].forEach((kw) => {
+        if (allPrizeText.toLowerCase().includes(kw.toLowerCase())) {
+          addUnique(kw);
+        }
+      });
+
+      for (let i = 0; i < boardState.winners.length && suggestions.length < 4; i++) {
+        const teamName = String(boardState.winners[i].team || '').trim();
+        if (teamName && teamName !== '-' && teamName.length <= 22) {
+          addUnique(teamName);
+        }
+      }
+
+      row.classList.remove('hidden');
+      row.classList.add('flex');
+
+      const currentQuery = document.getElementById('searchInput').value.trim();
+      box.innerHTML = suggestions
+        .map((chip) => {
+          const active = currentQuery.toLowerCase() === chip.toLowerCase();
+          const cls = active
+            ? 'gold-pill-tag font-bold'
+            : 'bg-obsidian-950/80 border border-white/15 text-silver hover:text-white hover:border-champagne/50 font-medium';
+          return (
+            '<button type="button" data-chip="' +
+            escapeHtml(chip) +
+            '" onclick="applyQuickSearchChip(this.dataset.chip)" class="px-2.5 py-1 rounded-lg text-xs transition ' +
+            cls +
+            '">' +
+            escapeHtml(chip) +
+            '</button>'
+          );
+        })
+        .join('');
+    }
+
+    function applyQuickSearchChip(keyword) {
+      const input = document.getElementById('searchInput');
+      if (input.value.trim().toLowerCase() === String(keyword).toLowerCase()) {
+        input.value = '';
+      } else {
+        input.value = keyword;
+      }
+      renderQuickSearchSuggestions();
+      renderFilteredWinners();
+    }
+
+    function renderGroupFilterChips() {
+      const bar = document.getElementById('groupFilterBar');
+
+      const activeGroupSet = new Set(boardState.prizeGroups);
+      boardState.winners.forEach((w) => {
+        if (w.prizeGroup) activeGroupSet.add(w.prizeGroup);
+      });
+      const allGroups = Array.from(activeGroupSet);
+
+      if (boardState.selectedGroup !== 'ALL' && !allGroups.includes(boardState.selectedGroup)) {
+        boardState.selectedGroup = 'ALL';
+      }
+
+      const chipsHtml = [
+        {
+          key: 'ALL',
+          label: 'ทั้งหมด (' + boardState.winners.length.toLocaleString() + ')'
+        }
+      ]
+        .concat(
+          allGroups.map((grp) => {
+            const count = boardState.winners.filter((w) => w.prizeGroup === grp).length;
+            return { key: grp, label: grp + ' (' + count.toLocaleString() + ')' };
+          })
+        )
+        .map((item) => {
+          const isSelected = boardState.selectedGroup === item.key;
+          const btnClass = isSelected
+            ? 'gold-pill-tab px-4 py-2 rounded-full text-xs font-extrabold shrink-0 transition'
+            : 'px-4 py-2 rounded-full text-xs font-medium bg-obsidian-950/80 border border-white/15 text-silver hover:text-white hover:border-champagne/50 shrink-0 transition';
+          return (
+            '<button type="button" data-group="' +
+            escapeHtml(item.key) +
+            '" onclick="selectGroupFilter(this.dataset.group)" class="' +
+            btnClass +
+            '">' +
+            escapeHtml(item.label) +
+            '</button>'
+          );
+        })
+        .join('');
+
+      bar.innerHTML = chipsHtml;
+    }
+
+    function selectGroupFilter(groupKey) {
+      boardState.selectedGroup = groupKey;
+      renderGroupFilterChips();
+      renderFilteredWinners();
+    }
+
+    function clearSearchInput() {
+      document.getElementById('searchInput').value = '';
+      renderQuickSearchSuggestions();
+      renderFilteredWinners();
+    }
+
+    function togglePrizeCard(cardKey) {
+      const currentlyOpen = Boolean(boardState.renderedOpenMap.get(cardKey));
+      boardState.cardOpenState.set(cardKey, !currentlyOpen);
+      renderFilteredWinners();
+    }
+
+    function toggleAllPrizeCards() {
+      const anyClosed = Array.from(boardState.renderedOpenMap.values()).some((v) => !v);
+      boardState.allExpandedOverride = anyClosed;
+      boardState.cardOpenState.clear();
+      renderFilteredWinners();
+    }
+
+    function hasCustomPrizePhoto(url) {
+      const clean = String(url || '').trim();
+      if (clean.indexOf('https://') !== 0) return false;
+      if (clean.includes('photo-1549465220-1a8b9238cd48')) return false;
+      return true;
+    }
+
+    function handleCustomThumbError(imgEl) {
+      imgEl.classList.add('hidden');
+      const fallback = imgEl.parentElement ? imgEl.parentElement.querySelector('.ruby-svg-fallback') : null;
+      if (fallback) fallback.classList.remove('hidden');
+    }
+
+    function openPrizeLightbox(event, imgUrl, prizeTitle) {
+      if (event) event.stopPropagation();
+      if (!imgUrl) return;
+      document.getElementById('lightboxImgEl').src = imgUrl;
+      document.getElementById('lightboxCaptionEl').textContent = prizeTitle || '';
+      document.getElementById('prizeLightboxModal').classList.remove('hidden');
+    }
+
+    function closePrizeLightbox() {
+      document.getElementById('prizeLightboxModal').classList.add('hidden');
+    }
+
+    function getPrizeSvgIconHtml(prizeGroup, prizeName) {
+      const text = (String(prizeGroup || '') + ' ' + String(prizeName || '')).toLowerCase();
+      const iconCls = boardState.viewportMode === 'MOBILE' ? 'w-7 h-7' : 'w-7 h-7 sm:w-8 sm:h-8';
+
+      if (
+        text.includes('ใหญ่') ||
+        text.includes('grand') ||
+        text.includes('top') ||
+        text.includes('ทอง') ||
+        text.includes('iphone') ||
+        text.includes('ipad') ||
+        text.includes('gadget')
+      ) {
+        return (
+          '<svg class="' + iconCls + ' text-champagne-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9">' +
+          '<path stroke-linecap="round" stroke-linejoin="round" d="M8 21h8m-4-4v4m-5.2-9.6L5 11a4 4 0 01-3-3.87V6a1 1 0 011-1h3m11.2 6.4L19 11a4 4 0 003-3.87V6a1 1 0 00-1-1h-3M6 5h12v4a6 6 0 01-12 0V5z" />' +
+          '</svg>'
+        );
+      }
+
+      return (
+        '<svg class="' + iconCls + ' text-champagne-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9">' +
+        '<rect x="3" y="8" width="18" height="4" rx="1" />' +
+        '<path stroke-linecap="round" stroke-linejoin="round" d="M12 8v13M19 12v7a2 2 0 01-2 2H7a2 2 0 01-2-2v-7M7.5 8a2.5 2.5 0 010-5C10 3 12 8 12 8s2-5 4.5-5a2.5 2.5 0 010 5" />' +
+        '</svg>'
+      );
+    }
+
+    function formatWinnerTime(w) {
+      const raw = String(w.wonAt || w.winTime || w.drawTime || w.time || w.timestamp || '').trim();
+      if (!raw) return '';
+      const match = raw.match(/(\d{1,2}:\d{2})/);
+      if (match) return match[1] + ' น.';
+      return raw;
+    }
+
+    function renderFilteredWinners() {
+      const isMobile = boardState.viewportMode === 'MOBILE';
+      const query = document.getElementById('searchInput').value.trim().toLowerCase();
+      const clearBtn = document.getElementById('btnClearSearch');
+      const summaryRow = document.getElementById('summaryHintRow');
+      const summaryText = document.getElementById('filteredSummaryText');
+
+      if (query.length > 0) {
+        clearBtn.classList.remove('hidden');
+      } else {
+        clearBtn.classList.add('hidden');
+      }
+
+      const container = document.getElementById('winnersContainer');
+      const emptyBox = document.getElementById('emptyStateBox');
+
+      const filtered = boardState.winners.filter((w) => {
+        const matchGroup =
+          boardState.selectedGroup === 'ALL' || w.prizeGroup === boardState.selectedGroup;
+        if (!matchGroup) return false;
+
+        if (!query) return true;
+        const haystack = [w.fullName, w.team, w.empId, w.prizeName, w.prizeGroup]
+          .join(' ')
+          .toLowerCase();
+        return haystack.includes(query);
+      });
+
+      if (filtered.length === 0) {
+        container.classList.add('hidden');
+        summaryRow.classList.add('hidden');
+        summaryRow.classList.remove('flex');
+        emptyBox.classList.remove('hidden');
+
+        if (boardState.winners.length === 0) {
+          document.getElementById('emptyStateTitle').textContent =
+            'ยังไม่มีรายชื่อผู้ได้รับรางวัลในขณะนี้';
+          document.getElementById('emptyStateDesc').textContent =
+            'รายชื่อผู้โชคดีจะแสดงผลบนหน้านี้แบบ Real-time ทันทีที่มีการยืนยันรับรางวัลบนเวที';
+        } else {
+          document.getElementById('emptyStateTitle').textContent =
+            'ไม่พบรายชื่อหรือของรางวัลที่ตรงกับการค้นหา';
+          document.getElementById('emptyStateDesc').textContent =
+            'ลองเปลี่ยนคำค้นหา หรือกดเลือกหมวดหมู่ "ทั้งหมด" ด้านบน';
+        }
+        return;
+      }
+
+      emptyBox.classList.add('hidden');
+      container.classList.remove('hidden');
+      summaryRow.classList.remove('hidden');
+      summaryRow.classList.add('flex');
+      summaryText.textContent = 'แสดงหมวดนี้รวม ' + filtered.length.toLocaleString() + ' รางวัล';
+
+      const orderedGroups = [];
+      const groupedMap = new Map();
+
+      boardState.prizeGroups.forEach((g) => {
+        groupedMap.set(g, []);
+        orderedGroups.push(g);
+      });
+
+      filtered.forEach((w) => {
+        const grp = w.prizeGroup || 'รางวัลพิเศษ';
+        if (!groupedMap.has(grp)) {
+          groupedMap.set(grp, []);
+          orderedGroups.push(grp);
+        }
+        groupedMap.get(grp).push(w);
+      });
+
+      const allPrizeBuckets = [];
+      orderedGroups.forEach((grp) => {
+        const items = groupedMap.get(grp) || [];
+        const prizeMap = new Map();
+
+        items.forEach((w) => {
+          const pName = String(w.prizeName || 'ของรางวัลพิเศษ').trim();
+          const bucketKey = grp + '::' + pName;
+          if (!prizeMap.has(bucketKey)) {
+            const bucket = {
+              key: bucketKey,
+              prizeName: pName,
+              prizeGroup: grp,
+              customImageUrl: '',
+              winners: []
+            };
+            prizeMap.set(bucketKey, bucket);
+            allPrizeBuckets.push(bucket);
+          }
+          const target = prizeMap.get(bucketKey);
+          if (!target.customImageUrl && hasCustomPrizePhoto(w.prizeImageUrl)) {
+            target.customImageUrl = String(w.prizeImageUrl).trim();
+          }
+          target.winners.push(w);
+        });
+      });
+
+      boardState.renderedOpenMap.clear();
+
+      const thumbSizeCls = isMobile ? 'w-14 h-14' : 'w-14 h-14 sm:w-16 sm:h-16';
+      const headerPadCls = isMobile ? 'p-4' : 'p-4 sm:p-5';
+      const titleFontCls = isMobile ? 'text-[15px]' : 'text-[15px] sm:text-[17px]';
+      const nameFontCls = isMobile ? 'text-sm' : 'text-sm sm:text-[15px]';
+      const listPadCls = isMobile ? 'px-3.5 pb-3.5 pt-3' : 'px-3.5 pb-3.5 pt-3 sm:px-4 sm:pb-4';
+
+      const cardsHtml = allPrizeBuckets
+        .map((bucket) => {
+          const count = bucket.winners.length;
+
+          let isOpen = false;
+          if (query.length > 0) {
+            isOpen = true;
+          } else if (boardState.cardOpenState.has(bucket.key)) {
+            isOpen = boardState.cardOpenState.get(bucket.key);
+          } else if (boardState.allExpandedOverride !== null) {
+            isOpen = boardState.allExpandedOverride;
+          } else {
+            isOpen = count <= CONFIG.AUTO_COLLAPSE_THRESHOLD;
+          }
+
+          boardState.renderedOpenMap.set(bucket.key, isOpen);
+
+          const svgBadgeInner = getPrizeSvgIconHtml(bucket.prizeGroup, bucket.prizeName);
+          const leftMediaHtml = bucket.customImageUrl
+            ? '<div data-url="' +
+              escapeHtml(bucket.customImageUrl) +
+              '" data-title="' +
+              escapeHtml(bucket.prizeName) +
+              '" onclick="openPrizeLightbox(event, this.dataset.url, this.dataset.title)" class="' +
+              thumbSizeCls +
+              ' rounded-2xl overflow-hidden shrink-0 relative border border-champagne/55 bg-obsidian-950 cursor-zoom-in">' +
+              '<img src="' +
+              escapeHtml(bucket.customImageUrl) +
+              '" alt="' +
+              escapeHtml(bucket.prizeName) +
+              '" onerror="handleCustomThumbError(this)" class="w-full h-full object-cover" />' +
+              '<div class="ruby-svg-fallback hidden w-full h-full prize-icon-ruby flex items-center justify-center">' +
+              svgBadgeInner +
+              '</div>' +
+              '</div>'
+            : '<div class="' +
+              thumbSizeCls +
+              ' rounded-2xl prize-icon-ruby shrink-0 flex items-center justify-center">' +
+              svgBadgeInner +
+              '</div>';
+
+          const gridColsClass = isMobile
+            ? 'grid-cols-1'
+            : count === 1
+            ? 'grid-cols-1'
+            : count === 2
+            ? 'grid-cols-1 sm:grid-cols-2'
+            : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3';
+
+          const winnerRowsHtml = bucket.winners
+            .map((w) => {
+              const isMatched =
+                query.length > 0 &&
+                [w.fullName, w.empId, w.team].join(' ').toLowerCase().includes(query);
+              const rowCls = isMatched
+                ? 'bg-champagne/15 border-champagne-light'
+                : 'bg-obsidian-900/90 border-white/10 hover:border-champagne/35';
+              const wonTimeStr = formatWinnerTime(w);
+
+              return (
+                '<div class="rounded-2xl border ' +
+                rowCls +
+                ' px-3.5 py-3 flex items-center justify-between gap-2.5 transition">' +
+                '<div class="min-w-0 flex-1">' +
+                '<p class="' +
+                nameFontCls +
+                ' font-bold text-white leading-snug py-[1px] truncate">' +
+                escapeHtml(w.fullName) +
+                '</p>' +
+                '<p class="text-xs text-silver mt-0.5 truncate">' +
+                'รหัส <span class="text-champagne-light font-semibold">' +
+                escapeHtml(w.empId) +
+                '</span> • ' +
+                escapeHtml(w.team || '-') +
+                '</p>' +
+                '</div>' +
+                (wonTimeStr
+                  ? '<span class="text-[11px] text-silver/75 font-medium shrink-0">' +
+                    escapeHtml(wonTimeStr) +
+                    '</span>' +
+                  : '') +
+                '</div>'
+              );
+            })
+            .join('');
+
+          return (
+            '<article class="glass-card rounded-[26px] overflow-hidden transition hover:border-champagne/70">' +
+            '<button type="button" data-card-key="' +
+            escapeHtml(bucket.key) +
+            '" onclick="togglePrizeCard(this.dataset.cardKey)" class="w-full ' +
+            headerPadCls +
+            ' flex items-center gap-3.5 text-left hover:bg-white/[0.04] transition">' +
+            leftMediaHtml +
+            '<div class="min-w-0 flex-1">' +
+            '<div class="flex flex-wrap items-center gap-2">' +
+            '<span class="gold-pill-tag px-3 py-0.5 rounded-full text-[11px] font-extrabold">' +
+            escapeHtml(bucket.prizeGroup) +
+            '</span>' +
+            '<span class="text-xs font-extrabold text-[#FF4D58]">' +
+            count.toLocaleString() +
+            ' รางวัล</span>' +
+            '</div>' +
+            '<h3 class="' +
+            titleFontCls +
+            ' font-extrabold text-white mt-1 leading-snug py-[1px] break-words">' +
+            escapeHtml(bucket.prizeName) +
+            '</h3>' +
+            '<p class="text-xs text-silver mt-0.5">' +
+            (isOpen
+              ? 'แตะเพื่อย่อรายชื่อผู้โชคดี'
+              : 'แตะเพื่อดูรายชื่อผู้โชคดีทั้ง ' + count.toLocaleString() + ' ท่าน') +
+            '</p>' +
+            '</div>' +
+            '<span class="w-8 h-8 rounded-full ' +
+            (isOpen ? 'gold-pill-tag' : 'bg-white/10 border border-white/15 text-silver') +
+            ' flex items-center justify-center shrink-0 transition">' +
+            '<svg class="w-3.5 h-3.5 transition-transform duration-200 ' +
+            (isOpen ? '' : 'rotate-180') +
+            '" viewBox="0 0 24 24" fill="currentColor">' +
+            '<path d="M12 7l8 10H4l8-10z" />' +
+            '</svg>' +
+            '</span>' +
+            '</button>' +
+            '<div class="' +
+            (isOpen ? '' : 'hidden ') +
+            'border-t border-champagne/20 bg-obsidian-950/65 ' +
+            listPadCls +
+            '">' +
+            '<div class="grid ' +
+            gridColsClass +
+            ' gap-2.5">' +
+            winnerRowsHtml +
+            '</div>' +
+            '</div>' +
+            '</article>'
+          );
+        })
+        .join('');
+
+      container.innerHTML = cardsHtml;
+    }
+
+    function escapeHtml(str) {
+      return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    /**
+     * ========================================================================
+     * 4. สร้างและคัดลอกโค้ดจริง winners.html (ตัดแถบจำลองและข้อมูลจำลองออก 100%)
+     *    พร้อมนำไปวางทับบน GitHub Pages ได้ทันที
+     * ========================================================================
+     */
+    function buildCleanProductionWinnersHtml() {
+      const closeScript = '</scr' + 'ipt>';
+      return `<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Hall of Winners | Operations New Year Party 2027</title>
+
+  <!-- Google Fonts: Prompt -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com">${closeScript}
+
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11">${closeScript}
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            prompt: ['Prompt', 'sans-serif']
+          },
+          colors: {
+            obsidian: {
+              950: '#121216',
+              900: '#1C1C24',
+              800: '#282834'
+            },
+            truered: {
+              DEFAULT: '#E60012',
+              dark: '#7A000A',
+              deep: '#680008'
+            },
+            champagne: {
+              DEFAULT: '#D4AF37',
+              light: '#F5D77F'
+            },
+            silver: '#B8B8C5'
+          }
+        }
+      }
+    };
+  ${closeScript}
 
   <style>
     body {
@@ -75,7 +1460,6 @@
       box-shadow: 0 14px 35px rgba(0, 0, 0, 0.55);
     }
 
-    /* ป้ายพื้นหลังสีทองเมทัลลิกตัวอักษรดำคมชัด (สำหรับวางบนพื้นแดงด้านบน) */
     .gold-pill-header {
       background: linear-gradient(90deg, #D4AF37 0%, #F5D77F 50%, #D4AF37 100%);
       color: #121216;
@@ -83,7 +1467,6 @@
       box-shadow: 0 4px 14px rgba(0, 0, 0, 0.32);
     }
 
-    /* ป้ายแท็บหมวดหมู่ของรางวัลที่เลือก */
     .gold-pill-tab {
       background: linear-gradient(90deg, #D4AF37 0%, #F5D77F 50%, #D4AF37 100%);
       color: #121216;
@@ -91,7 +1474,6 @@
       box-shadow: 0 4px 14px rgba(212, 175, 55, 0.28);
     }
 
-    /* ป้ายหมวดของรางวัลย่อยในการ์ดแต่ละใบ */
     .gold-pill-tag {
       background: linear-gradient(90deg, #D4AF37 0%, #F5D77F 50%, #D4AF37 100%);
       color: #121216;
@@ -105,6 +1487,87 @@
       box-shadow: 0 6px 16px rgba(230, 0, 18, 0.28);
     }
 
+    /* เอฟเฟกต์ปาดแสงทอง 24K & ประกายดาวสำหรับชื่องาน */
+    .gala-title-wrap {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      animation: galaGlowBreath 3.6s ease-in-out infinite;
+    }
+
+    .gala-shimmer-title {
+      background-image: linear-gradient(
+        110deg,
+        #FFFFFF 0%,
+        #FFFFFF 34%,
+        #FFF6D1 43%,
+        #FDE047 48%,
+        #FFFFFF 50%,
+        #F5D77F 53%,
+        #FFF6D1 58%,
+        #FFFFFF 67%,
+        #FFFFFF 100%
+      );
+      background-size: 240% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+      animation: galaLightSweep 3.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+      padding-top: 2px;
+      padding-bottom: 2px;
+    }
+
+    @keyframes galaLightSweep {
+      0% { background-position: 115% 50%; }
+      78%, 100% { background-position: -15% 50%; }
+    }
+
+    @keyframes galaGlowBreath {
+      0%, 100% {
+        filter: drop-shadow(0 2px 10px rgba(245, 215, 127, 0.32));
+      }
+      45% {
+        filter: drop-shadow(0 2px 16px rgba(253, 224, 71, 0.56)) drop-shadow(0 0 6px rgba(255, 255, 255, 0.25));
+      }
+    }
+
+    .gala-star-glint {
+      pointer-events: none;
+      animation: starTwinkle 2.8s ease-in-out infinite;
+    }
+    .gala-star-glint.delay-glint {
+      animation-delay: 1.4s;
+    }
+
+    @keyframes starTwinkle {
+      0%, 100% { opacity: 0.3; transform: scale(0.72) rotate(0deg); }
+      50% { opacity: 1; transform: scale(1.18) rotate(18deg); }
+    }
+
+    .gala-specular-track {
+      position: relative;
+      height: 1.5px;
+      background: linear-gradient(90deg, rgba(245, 215, 127, 0.42) 0%, rgba(212, 175, 55, 0.18) 65%, rgba(212, 175, 55, 0) 100%);
+      overflow: hidden;
+      border-radius: 9999px;
+    }
+
+    .gala-specular-runner {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 38%;
+      background: linear-gradient(90deg, transparent 0%, #FFF9DB 45%, #FDE047 55%, transparent 100%);
+      box-shadow: 0 0 8px rgba(253, 224, 71, 0.9);
+      animation: galaLineSweep 3.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    }
+
+    @keyframes galaLineSweep {
+      0% { left: -40%; opacity: 0.95; }
+      78%, 100% { left: 105%; opacity: 0; }
+    }
+
     .no-scrollbar::-webkit-scrollbar {
       display: none;
     }
@@ -113,7 +1576,6 @@
       scrollbar-width: none;
     }
 
-    /* SweetAlert2 Dark Luxury Theme */
     div:where(.swal2-container) div:where(.swal2-popup) {
       background: #1C1C24 !important;
       border: 1px solid #D4AF37 !important;
@@ -131,21 +1593,21 @@
 </head>
 
 <body class="antialiased pb-14">
-  <!-- ==================================================================== -->
-  <!-- HERO HEADER: โลโก้ True เด่นชัด + ป้ายพื้นหลังสีทอง + รองรับจอโปรเจ็คเตอร์ -->
-  <!-- ==================================================================== -->
+  <!-- HERO HEADER -->
   <header class="header-true-luxury px-4 sm:px-6 pt-4 sm:pt-5 pb-11 sm:pb-12 text-white shadow-xl relative overflow-hidden">
     <div class="max-w-2xl lg:max-w-5xl mx-auto">
-      <!-- แถวบน: โลโก้ True ขนาดสมดุล + ป้ายพื้นหลังสีทอง OFFICIAL WINNERS -->
+      <!-- แถวบน: โลโก้ True ความสูงเท่าแบนเนอร์ OFFICIAL WINNERS -->
       <div class="flex items-center justify-between gap-3">
-        <img
-          src="https://img2.pic.in.th/True--W9082df0ce2da3b92.png"
-          alt="True"
-          onerror="this.style.display='none'"
-          class="h-[42px] sm:h-[50px] lg:h-[56px] w-auto object-contain object-left -ml-1.5 sm:-ml-2 shrink-0 drop-shadow-[0_2px_8px_rgba(0,0,0,0.28)]"
-        />
+        <div class="h-[38px] sm:h-[44px] lg:h-[48px] flex items-center overflow-visible shrink-0">
+          <img
+            src="https://img2.pic.in.th/True--W9082df0ce2da3b92.png"
+            alt="True"
+            onerror="this.style.display='none'"
+            class="h-[62px] min-[390px]:h-[68px] sm:h-[80px] lg:h-[90px] w-auto max-w-none object-contain object-left -ml-2.5 sm:-ml-3.5 shrink-0 drop-shadow-[0_3px_10px_rgba(0,0,0,0.32)]"
+          />
+        </div>
 
-        <div class="gold-pill-header inline-flex items-center gap-1.5 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full text-[10px] sm:text-xs font-extrabold tracking-wide uppercase whitespace-nowrap shrink-0">
+        <div class="gold-pill-header h-[36px] sm:h-[42px] lg:h-[46px] inline-flex items-center gap-1.5 px-3 sm:px-4 rounded-full text-[10px] sm:text-xs font-extrabold tracking-wide uppercase whitespace-nowrap shrink-0">
           <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#121216] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1">
             <path stroke-linecap="round" stroke-linejoin="round" d="M8 21h8m-4-4v4m-5.2-9.6L5 11a4 4 0 01-3-3.87V6a1 1 0 011-1h3m11.2 6.4L19 11a4 4 0 003-3.87V6a1 1 0 00-1-1h-3M6 5h12v4a6 6 0 01-12 0V5z" />
           </svg>
@@ -153,18 +1615,30 @@
         </div>
       </div>
 
-      <!-- แถวล่าง: ชื่องานขนาดกะทัดรัดพอดีจอ + แถบสถานะประกาศผล (วางข้างกันอัตโนมัติบนจอคอม/โปรเจ็คเตอร์) -->
-      <div class="mt-3 sm:mt-3.5 lg:mt-4 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 lg:gap-6">
+      <!-- แถวล่าง: ชื่องานปาดแสงทอง 24K + แถบสถานะประกาศผล -->
+      <div class="mt-3.5 sm:mt-4 lg:mt-4 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 lg:gap-6">
         <div class="min-w-0">
-          <h1 id="eventTitleHeader" class="text-[18px] sm:text-[21px] lg:text-[23px] font-bold tracking-tight text-white leading-snug">
-            Operations New Year Party 2027
-          </h1>
-          <p class="text-[11.5px] sm:text-[13px] text-white/85 mt-0.5 leading-relaxed">
+          <div class="gala-title-wrap">
+            <svg class="gala-star-glint w-3.5 h-3.5 text-[#FDE047] -ml-0.5 mr-1 -mt-2 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 1L14.6 9.4L23 12L14.6 14.6L12 23L9.4 14.6L1 12L9.4 9.4L12 1Z" />
+            </svg>
+            <h1 id="eventTitleHeader" class="gala-shimmer-title text-[18px] sm:text-[21px] lg:text-[24px] font-extrabold tracking-tight leading-snug">
+              Operations New Year Party 2027
+            </h1>
+            <svg class="gala-star-glint delay-glint w-4 h-4 text-[#FFF6D1] ml-1 -mt-2.5 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 1L14.6 9.4L23 12L14.6 14.6L12 23L9.4 14.6L1 12L9.4 9.4L12 1Z" />
+            </svg>
+          </div>
+
+          <div class="gala-specular-track w-full max-w-[265px] sm:max-w-[320px] lg:max-w-[365px] mt-0.5">
+            <span class="gala-specular-runner"></span>
+          </div>
+
+          <p class="text-[11.5px] sm:text-[13px] text-white/85 mt-1 leading-relaxed">
             ตรวจสอบรายชื่อผู้โชคดีและของรางวัลประจำค่ำคืนสุดพิเศษ
           </p>
         </div>
 
-        <!-- แถบสถานะประกาศผลรางวัล (แตะเพื่อรีเฟรชข้อมูลทันทีได้) -->
         <button
           type="button"
           onclick="fetchWinnersData(true)"
@@ -195,12 +1669,9 @@
     </div>
   </header>
 
-  <!-- ==================================================================== -->
-  <!-- SEARCH & FILTER GLASS CARD: กล่องค้นหาและป้ายแท็บหมวดของรางวัลสีทอง     -->
-  <!-- ==================================================================== -->
+  <!-- SEARCH & FILTER GLASS CARD -->
   <section class="max-w-2xl lg:max-w-5xl mx-auto px-3.5 sm:px-6 -mt-6 relative z-20">
     <div class="glass-card rounded-[26px] p-4 sm:p-5 space-y-3">
-      <!-- ช่องค้นหา -->
       <div class="relative">
         <svg class="w-4 h-4 text-champagne-light absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35m1.85-5.15a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -223,13 +1694,11 @@
         </button>
       </div>
 
-      <!-- แถบคำค้นหาลัด (สร้างอัตโนมัติจากข้อมูลผู้โชคดีจริง) -->
       <div id="quickSearchRow" class="hidden items-center gap-1.5 overflow-x-auto no-scrollbar text-xs">
         <span class="text-silver shrink-0 mr-0.5">ลองค้นหา:</span>
         <div id="quickSearchChips" class="flex items-center gap-1.5 shrink-0"></div>
       </div>
 
-      <!-- แถบปุ่มหมวดหมู่รางวัล (PrizeGroup Tabs พื้นหลังสีทองเมทัลลิกเมื่อเลือก) -->
       <div id="groupFilterBar" class="flex items-center gap-2 overflow-x-auto no-scrollbar pt-0.5">
         <button
           type="button"
@@ -242,11 +1711,8 @@
     </div>
   </section>
 
-  <!-- ==================================================================== -->
-  <!-- MAIN CONTENT: แถบสรุปจำนวนหมวด + การ์ดรางวัลยุบ/ขยายรายชื่อ            -->
-  <!-- ==================================================================== -->
+  <!-- MAIN CONTENT -->
   <main class="max-w-2xl lg:max-w-5xl mx-auto px-3.5 sm:px-6 pt-4">
-    <!-- แถบข้อความสรุปจำนวนรางวัลในหมวดที่เลือก -->
     <div id="summaryHintRow" class="hidden items-center justify-between px-1 mb-3 text-xs">
       <span id="filteredSummaryText" class="font-bold text-champagne-light">
         แสดงหมวดนี้รวม 0 รางวัล
@@ -261,16 +1727,13 @@
       </button>
     </div>
 
-    <!-- Loading State -->
     <div id="initialLoading" class="glass-card rounded-[26px] p-12 text-center space-y-3">
       <div class="w-11 h-11 rounded-full border-4 border-t-truered border-r-champagne-light border-b-transparent border-l-transparent animate-spin mx-auto"></div>
       <p class="text-sm text-champagne-light font-medium">กำลังดึงรายชื่อผู้โชคดีแบบ Real-time...</p>
     </div>
 
-    <!-- รายการการ์ดของรางวัล (แบบที่ 2: ยุบ/ขยายรายชื่อ) -->
     <div id="winnersContainer" class="hidden space-y-3.5"></div>
 
-    <!-- Empty State -->
     <div id="emptyStateBox" class="hidden glass-card rounded-[26px] p-9 text-center space-y-2.5">
       <div class="w-14 h-14 rounded-2xl prize-icon-ruby mx-auto flex items-center justify-center text-champagne-light">
         <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9">
@@ -286,21 +1749,17 @@
     </div>
   </main>
 
-  <!-- ==================================================================== -->
-  <!-- FOOTER: ข้อมูลอัปเดตอัตโนมัติ + ชื่อทีมผู้พัฒนาระบบ                      -->
-  <!-- ==================================================================== -->
-  <footer class="max-w-2xl lg:max-w-5xl mx-auto px-4 mt-10 text-center space-y-1.5">
-    <p class="text-[11px] text-silver/65">
+  <!-- FOOTER -->
+  <footer class="max-w-2xl lg:max-w-5xl mx-auto px-4 mt-10 text-center space-y-1">
+    <p class="text-[11px] font-normal text-silver/65">
       อัปเดตข้อมูลอัตโนมัติทุก 30 วินาที • Operations New Year Party 2027
     </p>
-    <p class="text-xs font-medium text-champagne-light/85 tracking-wide">
+    <p class="text-[11px] font-normal text-silver/65">
       พัฒนาระบบ : Channel Academy &amp; Communication
     </p>
   </footer>
 
-  <!-- ==================================================================== -->
-  <!-- LIGHTBOX: ซูมดูภาพของรางวัลขนาดใหญ่กรณีมีรูปสินค้าจริง                    -->
-  <!-- ==================================================================== -->
+  <!-- LIGHTBOX -->
   <div
     id="prizeLightboxModal"
     onclick="closePrizeLightbox()"
@@ -322,11 +1781,6 @@
   </div>
 
   <script>
-    /**
-     * ========================================================================
-     * CONFIG: ตั้งค่าระบบจุดเดียวด้านบนสุดของไฟล์ (เชื่อมหลังบ้านตัวเดิม 100%)
-     * ========================================================================
-     */
     const CONFIG = {
       LIFF_ID: '1656846002-2BvPPmrM',
       GAS_WEB_APP_URL: 'https://script.google.com/macros/s/AKfycbzL9SNCIhSiDC2hgaQ8xSiVqbT9GpEFErE2UAJX5CM1tleziGBfLT2eGdASj7pD_eg/exec',
@@ -336,9 +1790,9 @@
       MAP_URL: 'https://maps.app.goo.gl/85FVz4J4Ai2xE8h88',
       STAFF_PIN: '2026',
 
-      TOTAL_PRIZES_TARGET: 251,        // จำนวนของรางวัลทั้งหมดในงาน
-      AUTO_REFRESH_INTERVAL_MS: 30000, // อัปเดตข้อมูล Real-time ทุก 30 วินาที
-      AUTO_COLLAPSE_THRESHOLD: 5       // รางวัลที่มีผู้โชคดีเกิน 5 ท่าน จะย่อรายชื่อไว้เริ่มต้นเพื่อความกระชับ
+      TOTAL_PRIZES_TARGET: 251,
+      AUTO_REFRESH_INTERVAL_MS: 30000,
+      AUTO_COLLAPSE_THRESHOLD: 5
     };
 
     const boardState = {
@@ -347,8 +1801,8 @@
       totalTarget: CONFIG.TOTAL_PRIZES_TARGET,
       selectedGroup: 'ALL',
       isFetching: false,
-      cardOpenState: new Map(),   // จำสถานะการ์ดที่ผู้ใช้แตะย่อ/ขยายไว้ ไม่ให้เด้งกลับตอนรีเฟรช
-      renderedOpenMap: new Map(), // สถานะเปิด/ปิดล่าสุดของแต่ละการ์ด
+      cardOpenState: new Map(),
+      renderedOpenMap: new Map(),
       allExpandedOverride: null
     };
 
@@ -359,7 +1813,6 @@
 
       await fetchWinnersData(false);
 
-      // อัปเดตรายชื่อผู้โชคดีแบบ Real-time อัตโนมัติทุก 30 วินาที
       setInterval(() => {
         if (!document.hidden) {
           fetchWinnersData(false);
@@ -367,9 +1820,6 @@
       }, CONFIG.AUTO_REFRESH_INTERVAL_MS);
     });
 
-    /**
-     * ดึงรายชื่อผู้โชคดีจากชีท Winners ผ่าน GAS_WEB_APP_URL เดิม
-     */
     async function fetchWinnersData(isManualClick) {
       if (boardState.isFetching) return;
       boardState.isFetching = true;
@@ -448,9 +1898,6 @@
       }
     }
 
-    /**
-     * อัปเดตแถบตัวเลขประกาศผลแล้ว X / 251 รางวัล และไฟสถานะบนหัวเว็บ
-     */
     function updateHeaderProgressUI(updatedAtStr) {
       const wonCount = boardState.winners.length;
       const target = boardState.totalTarget;
@@ -479,9 +1926,6 @@
       }
     }
 
-    /**
-     * สร้างปุ่มคำค้นหาลัด ("ลองค้นหา:") อัตโนมัติจากข้อมูลจริงในชีท Winners
-     */
     function renderQuickSearchSuggestions() {
       const row = document.getElementById('quickSearchRow');
       const box = document.getElementById('quickSearchChips');
@@ -558,9 +2002,6 @@
       renderFilteredWinners();
     }
 
-    /**
-     * สร้างปุ่มเลือกหมวดหมู่รางวัล (ใช้พื้นหลังสีทองเมทัลลิกเมื่อเลือก)
-     */
     function renderGroupFilterChips() {
       const bar = document.getElementById('groupFilterBar');
 
@@ -691,9 +2132,6 @@
       return raw;
     }
 
-    /**
-     * แสดงผลการ์ดรางวัลแบบที่ 2 บนโทนสี Obsidian Glass & Champagne Gold
-     */
     function renderFilteredWinners() {
       const query = document.getElementById('searchInput').value.trim().toLowerCase();
       const clearBtn = document.getElementById('btnClearSearch');
@@ -830,7 +2268,6 @@
               svgBadgeInner +
               '</div>';
 
-          // ปรับคอลัมน์รายชื่ออัตโนมัติสำหรับจอคอมพิวเตอร์และโปรเจ็คเตอร์
           const gridColsClass =
             count === 1
               ? 'grid-cols-1'
@@ -875,7 +2312,6 @@
 
           return (
             '<article class="glass-card rounded-[26px] overflow-hidden transition hover:border-champagne/70">' +
-            // ส่วนหัวการ์ดรางวัล (แตะเพื่อย่อ/ขยาย)
             '<button type="button" data-card-key="' +
             escapeHtml(bucket.key) +
             '" onclick="togglePrizeCard(this.dataset.cardKey)" class="w-full p-4 sm:p-5 flex items-center gap-3.5 text-left hover:bg-white/[0.04] transition">' +
@@ -908,7 +2344,6 @@
             '</svg>' +
             '</span>' +
             '</button>' +
-            // ส่วนรายการผู้โชคดีด้านล่าง
             '<div class="' +
             (isOpen ? '' : 'hidden ') +
             'border-t border-champagne/20 bg-obsidian-950/65 px-3.5 pb-3.5 pt-3 sm:px-4 sm:pb-4">' +
@@ -933,6 +2368,36 @@
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#039;');
+    }
+  ${closeScript}
+</body>
+</html>`;
+    }
+
+    function copyProductionWinnersHtml() {
+      const cleanCode = buildCleanProductionWinnersHtml();
+      const tempArea = document.createElement('textarea');
+      tempArea.value = cleanCode;
+      tempArea.setAttribute('readonly', '');
+      tempArea.style.position = 'fixed';
+      tempArea.style.top = '-9999px';
+      tempArea.style.left = '-9999px';
+      document.body.appendChild(tempArea);
+      tempArea.select();
+
+      let copied = false;
+      try {
+        copied = document.execCommand('copy');
+      } catch (_) {
+        copied = false;
+      }
+      document.body.removeChild(tempArea);
+
+      if (copied) {
+        showSimToast('คัดลอกโค้ดจริง winners.html (ตัดแถบจำลองออกแล้ว) เรียบร้อย! นำไปวางบน GitHub ได้เลยครับ');
+      } else {
+        showSimToast('เบราว์เซอร์ไม่อนุญาตให้คัดลอกอัตโนมัติ กรุณาลองกดอีกครั้ง', true);
+      }
     }
   </script>
 </body>
