@@ -16,7 +16,7 @@
   <!-- SweetAlert2 -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-  <!-- LINE LIFF SDK v2 (ดึงโปรไฟล์เงียบๆ เมื่อเปิดใน LINE โดยไม่บังคับล็อกอิน) -->
+  <!-- LINE LIFF SDK v2 (ดึงโปรไฟล์ผูกข้อมูลพนักงานอัตโนมัติเมื่อเปิดใน LINE) -->
   <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 
   <script>
@@ -174,7 +174,7 @@
     }
 
     /* ====================================================================
-       สไตล์ป๊อปอัปประเมินความพึงพอใจ USER FEEDBACK (Smart Delay 3 วินาที)
+       สไตล์ป๊อปอัปประเมินความพึงพอใจ USER FEEDBACK
        ==================================================================== */
     .rating-box-active {
       background: linear-gradient(180deg, #FFFFFF 0%, #FFF5F5 100%) !important;
@@ -441,7 +441,7 @@
   </div>
 
   <!-- ==================================================================== -->
-  <!-- SMART DELAY FEEDBACK MOUNT: ป๊อปอัปประเมิน 3 วินาที + ปุ่มย่อมุมขวาล่าง    -->
+  <!-- SMART DELAY FEEDBACK MOUNT: ซิงก์กับชีทจริง + ดึงชื่อพนักงานอัตโนมัติ   -->
   <!-- ==================================================================== -->
   <div id="ny27SmartFeedbackRoot"></div>
 
@@ -453,7 +453,7 @@
      */
     const CONFIG = {
       LIFF_ID: '1656846002-2BvPPmrM',
-      WINNERS_LIFF_ID: '1657584836-rVBgBjPq', // LIFF ของหน้าประกาศผลรางวัล
+      WINNERS_LIFF_ID: '1657584836-rVBgBjPq',
       GAS_WEB_APP_URL: 'https://script.google.com/macros/s/AKfycbzL9SNCIhSiDC2hgaQ8xSiVqbT9GpEFErE2UAJX5CM1tleziGBfLT2eGdASj7pD_eg/exec',
       WINNERS_PAGE_URL: 'https://linedeveloper.github.io/Operation-New-Year-Party-2026/winners.html',
       SOUVENIR_IMAGE_URL: 'https://images.unsplash.com/photo-1513885535751-8b9238bd345a?auto=format&fit=crop&w=1000&q=80',
@@ -461,18 +461,17 @@
       MAP_URL: 'https://maps.app.goo.gl/85FVz4J4Ai2xE8h88',
       STAFF_PIN: '2026',
 
-      TOTAL_PRIZES_TARGET: 251,        // จำนวนของรางวัลทั้งหมดในงาน
-      AUTO_REFRESH_INTERVAL_MS: 30000, // อัปเดตข้อมูล Real-time ทุก 30 วินาที
-      AUTO_COLLAPSE_THRESHOLD: 5,      // รางวัลที่มีผู้โชคดีเกิน 5 ท่าน จะย่อรายชื่อไว้เริ่มต้นเพื่อความลื่นไหล
-      FETCH_TIMEOUT_MS: 15000,         // ป้องกันการค้างกรณีเน็ตมือถือสลับสัญญาณ
+      TOTAL_PRIZES_TARGET: 251,
+      AUTO_REFRESH_INTERVAL_MS: 30000,
+      AUTO_COLLAPSE_THRESHOLD: 5,
+      FETCH_TIMEOUT_MS: 15000,
 
-      // ตั้งค่าป๊อปอัปประเมินความพึงพอใจ (Smart Delay 3 วินาที)
+      // ตั้งค่าป๊อปอัปประเมินความพึงพอใจ (เครื่องละ 1 ครั้ง + ลบจากชีทแล้วเด้งใหม่ทันที)
       ENABLE_SMART_FEEDBACK: true,
       FEEDBACK_DELAY_MS: 3000,
-      MINIMIZED_ICON_STYLE: 'GIFT',    // 'GIFT' (กล่องของขวัญทอง) | 'STAR' (ดาวทอง 24K)
-      FEEDBACK_DONE_KEY: 'ny2027_winners_fb_done_v1',
-      FEEDBACK_QUEUE_KEY: 'ny2027_winners_fb_queue_v1',
-      FEEDBACK_SESSION_KEY: 'ny2027_winners_fb_sid_v1'
+      MINIMIZED_ICON_STYLE: 'GIFT',
+      FEEDBACK_DONE_KEY: 'ny2027_winners_fb_done_v2',
+      FEEDBACK_DEVICE_KEY: 'ny2027_winners_fb_device_v2'
     };
 
     const boardState = {
@@ -491,12 +490,14 @@
         if (e.key === 'Escape') closePrizeLightbox();
       });
 
+      // โหลดรายชื่อรางวัลคู่กับการเช็กสิทธิ์ประเมินจากชีทพร้อมกันทันที
+      fetchWinnersData(false);
       initSmartFeedbackPopup();
-      await fetchWinnersData(false);
 
       setInterval(() => {
         if (!document.hidden) {
           fetchWinnersData(false);
+          syncFeedbackStatusWithSheet(false);
         }
       }, CONFIG.AUTO_REFRESH_INTERVAL_MS);
     });
@@ -1051,7 +1052,7 @@
 
     /**
      * ========================================================================
-     * USER FEEDBACK MODULE (Smart Delay 3s + Offline Queue + Silent LIFF Sync)
+     * USER FEEDBACK MODULE (Sheet-Synced 1-Per-Device + Auto Employee Info)
      * ========================================================================
      */
     const FEEDBACK_LEVELS = {
@@ -1082,14 +1083,23 @@
       score: 5,
       selectedTags: [],
       comment: '',
+      empInput: '',
+      employee: null,
+      serverEmployee: null,
+      manualEmpOverride: false,
+      errorMsg: '',
       isOpen: false,
       isMinimized: false,
       showThankYou: false,
       isSubmitting: false,
-      isTestResetMode: false,
+      isCheckingSheet: false,
+      lastCheckAt: 0,
+      pageOpenedAt: Date.now(),
+      empLookupTimer: null,
+      delayPopupTimer: null,
       lineUserId: '',
       displayName: '',
-      sessionId: ''
+      deviceId: ''
     };
 
     function getEmotionFaceSvg(level, isSelected) {
@@ -1175,57 +1185,47 @@
     async function initSmartFeedbackPopup() {
       if (!CONFIG.ENABLE_SMART_FEEDBACK) return;
 
+      feedbackState.pageOpenedAt = Date.now();
+
       try {
-        let sid = localStorage.getItem(CONFIG.FEEDBACK_SESSION_KEY);
-        if (!sid) {
-          sid = 'SID-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8);
-          localStorage.setItem(CONFIG.FEEDBACK_SESSION_KEY, sid);
+        let devId = localStorage.getItem(CONFIG.FEEDBACK_DEVICE_KEY);
+        if (!devId) {
+          devId = 'DEV-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 9);
+          localStorage.setItem(CONFIG.FEEDBACK_DEVICE_KEY, devId);
         }
-        feedbackState.sessionId = sid;
+        feedbackState.deviceId = devId;
       } catch (_) {
-        feedbackState.sessionId = 'SID-' + Date.now().toString(36);
+        feedbackState.deviceId = 'DEV-' + Date.now().toString(36);
       }
 
-      // รองรับพารามิเตอร์ ?resetFeedback=1 สำหรับแอดมินกดทดสอบซ้ำ
-      const params = new URLSearchParams(window.location.search);
-      if (params.get('resetFeedback') === '1') {
-        feedbackState.isTestResetMode = true;
-        try {
-          localStorage.removeItem(CONFIG.FEEDBACK_DONE_KEY);
-          localStorage.removeItem(CONFIG.FEEDBACK_QUEUE_KEY);
-        } catch (_) {}
-      }
-
-      window.addEventListener('online', flushPendingFeedbackQueue);
-      flushPendingFeedbackQueue();
-
-      // ดึงข้อมูล LINE Profile แบบเงียบๆ (ไม่บังคับ Redirect ออกนอกหน้า)
-      initSilentLiffIdentity();
-
-      let alreadyDone = false;
-      try {
-        alreadyDone = localStorage.getItem(CONFIG.FEEDBACK_DONE_KEY) === '1';
-      } catch (_) {}
-
-      if (alreadyDone) return;
-
-      setTimeout(() => {
-        if (!feedbackState.isMinimized && !isFeedbackDoneLocally()) {
-          feedbackState.isOpen = true;
-          renderSmartFeedbackUI();
+      // เช็กชีทซ้ำทันทีเมื่อสลับหน้าต่างกลับมา (กรณีแอดมินเพิ่งลบแถวใน Google Sheets)
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+          syncFeedbackStatusWithSheet(false);
         }
-      }, CONFIG.FEEDBACK_DELAY_MS);
+      });
+      window.addEventListener('focus', () => {
+        syncFeedbackStatusWithSheet(false);
+      });
+
+      await initSilentLiffIdentity();
+      await syncFeedbackStatusWithSheet(true);
     }
 
     async function initSilentLiffIdentity() {
       try {
         if (typeof liff !== 'undefined' && CONFIG.WINNERS_LIFF_ID) {
-          await liff.init({ liffId: CONFIG.WINNERS_LIFF_ID.trim() });
-          if (liff.isLoggedIn()) {
-            const profile = await liff.getProfile();
-            feedbackState.lineUserId = profile.userId || '';
-            feedbackState.displayName = profile.displayName || '';
-          }
+          await Promise.race([
+            (async () => {
+              await liff.init({ liffId: CONFIG.WINNERS_LIFF_ID.trim() });
+              if (liff.isLoggedIn()) {
+                const profile = await liff.getProfile();
+                feedbackState.lineUserId = profile.userId || '';
+                feedbackState.displayName = profile.displayName || '';
+              }
+            })(),
+            new Promise((resolve) => setTimeout(resolve, 2000))
+          ]);
         }
       } catch (_) {}
     }
@@ -1238,27 +1238,124 @@
       }
     }
 
-    function flushPendingFeedbackQueue() {
+    function setFeedbackDoneLocally(done) {
       try {
-        const raw = localStorage.getItem(CONFIG.FEEDBACK_QUEUE_KEY);
-        if (!raw || !CONFIG.GAS_WEB_APP_URL || CONFIG.GAS_WEB_APP_URL.includes('PUT_YOUR_DEPLOYMENT_ID')) {
-          return;
+        if (done) {
+          localStorage.setItem(CONFIG.FEEDBACK_DONE_KEY, '1');
+        } else {
+          localStorage.removeItem(CONFIG.FEEDBACK_DONE_KEY);
         }
-        fetch(CONFIG.GAS_WEB_APP_URL, {
+      } catch (_) {}
+    }
+
+    /**
+     * ซิงก์สถานะกับแท็บ Web_Feedback ใน Google Sheets
+     * - มีข้อมูลอยู่ในชีท -> ล็อก 1 เครื่อง 1 ครั้ง ไม่เด้งซ้ำ
+     * - ลบข้อมูลออกจากชีท -> ปลดล็อกและเด้งป๊อปอัปกลับมาทันที
+     */
+    async function syncFeedbackStatusWithSheet(isInitialLoad) {
+      if (!CONFIG.ENABLE_SMART_FEEDBACK || feedbackState.isSubmitting || feedbackState.isCheckingSheet) {
+        return;
+      }
+
+      const now = Date.now();
+      if (!isInitialLoad && now - feedbackState.lastCheckAt < 2500) {
+        return;
+      }
+      feedbackState.lastCheckAt = now;
+      feedbackState.isCheckingSheet = true;
+
+      const wasDone = isFeedbackDoneLocally();
+
+      try {
+        const res = await fetch(CONFIG.GAS_WEB_APP_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: raw,
-          redirect: 'follow',
-          keepalive: true
-        })
-          .then((res) => res.json())
-          .then((json) => {
-            if (json && json.success) {
-              localStorage.removeItem(CONFIG.FEEDBACK_QUEUE_KEY);
-            }
-          })
-          .catch(() => {});
-      } catch (_) {}
+          body: JSON.stringify({
+            action: 'checkWebFeedbackStatus',
+            deviceId: feedbackState.deviceId,
+            lineUserId: feedbackState.lineUserId,
+            displayName: feedbackState.displayName
+          }),
+          redirect: 'follow'
+        });
+
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const json = await res.json();
+
+        if (!json || !json.success) {
+          // กรณีหลังบ้านยังไม่ได้ Deploy ฟังก์ชันใหม่ ให้ยึดค่าเครื่องเป็นหลักชั่วคราว
+          if (isInitialLoad && !wasDone) {
+            scheduleInitialFeedbackPopup();
+          }
+          return;
+        }
+
+        if (json.employee && json.employee.empId) {
+          feedbackState.serverEmployee = json.employee;
+          if (!feedbackState.manualEmpOverride) {
+            feedbackState.employee = json.employee;
+            feedbackState.empInput = json.employee.empId;
+          }
+        }
+
+        // กรณีที่ 1: ยังมีข้อมูลอยู่ในชีท -> ไม่แสดงป๊อปอัปซ้ำ (เครื่องละ 1 ครั้ง)
+        if (json.hasSubmitted) {
+          setFeedbackDoneLocally(true);
+          if (feedbackState.delayPopupTimer) {
+            clearTimeout(feedbackState.delayPopupTimer);
+            feedbackState.delayPopupTimer = null;
+          }
+          if (feedbackState.isOpen || feedbackState.isMinimized) {
+            feedbackState.isOpen = false;
+            feedbackState.isMinimized = false;
+            renderSmartFeedbackUI();
+          }
+          return;
+        }
+
+        // กรณีที่ 2: เคยทำประเมินไปแล้ว แต่แอดมินลบแถวข้อมูลออกจากชีท -> เด้งป๊อปอัปกลับมาทันที!
+        if (wasDone && !json.hasSubmitted) {
+          setFeedbackDoneLocally(false);
+          feedbackState.score = 5;
+          feedbackState.selectedTags = [];
+          feedbackState.comment = '';
+          feedbackState.errorMsg = '';
+          feedbackState.manualEmpOverride = false;
+          feedbackState.employee = feedbackState.serverEmployee || null;
+          feedbackState.empInput = feedbackState.serverEmployee ? feedbackState.serverEmployee.empId : '';
+          feedbackState.isMinimized = false;
+          feedbackState.isOpen = true;
+          renderSmartFeedbackUI();
+          return;
+        }
+
+        // กรณีที่ 3: เข้าใช้งานครั้งแรก (ยังไม่เคยส่งประเมิน) -> หน่วงเวลา 3 วินาทีให้ดูรางวัลก่อน
+        if (isInitialLoad && !wasDone) {
+          scheduleInitialFeedbackPopup();
+        } else if (feedbackState.isOpen) {
+          renderSmartFeedbackUI();
+        }
+      } catch (_) {
+        if (isInitialLoad && !wasDone) {
+          scheduleInitialFeedbackPopup();
+        }
+      } finally {
+        feedbackState.isCheckingSheet = false;
+      }
+    }
+
+    function scheduleInitialFeedbackPopup() {
+      if (feedbackState.delayPopupTimer) clearTimeout(feedbackState.delayPopupTimer);
+      const elapsed = Date.now() - feedbackState.pageOpenedAt;
+      const waitMs = Math.max(0, CONFIG.FEEDBACK_DELAY_MS - elapsed);
+
+      feedbackState.delayPopupTimer = setTimeout(() => {
+        if (!feedbackState.isMinimized && !isFeedbackDoneLocally()) {
+          feedbackState.isOpen = true;
+          renderSmartFeedbackUI();
+        }
+      }, waitMs);
     }
 
     function chooseFeedbackScore(lv) {
@@ -1281,7 +1378,72 @@
       renderSmartFeedbackUI();
     }
 
+    function enableManualEmployeeSwitch() {
+      feedbackState.manualEmpOverride = true;
+      feedbackState.employee = null;
+      feedbackState.empInput = '';
+      feedbackState.errorMsg = '';
+      renderSmartFeedbackUI();
+      setTimeout(() => {
+        const el = document.getElementById('ny27EmpIdInput');
+        if (el) el.focus();
+      }, 60);
+    }
+
+    function handleEmpIdTyping(val) {
+      feedbackState.empInput = String(val || '').trim().toUpperCase();
+      feedbackState.employee = null;
+      feedbackState.errorMsg = '';
+
+      const statusBox = document.getElementById('ny27EmpLookupStatus');
+      const errBox = document.getElementById('ny27FeedbackError');
+      if (errBox) errBox.classList.add('hidden');
+
+      if (feedbackState.empLookupTimer) clearTimeout(feedbackState.empLookupTimer);
+
+      if (feedbackState.empInput.length < 4) {
+        if (statusBox) {
+          statusBox.textContent = '';
+          statusBox.className = 'hidden';
+        }
+        return;
+      }
+
+      if (statusBox) {
+        statusBox.textContent = 'กำลังดึงข้อมูลพนักงาน...';
+        statusBox.className = 'thai-safe text-[11px] text-slate-500 mt-1 block';
+      }
+
+      const targetId = feedbackState.empInput;
+      feedbackState.empLookupTimer = setTimeout(async () => {
+        try {
+          const res = await fetch(CONFIG.GAS_WEB_APP_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify({ action: 'checkEmployee', empId: targetId }),
+            redirect: 'follow'
+          });
+          const json = await res.json();
+          if (feedbackState.empInput !== targetId) return;
+
+          const liveBox = document.getElementById('ny27EmpLookupStatus');
+          if (json && json.success && json.employee) {
+            feedbackState.employee = json.employee;
+            if (liveBox) {
+              liveBox.textContent =
+                '✓ ' + json.employee.fullName + ' • ทีม ' + (json.employee.team || '-');
+              liveBox.className = 'thai-safe text-[11.5px] font-semibold text-emerald-700 mt-1 block';
+            }
+          } else if (liveBox) {
+            liveBox.textContent = 'ยังไม่พบรหัสพนักงานนี้ในระบบ';
+            liveBox.className = 'thai-safe text-[11px] text-rose-600 mt-1 block';
+          }
+        } catch (_) {}
+      }, 450);
+    }
+
     function minimizeFeedbackModal() {
+      if (feedbackState.isSubmitting) return;
       feedbackState.isOpen = false;
       feedbackState.isMinimized = true;
       renderSmartFeedbackUI();
@@ -1294,39 +1456,69 @@
       renderSmartFeedbackUI();
     }
 
-    function submitSmartFeedbackForm() {
+    async function submitSmartFeedbackForm() {
       if (feedbackState.isSubmitting || isFeedbackDoneLocally()) return;
+
+      const resolvedEmpId =
+        (feedbackState.employee && feedbackState.employee.empId) ||
+        String(feedbackState.empInput || '').trim().toUpperCase();
+
+      // กรณีเปิดนอก LINE แล้วไม่ได้กรอกรหัสพนักงาน ให้แจ้งเตือนสั้นๆ เพื่อให้ชีทมีข้อมูลพนักงานครบทุกคน
+      if (!resolvedEmpId && !feedbackState.lineUserId) {
+        feedbackState.errorMsg = 'กรุณากรอกรหัสพนักงานเพื่อดึงชื่อและสังกัดก่อนส่งผลประเมินครับ';
+        renderSmartFeedbackUI();
+        setTimeout(() => {
+          const inp = document.getElementById('ny27EmpIdInput');
+          if (inp) inp.focus();
+        }, 50);
+        return;
+      }
+
       feedbackState.isSubmitting = true;
-
-      const payloadObj = {
-        action: 'submitWebFeedback',
-        score: feedbackState.score,
-        tags: feedbackState.selectedTags.slice(),
-        comment: String(feedbackState.comment || '').trim(),
-        lineUserId: feedbackState.lineUserId,
-        displayName: feedbackState.displayName,
-        sessionId: feedbackState.sessionId,
-        allowDuplicateTest: feedbackState.isTestResetMode
-      };
-
-      const serialized = JSON.stringify(payloadObj);
-      try {
-        localStorage.setItem(CONFIG.FEEDBACK_DONE_KEY, '1');
-        localStorage.setItem(CONFIG.FEEDBACK_QUEUE_KEY, serialized);
-      } catch (_) {}
-
-      flushPendingFeedbackQueue();
-
-      feedbackState.isSubmitting = false;
-      feedbackState.isOpen = false;
-      feedbackState.isMinimized = false;
-      feedbackState.showThankYou = true;
+      feedbackState.errorMsg = '';
       renderSmartFeedbackUI();
 
-      setTimeout(() => {
-        feedbackState.showThankYou = false;
+      try {
+        const res = await fetch(CONFIG.GAS_WEB_APP_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({
+            action: 'submitWebFeedback',
+            empId: resolvedEmpId,
+            score: feedbackState.score,
+            tags: feedbackState.selectedTags.slice(),
+            comment: String(feedbackState.comment || '').trim(),
+            lineUserId: feedbackState.lineUserId,
+            displayName: feedbackState.displayName,
+            deviceId: feedbackState.deviceId
+          }),
+          redirect: 'follow'
+        });
+
+        const json = await res.json();
+        feedbackState.isSubmitting = false;
+
+        if (!json || !json.success) {
+          feedbackState.errorMsg = (json && json.message) || 'ไม่สามารถบันทึกข้อมูลได้ กรุณาลองอีกครั้งครับ';
+          renderSmartFeedbackUI();
+          return;
+        }
+
+        setFeedbackDoneLocally(true);
+        feedbackState.isOpen = false;
+        feedbackState.isMinimized = false;
+        feedbackState.showThankYou = true;
         renderSmartFeedbackUI();
-      }, 2500);
+
+        setTimeout(() => {
+          feedbackState.showThankYou = false;
+          renderSmartFeedbackUI();
+        }, 2500);
+      } catch (_) {
+        feedbackState.isSubmitting = false;
+        feedbackState.errorMsg = 'สัญญาณอินเทอร์เน็ตขัดข้อง กรุณากดส่งผลประเมินอีกครั้งครับ';
+        renderSmartFeedbackUI();
+      }
     }
 
     function renderSmartFeedbackUI() {
@@ -1373,6 +1565,41 @@
 
       const meta = FEEDBACK_LEVELS[feedbackState.score];
       const tagPool = meta.high ? QUICK_TAGS_POSITIVE : QUICK_TAGS_IMPROVE;
+
+      // ส่วนแสดงชื่อพนักงานอัตโนมัติ (จาก LINE LIFF) หรือช่องกรอกรหัสพนักงาน (กรณีเปิดผ่านเว็บนอก LINE)
+      const hasAutoEmployee =
+        Boolean(feedbackState.serverEmployee && feedbackState.serverEmployee.empId) &&
+        !feedbackState.manualEmpOverride;
+
+      const employeeSectionHtml = hasAutoEmployee
+        ? '<div class="rounded-[14px] bg-emerald-50/90 border border-emerald-200 px-3 py-2 flex items-center justify-between gap-2 text-left">' +
+          '  <div class="min-w-0">' +
+          '    <p class="thai-safe text-[11.5px] font-bold text-emerald-900 truncate">✓ ' +
+                 escapeHtml(feedbackState.serverEmployee.fullName) +
+          '    </p>' +
+          '    <p class="thai-safe text-[10.5px] text-emerald-700 truncate">รหัส ' +
+                 escapeHtml(feedbackState.serverEmployee.empId) +
+                 ' • ' +
+                 escapeHtml(feedbackState.serverEmployee.team || '-') +
+          '    </p>' +
+          '  </div>' +
+          '  <button type="button" onclick="enableManualEmployeeSwitch()" class="shrink-0 text-[10.5px] font-semibold text-slate-500 hover:text-[#E11D48] underline">เปลี่ยน</button>' +
+          '</div>'
+        : '<div class="text-left">' +
+          '  <label for="ny27EmpIdInput" class="thai-safe block text-[11.5px] font-semibold text-[#1E293B] mb-1">รหัสพนักงาน <span class="font-normal text-slate-500">(ดึงชื่อและทีมอัตโนมัติ)</span></label>' +
+          '  <input id="ny27EmpIdInput" type="text" value="' +
+               escapeHtml(feedbackState.empInput) +
+               '" placeholder="พิมพ์รหัสพนักงาน เช่น 90006323" autocomplete="off" class="thai-safe w-full rounded-[13px] bg-white border border-[#CBD5E1] focus:border-[#E11D48] focus:outline-none px-3 py-2 text-xs font-semibold text-slate-900 uppercase placeholder:font-normal placeholder:text-[#94A3B8] transition" />' +
+          '  <span id="ny27EmpLookupStatus" class="' +
+               (feedbackState.employee
+                 ? 'thai-safe text-[11.5px] font-semibold text-emerald-700 mt-1 block'
+                 : 'hidden') +
+               '">' +
+               (feedbackState.employee
+                 ? '✓ ' + escapeHtml(feedbackState.employee.fullName) + ' • ทีม ' + escapeHtml(feedbackState.employee.team || '-')
+                 : '') +
+          '  </span>' +
+          '</div>';
 
       let ratingCardsHtml = '';
       for (let lv = 1; lv <= 5; lv++) {
@@ -1424,9 +1651,15 @@
         })
         .join('');
 
+      const errorHtml = feedbackState.errorMsg
+        ? '<p id="ny27FeedbackError" class="thai-safe text-[11.5px] font-semibold text-rose-600 bg-rose-50 border border-rose-200 rounded-xl px-3 py-1.5 text-center">' +
+          escapeHtml(feedbackState.errorMsg) +
+          '</p>'
+        : '<p id="ny27FeedbackError" class="hidden"></p>';
+
       root.innerHTML =
         '<div class="fixed inset-0 z-40 bg-black/70 backdrop-blur-[3px] p-3.5 sm:p-5 flex items-center justify-center overflow-y-auto">' +
-        '  <div class="w-full max-w-[420px] rounded-[28px] bg-white border border-slate-200 shadow-[0_24px_65px_rgba(0,0,0,0.65)] px-4 sm:px-5 pt-4 pb-4 max-h-[92vh] overflow-y-auto relative animate-smart-popup text-slate-800 my-auto">' +
+        '  <div class="w-full max-w-[425px] rounded-[28px] bg-white border border-slate-200 shadow-[0_24px_65px_rgba(0,0,0,0.65)] px-4 sm:px-5 pt-4 pb-4 max-h-[92vh] overflow-y-auto relative animate-smart-popup text-slate-800 my-auto">' +
         '    <button type="button" onclick="minimizeFeedbackModal()" class="absolute top-3.5 right-3.5 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center transition" title="ย่อเก็บไปมุมขวาล่าง">' +
         '      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18" /></svg>' +
         '    </button>' +
@@ -1444,11 +1677,12 @@
         '      <p class="thai-safe text-xs text-[#64748B] mt-0.5">' +
         '        แตะเลือกไอคอนเพื่อให้คะแนนและเสนอแนะเพิ่มเติม' +
         '      </p>' +
-        '      <div class="grid grid-cols-5 gap-1.5 mt-3.5">' +
+        '      <div class="grid grid-cols-5 gap-1.5 mt-3">' +
                  ratingCardsHtml +
         '      </div>' +
         '      <div class="mt-3.5 rounded-[20px] bg-[#F8FAFC] border border-[#E2E8F0] p-3.5 space-y-2.5 text-left">' +
-        '        <p class="thai-safe text-xs font-semibold text-[#1E293B]">' +
+                 employeeSectionHtml +
+        '        <p class="thai-safe text-xs font-semibold text-[#1E293B] pt-0.5">' +
         '          คุณเลือก: <span class="text-[#E11D48] font-bold">ระดับ ' +
                    meta.score +
                    ' (' +
@@ -1463,13 +1697,21 @@
                      escapeHtml(feedbackState.comment) +
         '</textarea>' +
         '        </div>' +
-        '        <button type="button" onclick="submitSmartFeedbackForm()" class="thai-safe w-full rounded-full bg-[#DC2626] hover:bg-[#B91C1C] text-white font-bold text-[13.5px] py-2.5 px-4 shadow-[0_6px_18px_rgba(220,38,38,0.28)] transition active:scale-[0.99]">' +
-        '          ส่งผลประเมิน' +
+                 errorHtml +
+        '        <button type="button" onclick="submitSmartFeedbackForm()" ' +
+                   (feedbackState.isSubmitting ? 'disabled ' : '') +
+                   'class="thai-safe w-full rounded-full bg-[#DC2626] hover:bg-[#B91C1C] disabled:opacity-60 text-white font-bold text-[13.5px] py-2.5 px-4 shadow-[0_6px_18px_rgba(220,38,38,0.28)] transition active:scale-[0.99]">' +
+                   (feedbackState.isSubmitting ? 'กำลังบันทึกข้อมูล...' : 'ส่งผลประเมิน') +
         '        </button>' +
         '      </div>' +
         '    </div>' +
         '  </div>' +
         '</div>';
+
+      const empEl = document.getElementById('ny27EmpIdInput');
+      if (empEl) {
+        empEl.addEventListener('input', (e) => handleEmpIdTyping(e.target.value));
+      }
 
       const commentEl = document.getElementById('ny27FeedbackComment');
       if (commentEl) {
