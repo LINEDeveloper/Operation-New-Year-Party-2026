@@ -16,6 +16,9 @@
   <!-- SweetAlert2 -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+  <!-- LINE LIFF SDK v2 (ดึงโปรไฟล์เงียบๆ เมื่อเปิดใน LINE โดยไม่บังคับล็อกอิน) -->
+  <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+
   <script>
     tailwind.config = {
       theme: {
@@ -57,9 +60,16 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    input {
+    input,
+    textarea {
       -webkit-user-select: text !important;
       user-select: text !important;
+    }
+
+    .thai-safe {
+      line-height: 1.58;
+      padding-top: 0.04em;
+      padding-bottom: 0.04em;
     }
 
     .header-true-luxury {
@@ -163,6 +173,51 @@
       filter: drop-shadow(0 0 6px rgba(245, 215, 127, 0.8));
     }
 
+    /* ====================================================================
+       สไตล์ป๊อปอัปประเมินความพึงพอใจ USER FEEDBACK (Smart Delay 3 วินาที)
+       ==================================================================== */
+    .rating-box-active {
+      background: linear-gradient(180deg, #FFFFFF 0%, #FFF5F5 100%) !important;
+      border: 2px solid #E11D48 !important;
+      box-shadow:
+        0 10px 22px -4px rgba(225, 29, 72, 0.18),
+        0 0 0 3px rgba(254, 205, 211, 0.5);
+      transform: translateY(-2px) scale(1.03);
+      opacity: 1 !important;
+    }
+
+    @keyframes smartPopupIn {
+      0% {
+        opacity: 0;
+        transform: translate3d(0, 22px, 0) scale(0.93);
+      }
+      100% {
+        opacity: 1;
+        transform: translate3d(0, 0, 0) scale(1);
+      }
+    }
+    .animate-smart-popup {
+      animation: smartPopupIn 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes miniPillPop {
+      0% {
+        opacity: 0;
+        transform: scale(0.82) translateY(8px);
+      }
+      65% {
+        opacity: 1;
+        transform: scale(1.05) translateY(0);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+    .animate-mini-pill {
+      animation: miniPillPop 0.34s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
     .no-scrollbar::-webkit-scrollbar {
       display: none;
     }
@@ -188,7 +243,7 @@
   </style>
 </head>
 
-<body class="antialiased pb-14">
+<body class="antialiased pb-20">
   <!-- ==================================================================== -->
   <!-- HERO HEADER: โลโก้ True เด่นสมดุล + ชื่องานปาดแสงทอง + แถบสถานะไม่ตัดคำ -->
   <!-- ==================================================================== -->
@@ -385,14 +440,20 @@
     </div>
   </div>
 
+  <!-- ==================================================================== -->
+  <!-- SMART DELAY FEEDBACK MOUNT: ป๊อปอัปประเมิน 3 วินาที + ปุ่มย่อมุมขวาล่าง    -->
+  <!-- ==================================================================== -->
+  <div id="ny27SmartFeedbackRoot"></div>
+
   <script>
     /**
      * ========================================================================
-     * CONFIG: เชื่อมต่อฐานข้อมูลเดิมแบบ Read-Only (ไม่กระทบระบบอื่น 100%)
+     * CONFIG: ตั้งค่าระบบประกาศผลและป๊อปอัปประเมินความพึงพอใจ
      * ========================================================================
      */
     const CONFIG = {
       LIFF_ID: '1656846002-2BvPPmrM',
+      WINNERS_LIFF_ID: '1657584836-rVBgBjPq', // LIFF ของหน้าประกาศผลรางวัล
       GAS_WEB_APP_URL: 'https://script.google.com/macros/s/AKfycbzL9SNCIhSiDC2hgaQ8xSiVqbT9GpEFErE2UAJX5CM1tleziGBfLT2eGdASj7pD_eg/exec',
       WINNERS_PAGE_URL: 'https://linedeveloper.github.io/Operation-New-Year-Party-2026/winners.html',
       SOUVENIR_IMAGE_URL: 'https://images.unsplash.com/photo-1513885535751-8b9238bd345a?auto=format&fit=crop&w=1000&q=80',
@@ -403,7 +464,15 @@
       TOTAL_PRIZES_TARGET: 251,        // จำนวนของรางวัลทั้งหมดในงาน
       AUTO_REFRESH_INTERVAL_MS: 30000, // อัปเดตข้อมูล Real-time ทุก 30 วินาที
       AUTO_COLLAPSE_THRESHOLD: 5,      // รางวัลที่มีผู้โชคดีเกิน 5 ท่าน จะย่อรายชื่อไว้เริ่มต้นเพื่อความลื่นไหล
-      FETCH_TIMEOUT_MS: 15000          // ป้องกันการค้างกรณีเน็ตมือถือสลับสัญญาณ
+      FETCH_TIMEOUT_MS: 15000,         // ป้องกันการค้างกรณีเน็ตมือถือสลับสัญญาณ
+
+      // ตั้งค่าป๊อปอัปประเมินความพึงพอใจ (Smart Delay 3 วินาที)
+      ENABLE_SMART_FEEDBACK: true,
+      FEEDBACK_DELAY_MS: 3000,
+      MINIMIZED_ICON_STYLE: 'GIFT',    // 'GIFT' (กล่องของขวัญทอง) | 'STAR' (ดาวทอง 24K)
+      FEEDBACK_DONE_KEY: 'ny2027_winners_fb_done_v1',
+      FEEDBACK_QUEUE_KEY: 'ny2027_winners_fb_queue_v1',
+      FEEDBACK_SESSION_KEY: 'ny2027_winners_fb_sid_v1'
     };
 
     const boardState = {
@@ -422,6 +491,7 @@
         if (e.key === 'Escape') closePrizeLightbox();
       });
 
+      initSmartFeedbackPopup();
       await fetchWinnersData(false);
 
       setInterval(() => {
@@ -743,7 +813,7 @@
     }
 
     function formatWinnerTime(w) {
-      const raw = String(w.wonAt || w.winTime || w.drawTime || w.time || w.timestamp || '').trim();
+      const raw = String(w.winTimestamp || w.wonAt || w.winTime || w.drawTime || w.time || w.timestamp || '').trim();
       if (!raw) return '';
       const match = raw.match(/(\d{1,2}:\d{2})/);
       if (match) return match[1] + ' น.';
@@ -977,6 +1047,436 @@
         .join('');
 
       container.innerHTML = cardsHtml;
+    }
+
+    /**
+     * ========================================================================
+     * USER FEEDBACK MODULE (Smart Delay 3s + Offline Queue + Silent LIFF Sync)
+     * ========================================================================
+     */
+    const FEEDBACK_LEVELS = {
+      1: { score: 1, label: 'ควรปรับปรุง', high: false },
+      2: { score: 2, label: 'พอใช้', high: false },
+      3: { score: 3, label: 'ปานกลาง', high: false },
+      4: { score: 4, label: 'ดีมาก', high: true },
+      5: { score: 5, label: 'ยอดเยี่ยม', high: true }
+    };
+
+    const QUICK_TAGS_POSITIVE = [
+      'ลงทะเบียนรับบัตร QR ง่าย',
+      'สแกนเช็คอินหน้างานรวดเร็ว',
+      'ลุ้นและเช็กรางวัลสะดวก',
+      'แจ้งเตือนผ่าน LINE ชัดเจน',
+      'กิจกรรมปีใหม่สนุกประทับใจ'
+    ];
+
+    const QUICK_TAGS_IMPROVE = [
+      'ขั้นตอนลงทะเบียนซับซ้อน',
+      'จุดสแกนเช็คอินคิวยาว/ช้า',
+      'ค้นหารายชื่อผลรางวัลยาก',
+      'แจ้งเตือน LINE ล่าช้า',
+      'อยากให้ปรับปรุงรูปแบบกิจกรรม'
+    ];
+
+    const feedbackState = {
+      score: 5,
+      selectedTags: [],
+      comment: '',
+      isOpen: false,
+      isMinimized: false,
+      showThankYou: false,
+      isSubmitting: false,
+      isTestResetMode: false,
+      lineUserId: '',
+      displayName: '',
+      sessionId: ''
+    };
+
+    function getEmotionFaceSvg(level, isSelected) {
+      if (level === 1) {
+        const bg = isSelected ? '#FFE4E6' : '#FFF7F7';
+        const ring = isSelected ? '#E11D48' : '#E5B8B8';
+        const line = isSelected ? '#BE123C' : '#D99292';
+        return (
+          '<svg class="w-9 h-9 sm:w-10 sm:h-10 mx-auto" viewBox="0 0 48 48" fill="none">' +
+          '<circle cx="24" cy="24" r="18.5" fill="' + bg + '" stroke="' + ring + '" stroke-width="2.5"/>' +
+          '<path d="M16 18.8L20.5 21.5L16.5 23.2" stroke="' + line + '" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>' +
+          '<path d="M32 18.8L27.5 21.5L31.5 23.2" stroke="' + line + '" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>' +
+          '<path d="M17.8 31.8C19.8 28.2 28.2 28.2 30.2 31.8" stroke="' + line + '" stroke-width="2.4" stroke-linecap="round"/>' +
+          '</svg>'
+        );
+      }
+
+      if (level === 2) {
+        const bg = isSelected ? '#FFEDD5' : '#FFF9F4';
+        const ring = isSelected ? '#EA580C' : '#E7C4AA';
+        const line = isSelected ? '#C2410C' : '#DA9F78';
+        return (
+          '<svg class="w-9 h-9 sm:w-10 sm:h-10 mx-auto" viewBox="0 0 48 48" fill="none">' +
+          '<circle cx="24" cy="24" r="18.5" fill="' + bg + '" stroke="' + ring + '" stroke-width="2.5"/>' +
+          '<circle cx="18.5" cy="21" r="2" fill="' + line + '"/>' +
+          '<circle cx="29.5" cy="21" r="2" fill="' + line + '"/>' +
+          '<path d="M18 31.2C20.2 28.3 27.8 28.3 30 31.2" stroke="' + line + '" stroke-width="2.4" stroke-linecap="round"/>' +
+          '</svg>'
+        );
+      }
+
+      if (level === 3) {
+        const bg = isSelected ? '#FEF08A' : '#FFFEF4';
+        const ring = isSelected ? '#CA8A04' : '#E7D89E';
+        const line = isSelected ? '#A16207' : '#D2BE75';
+        return (
+          '<svg class="w-9 h-9 sm:w-10 sm:h-10 mx-auto" viewBox="0 0 48 48" fill="none">' +
+          '<circle cx="24" cy="24" r="18.5" fill="' + bg + '" stroke="' + ring + '" stroke-width="2.5"/>' +
+          '<circle cx="18.5" cy="21" r="2" fill="' + line + '"/>' +
+          '<circle cx="29.5" cy="21" r="2" fill="' + line + '"/>' +
+          '<line x1="17.8" y1="29.5" x2="30.2" y2="29.5" stroke="' + line + '" stroke-width="2.4" stroke-linecap="round"/>' +
+          '</svg>'
+        );
+      }
+
+      if (level === 4) {
+        const bg = isSelected ? '#DCFCE7' : '#F6FEF9';
+        const ring = isSelected ? '#16A34A' : '#A9DABF';
+        const line = isSelected ? '#15803D' : '#82C39E';
+        const cheek = isSelected ? '#FDA4AF' : '#F9CDD5';
+        return (
+          '<svg class="w-9 h-9 sm:w-10 sm:h-10 mx-auto" viewBox="0 0 48 48" fill="none">' +
+          '<circle cx="24" cy="24" r="18.5" fill="' + bg + '" stroke="' + ring + '" stroke-width="2.5"/>' +
+          '<path d="M15.8 21.5C17 19.2 19.8 19.2 21 21.5" stroke="' + line + '" stroke-width="2.3" stroke-linecap="round"/>' +
+          '<path d="M27 21.5C28.2 19.2 31 19.2 32.2 21.5" stroke="' + line + '" stroke-width="2.3" stroke-linecap="round"/>' +
+          '<circle cx="14.5" cy="25.5" r="2.3" fill="' + cheek + '"/>' +
+          '<circle cx="33.5" cy="25.5" r="2.3" fill="' + cheek + '"/>' +
+          '<path d="M18.8 27.5C20.5 30.8 27.5 30.8 29.2 27.5" stroke="' + line + '" stroke-width="2.4" stroke-linecap="round"/>' +
+          '</svg>'
+        );
+      }
+
+      const bg5 = isSelected ? '#FDE047' : '#FEF9C3';
+      const ring5 = isSelected ? '#CA8A04' : '#DFC67A';
+      const eye5 = isSelected ? '#78350F' : '#A68942';
+      const cheek5 = isSelected ? '#F472B6' : '#F9A8D4';
+      const mouth5 = isSelected ? '#853214' : '#B5894A';
+      const tongue5 = isSelected ? '#FB7185' : '#FDA4AF';
+
+      return (
+        '<svg class="w-9 h-9 sm:w-10 sm:h-10 mx-auto" viewBox="0 0 48 48" fill="none">' +
+        '<circle cx="24" cy="24" r="18.5" fill="' + bg5 + '" stroke="' + ring5 + '" stroke-width="2.6"/>' +
+        '<path d="M15.2 20.8C16.6 17.8 19.8 17.8 21.2 20.8" stroke="' + eye5 + '" stroke-width="2.6" stroke-linecap="round"/>' +
+        '<path d="M26.8 20.8C28.2 17.8 31.4 17.8 32.8 20.8" stroke="' + eye5 + '" stroke-width="2.6" stroke-linecap="round"/>' +
+        '<circle cx="13.8" cy="24.6" r="2.6" fill="' + cheek5 + '" opacity="' + (isSelected ? '0.92' : '0.55') + '"/>' +
+        '<circle cx="34.2" cy="24.6" r="2.6" fill="' + cheek5 + '" opacity="' + (isSelected ? '0.92' : '0.55') + '"/>' +
+        '<path d="M16.8 26.2H31.2C31.2 31.6 28 34.6 24 34.6C20 34.6 16.8 31.6 16.8 26.2Z" fill="' + mouth5 + '"/>' +
+        '<path d="M19.8 32.4C21 30.8 27 30.8 28.2 32.4C27 34 21 34 19.8 32.4Z" fill="' + tongue5 + '"/>' +
+        '</svg>'
+      );
+    }
+
+    async function initSmartFeedbackPopup() {
+      if (!CONFIG.ENABLE_SMART_FEEDBACK) return;
+
+      try {
+        let sid = localStorage.getItem(CONFIG.FEEDBACK_SESSION_KEY);
+        if (!sid) {
+          sid = 'SID-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8);
+          localStorage.setItem(CONFIG.FEEDBACK_SESSION_KEY, sid);
+        }
+        feedbackState.sessionId = sid;
+      } catch (_) {
+        feedbackState.sessionId = 'SID-' + Date.now().toString(36);
+      }
+
+      // รองรับพารามิเตอร์ ?resetFeedback=1 สำหรับแอดมินกดทดสอบซ้ำ
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('resetFeedback') === '1') {
+        feedbackState.isTestResetMode = true;
+        try {
+          localStorage.removeItem(CONFIG.FEEDBACK_DONE_KEY);
+          localStorage.removeItem(CONFIG.FEEDBACK_QUEUE_KEY);
+        } catch (_) {}
+      }
+
+      window.addEventListener('online', flushPendingFeedbackQueue);
+      flushPendingFeedbackQueue();
+
+      // ดึงข้อมูล LINE Profile แบบเงียบๆ (ไม่บังคับ Redirect ออกนอกหน้า)
+      initSilentLiffIdentity();
+
+      let alreadyDone = false;
+      try {
+        alreadyDone = localStorage.getItem(CONFIG.FEEDBACK_DONE_KEY) === '1';
+      } catch (_) {}
+
+      if (alreadyDone) return;
+
+      setTimeout(() => {
+        if (!feedbackState.isMinimized && !isFeedbackDoneLocally()) {
+          feedbackState.isOpen = true;
+          renderSmartFeedbackUI();
+        }
+      }, CONFIG.FEEDBACK_DELAY_MS);
+    }
+
+    async function initSilentLiffIdentity() {
+      try {
+        if (typeof liff !== 'undefined' && CONFIG.WINNERS_LIFF_ID) {
+          await liff.init({ liffId: CONFIG.WINNERS_LIFF_ID.trim() });
+          if (liff.isLoggedIn()) {
+            const profile = await liff.getProfile();
+            feedbackState.lineUserId = profile.userId || '';
+            feedbackState.displayName = profile.displayName || '';
+          }
+        }
+      } catch (_) {}
+    }
+
+    function isFeedbackDoneLocally() {
+      try {
+        return localStorage.getItem(CONFIG.FEEDBACK_DONE_KEY) === '1';
+      } catch (_) {
+        return false;
+      }
+    }
+
+    function flushPendingFeedbackQueue() {
+      try {
+        const raw = localStorage.getItem(CONFIG.FEEDBACK_QUEUE_KEY);
+        if (!raw || !CONFIG.GAS_WEB_APP_URL || CONFIG.GAS_WEB_APP_URL.includes('PUT_YOUR_DEPLOYMENT_ID')) {
+          return;
+        }
+        fetch(CONFIG.GAS_WEB_APP_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: raw,
+          redirect: 'follow',
+          keepalive: true
+        })
+          .then((res) => res.json())
+          .then((json) => {
+            if (json && json.success) {
+              localStorage.removeItem(CONFIG.FEEDBACK_QUEUE_KEY);
+            }
+          })
+          .catch(() => {});
+      } catch (_) {}
+    }
+
+    function chooseFeedbackScore(lv) {
+      const prevHigh = FEEDBACK_LEVELS[feedbackState.score].high;
+      const nextHigh = FEEDBACK_LEVELS[lv].high;
+      feedbackState.score = lv;
+      if (prevHigh !== nextHigh) {
+        feedbackState.selectedTags = [];
+      }
+      renderSmartFeedbackUI();
+    }
+
+    function toggleFeedbackQuickTag(tagText) {
+      const idx = feedbackState.selectedTags.indexOf(tagText);
+      if (idx >= 0) {
+        feedbackState.selectedTags.splice(idx, 1);
+      } else {
+        feedbackState.selectedTags.push(tagText);
+      }
+      renderSmartFeedbackUI();
+    }
+
+    function minimizeFeedbackModal() {
+      feedbackState.isOpen = false;
+      feedbackState.isMinimized = true;
+      renderSmartFeedbackUI();
+    }
+
+    function reopenFeedbackModal() {
+      if (isFeedbackDoneLocally()) return;
+      feedbackState.isMinimized = false;
+      feedbackState.isOpen = true;
+      renderSmartFeedbackUI();
+    }
+
+    function submitSmartFeedbackForm() {
+      if (feedbackState.isSubmitting || isFeedbackDoneLocally()) return;
+      feedbackState.isSubmitting = true;
+
+      const payloadObj = {
+        action: 'submitWebFeedback',
+        score: feedbackState.score,
+        tags: feedbackState.selectedTags.slice(),
+        comment: String(feedbackState.comment || '').trim(),
+        lineUserId: feedbackState.lineUserId,
+        displayName: feedbackState.displayName,
+        sessionId: feedbackState.sessionId,
+        allowDuplicateTest: feedbackState.isTestResetMode
+      };
+
+      const serialized = JSON.stringify(payloadObj);
+      try {
+        localStorage.setItem(CONFIG.FEEDBACK_DONE_KEY, '1');
+        localStorage.setItem(CONFIG.FEEDBACK_QUEUE_KEY, serialized);
+      } catch (_) {}
+
+      flushPendingFeedbackQueue();
+
+      feedbackState.isSubmitting = false;
+      feedbackState.isOpen = false;
+      feedbackState.isMinimized = false;
+      feedbackState.showThankYou = true;
+      renderSmartFeedbackUI();
+
+      setTimeout(() => {
+        feedbackState.showThankYou = false;
+        renderSmartFeedbackUI();
+      }, 2500);
+    }
+
+    function renderSmartFeedbackUI() {
+      const root = document.getElementById('ny27SmartFeedbackRoot');
+      if (!root) return;
+
+      if (feedbackState.showThankYou) {
+        root.innerHTML =
+          '<div class="fixed inset-x-4 bottom-5 z-50 flex justify-center pointer-events-none">' +
+          '  <div class="animate-mini-pill rounded-full bg-emerald-600 text-white px-5 py-2.5 shadow-2xl border border-emerald-400/50 flex items-center gap-2 text-xs sm:text-sm font-bold">' +
+          '    <span>✓ ขอบคุณสำหรับคำแนะนำครับ</span>' +
+          '  </div>' +
+          '</div>';
+        return;
+      }
+
+      if (isFeedbackDoneLocally()) {
+        root.innerHTML = '';
+        return;
+      }
+
+      if (!feedbackState.isOpen) {
+        if (!feedbackState.isMinimized) {
+          root.innerHTML = '';
+          return;
+        }
+
+        const miniIconSvg =
+          CONFIG.MINIMIZED_ICON_STYLE === 'STAR'
+            ? '<svg class="w-4 h-4 text-amber-500" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L14.6 8.9L22 9.5L16.3 14.3L18.1 21.5L12 17.6L5.9 21.5L7.7 14.3L2 9.5L9.4 8.9L12 2Z"/></svg>'
+            : '<svg class="w-4 h-4 text-amber-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"/></svg>';
+
+        root.innerHTML =
+          '<div class="fixed bottom-4 right-4 z-40">' +
+          '  <button type="button" onclick="reopenFeedbackModal()" class="animate-mini-pill rounded-full bg-white hover:bg-amber-50 border-2 border-[#E11D48] pl-2.5 pr-4 py-1.5 shadow-[0_12px_28px_rgba(0,0,0,0.5)] flex items-center gap-2 text-xs font-bold text-slate-900 transition active:scale-95">' +
+          '    <span class="w-6 h-6 rounded-full bg-[#FFFBEB] border border-[#FDE68A] flex items-center justify-center shrink-0">' +
+                 miniIconSvg +
+          '    </span>' +
+          '    <span class="thai-safe">ร่วมประเมินงาน</span>' +
+          '  </button>' +
+          '</div>';
+        return;
+      }
+
+      const meta = FEEDBACK_LEVELS[feedbackState.score];
+      const tagPool = meta.high ? QUICK_TAGS_POSITIVE : QUICK_TAGS_IMPROVE;
+
+      let ratingCardsHtml = '';
+      for (let lv = 1; lv <= 5; lv++) {
+        const item = FEEDBACK_LEVELS[lv];
+        const selected = feedbackState.score === lv;
+        const cardStyle = selected
+          ? 'rating-box-active z-10'
+          : 'bg-white border border-slate-200/90 hover:border-slate-300 opacity-85 hover:opacity-100';
+        const numCls = selected ? 'text-slate-900 font-extrabold' : 'text-slate-400 font-bold';
+        const txtCls = selected ? 'text-slate-700 font-semibold' : 'text-slate-400 font-normal';
+
+        ratingCardsHtml +=
+          '<button type="button" onclick="chooseFeedbackScore(' +
+          lv +
+          ')" class="rounded-[18px] py-2.5 px-1 flex flex-col items-center justify-between transition-all duration-200 focus:outline-none ' +
+          cardStyle +
+          '">' +
+          getEmotionFaceSvg(lv, selected) +
+          '<span class="text-[15px] leading-none mt-1.5 ' +
+          numCls +
+          '">' +
+          lv +
+          '</span>' +
+          '<span class="thai-safe text-[9.5px] sm:text-[10px] mt-0.5 text-center tracking-tight ' +
+          txtCls +
+          '">' +
+          escapeHtml(item.label) +
+          '</span>' +
+          '</button>';
+      }
+
+      const tagsHtml = tagPool
+        .map((tag) => {
+          const picked = feedbackState.selectedTags.indexOf(tag) !== -1;
+          const cls = picked
+            ? 'bg-[#FFF1F2] border-[#E11D48] text-[#BE123C] font-semibold shadow-sm'
+            : 'bg-white border-slate-300 text-slate-700 hover:border-slate-400 font-normal';
+          const prefix = picked ? '✓ ' : '+ ';
+          return (
+            '<button type="button" data-fbtag="' +
+            escapeHtml(tag) +
+            '" onclick="toggleFeedbackQuickTag(this.dataset.fbtag)" class="thai-safe rounded-full border px-3 py-1 text-[11.5px] transition active:scale-95 ' +
+            cls +
+            '">' +
+            prefix +
+            escapeHtml(tag) +
+            '</button>'
+          );
+        })
+        .join('');
+
+      root.innerHTML =
+        '<div class="fixed inset-0 z-40 bg-black/70 backdrop-blur-[3px] p-3.5 sm:p-5 flex items-center justify-center overflow-y-auto">' +
+        '  <div class="w-full max-w-[420px] rounded-[28px] bg-white border border-slate-200 shadow-[0_24px_65px_rgba(0,0,0,0.65)] px-4 sm:px-5 pt-4 pb-4 max-h-[92vh] overflow-y-auto relative animate-smart-popup text-slate-800 my-auto">' +
+        '    <button type="button" onclick="minimizeFeedbackModal()" class="absolute top-3.5 right-3.5 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center transition" title="ย่อเก็บไปมุมขวาล่าง">' +
+        '      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18" /></svg>' +
+        '    </button>' +
+        '    <div class="text-center pt-0.5">' +
+        '      <div class="inline-flex items-center gap-1.5 rounded-full bg-[#FFFBEB] border border-[#FDE68A] px-3.5 py-1 shadow-sm">' +
+        '        <svg class="w-3.5 h-3.5 text-[#F59E0B]" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">' +
+        '          <path d="M12 2L14.2 8.8L21 11L14.2 13.2L12 20L9.8 13.2L3 11L9.8 8.8L12 2Z"/>' +
+        '          <path d="M19 16L19.9 18.6L22.5 19.5L19.9 20.4L19 23L18.1 20.4L15.5 19.5L18.1 18.6L19 16Z"/>' +
+        '        </svg>' +
+        '        <span class="text-[11px] font-extrabold tracking-wider uppercase text-[#B45309]">USER FEEDBACK</span>' +
+        '      </div>' +
+        '      <h3 class="thai-safe text-[16.5px] sm:text-[18px] font-bold text-[#1E293B] mt-2 px-5 leading-snug">' +
+        '        ประเมินความพึงพอใจการใช้งานระบบลงทะเบียนและกิจกรรมปีใหม่' +
+        '      </h3>' +
+        '      <p class="thai-safe text-xs text-[#64748B] mt-0.5">' +
+        '        แตะเลือกไอคอนเพื่อให้คะแนนและเสนอแนะเพิ่มเติม' +
+        '      </p>' +
+        '      <div class="grid grid-cols-5 gap-1.5 mt-3.5">' +
+                 ratingCardsHtml +
+        '      </div>' +
+        '      <div class="mt-3.5 rounded-[20px] bg-[#F8FAFC] border border-[#E2E8F0] p-3.5 space-y-2.5 text-left">' +
+        '        <p class="thai-safe text-xs font-semibold text-[#1E293B]">' +
+        '          คุณเลือก: <span class="text-[#E11D48] font-bold">ระดับ ' +
+                   meta.score +
+                   ' (' +
+                   escapeHtml(meta.label) +
+                   ')</span> • แตะเลือกหัวข้อหรือพิมพ์เสริมได้ครับ' +
+        '        </p>' +
+        '        <div class="flex flex-wrap gap-1.5">' +
+                   tagsHtml +
+        '        </div>' +
+        '        <div>' +
+        '          <textarea id="ny27FeedbackComment" rows="2" maxlength="500" placeholder="พิมพ์ข้อเสนอแนะเพิ่มเติม (ไม่บังคับ)..." class="thai-safe w-full rounded-[15px] bg-white border border-[#CBD5E1] focus:border-[#E11D48] focus:outline-none px-3.5 py-2 text-xs text-slate-800 placeholder:text-[#94A3B8] resize-none transition">' +
+                     escapeHtml(feedbackState.comment) +
+        '</textarea>' +
+        '        </div>' +
+        '        <button type="button" onclick="submitSmartFeedbackForm()" class="thai-safe w-full rounded-full bg-[#DC2626] hover:bg-[#B91C1C] text-white font-bold text-[13.5px] py-2.5 px-4 shadow-[0_6px_18px_rgba(220,38,38,0.28)] transition active:scale-[0.99]">' +
+        '          ส่งผลประเมิน' +
+        '        </button>' +
+        '      </div>' +
+        '    </div>' +
+        '  </div>' +
+        '</div>';
+
+      const commentEl = document.getElementById('ny27FeedbackComment');
+      if (commentEl) {
+        commentEl.addEventListener('input', (e) => {
+          feedbackState.comment = e.target.value;
+        });
+      }
     }
 
     function escapeHtml(str) {
