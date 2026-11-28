@@ -288,20 +288,27 @@
         <span class="gold-pill-tag px-2.5 py-0.5 rounded-full font-extrabold">ADMIN SURVEY</span>
         <span class="text-champagne-light font-semibold">ระบบจัดการและส่งการ์ด LINE Flex แบบประเมิน</span>
       </div>
-      <div class="flex items-center gap-2">
+      <div class="flex flex-wrap items-center gap-2">
         <button
           type="button"
           onclick="forcePreviewFeedbackModal()"
           class="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white text-xs font-semibold transition"
         >
-          👁️ ทดสอบเปิดป๊อปอัป
+          👁️ ทดสอบป๊อปอัปเว็บ
+        </button>
+        <button
+          type="button"
+          onclick="openAdminTestSurveyModal()"
+          class="px-3 py-1.5 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-400/50 text-emerald-300 text-xs font-bold transition"
+        >
+          🧪 ส่งการ์ดทดสอบ (1 คน)
         </button>
         <button
           type="button"
           onclick="openAdminSurveyBroadcastModal()"
           class="gold-pill-tag px-3.5 py-1.5 rounded-xl text-xs font-extrabold hover:brightness-105 transition"
         >
-          📤 ส่ง LINE Flex แบบประเมิน (Multicast)
+          📤 ส่งจริงทั้งหมด (Multicast)
         </button>
       </div>
     </div>
@@ -795,6 +802,10 @@
         renderQuickSearchSuggestions();
         renderGroupFilterChips();
         renderFilteredWinners();
+
+        if (feedbackState.pendingHighlightEmpId) {
+          highlightEmployeePrizeIfWon(feedbackState.pendingHighlightEmpId);
+        }
       } catch (err) {
         clearTimeout(timeoutId);
         document.getElementById('initialLoading').classList.add('hidden');
@@ -1311,6 +1322,7 @@
       employee: null,
       serverEmployee: null,
       manualEmpOverride: false,
+      pendingHighlightEmpId: '',
       isOpen: false,
       isMinimized: false,
       isSubmitting: false,
@@ -1928,8 +1940,15 @@
      */
     function highlightEmployeePrizeIfWon(empId) {
       const norm = String(empId || '').trim().toUpperCase();
-      if (!norm || !boardState.winners || boardState.winners.length === 0) return;
+      if (!norm) return;
 
+      // หากรายชื่อรางวัลยังโหลดไม่เสร็จ ให้พักรหัสไว้รันอัตโนมัติทันทีที่โหลดเสร็จ
+      if (!boardState.winners || boardState.winners.length === 0) {
+        feedbackState.pendingHighlightEmpId = norm;
+        return;
+      }
+
+      feedbackState.pendingHighlightEmpId = '';
       const wonItem = boardState.winners.find(
         (w) => String(w.empId || '').trim().toUpperCase() === norm
       );
@@ -1954,7 +1973,7 @@
 
     /**
      * ========================================================================
-     * ADMIN SURVEY BROADCAST & PNG EXPORTER (?adminSurvey=1)
+     * ADMIN SURVEY TEST PUSH (1 คน) + MULTICAST + PNG EXPORTER (?adminSurvey=1)
      * ========================================================================
      */
     function downloadAll5FacePngs() {
@@ -1997,6 +2016,118 @@
       return Promise.all(checks).then((results) => results.every(Boolean));
     }
 
+    async function openAdminTestSurveyModal() {
+      Swal.fire({
+        title: 'กำลังเช็กสถานะรูปไอคอนบน GitHub...',
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading()
+      });
+
+      const iconsReady = await Promise.race([
+        checkGithubFaceImagesStatus(),
+        new Promise((resolve) => setTimeout(() => resolve(false), 3500))
+      ]);
+
+      let savedTarget = '';
+      try {
+        savedTarget = localStorage.getItem('ny27_admin_test_target') || '';
+      } catch (_) {}
+      if (!savedTarget && feedbackState.serverEmployee && feedbackState.serverEmployee.empId) {
+        savedTarget = feedbackState.serverEmployee.empId;
+      }
+
+      const iconStatusHtml = iconsReady
+        ? '<div class="p-2.5 rounded-xl bg-emerald-950/80 border border-emerald-500/40 text-emerald-300 text-xs font-semibold">✓ รูป face-1.png ถึง face-5.png บน GitHub พร้อมแสดงบนการ์ด LINE แล้ว</div>'
+        : '<div class="p-2.5 rounded-xl bg-amber-950/80 border border-amber-400/50 text-amber-200 text-xs space-y-1.5">' +
+          '<p class="font-bold">⚠️ ยังไม่พบรูป face-1.png – face-5.png บน GitHub (ส่งทดสอบได้ แต่ช่องรูปบนการ์ดจะว่างจนกว่าจะอัปโหลดรูปเสร็จ)</p>' +
+          '<button type="button" onclick="downloadAll5FacePngs()" class="px-3 py-1 rounded-lg bg-amber-400 text-black font-bold text-[11px]">📥 ดาวน์โหลดรูปทั้ง 5 ไฟล์ (PNG)</button>' +
+          '</div>';
+
+      const testForm = await Swal.fire({
+        title: '🧪 ส่งการ์ดทดสอบ (1 คน)',
+        html:
+          '<div class="text-left text-xs space-y-3">' +
+          iconStatusHtml +
+          '<div>' +
+          '  <label class="block text-silver mb-1">รหัสพนักงานผู้รับทดสอบ <span class="text-white/60">(ต้องเคยลงทะเบียนใน LINE OA งานนี้)</span>:</label>' +
+          '  <input id="swalTestTargetInput" type="text" value="' +
+             escapeHtml(savedTarget) +
+             '" placeholder="เช่น 90006323 หรือใส่ LINE User ID (U...)" class="w-full rounded-xl bg-obsidian-950 border border-champagne/50 px-3 py-2 text-white text-sm uppercase focus:outline-none" />' +
+          '</div>' +
+          '<div>' +
+          '  <label class="block text-silver mb-1">กรอกรหัส <b class="text-white">Staff PIN</b>:</label>' +
+          '  <input id="swalTestPinInput" type="password" maxlength="10" placeholder="รหัส Staff PIN (เช่น 2026)" class="w-full rounded-xl bg-obsidian-950 border border-champagne/50 px-3 py-2 text-white text-sm focus:outline-none" />' +
+          '</div>' +
+          '</div>',
+        showCancelButton: true,
+        confirmButtonColor: '#059669',
+        cancelButtonColor: '#282834',
+        confirmButtonText: 'ส่งการ์ดทดสอบเข้า LINE ทันที',
+        cancelButtonText: 'ยกเลิก',
+        preConfirm: () => {
+          const targetVal = String(document.getElementById('swalTestTargetInput').value || '').trim();
+          const pinVal = String(document.getElementById('swalTestPinInput').value || '').trim();
+          if (!targetVal && !feedbackState.lineUserId) {
+            Swal.showValidationMessage('กรุณากรอกรหัสพนักงานของผู้รับทดสอบครับ');
+            return false;
+          }
+          if (pinVal !== String(CONFIG.STAFF_PIN).trim()) {
+            Swal.showValidationMessage('รหัส Staff PIN ไม่ถูกต้อง');
+            return false;
+          }
+          return { targetInput: targetVal, pin: pinVal };
+        }
+      });
+
+      if (!testForm.isConfirmed || !testForm.value) return;
+
+      try {
+        if (testForm.value.targetInput) {
+          localStorage.setItem('ny27_admin_test_target', testForm.value.targetInput);
+        }
+      } catch (_) {}
+
+      Swal.fire({
+        title: 'กำลังยิงการ์ดทดสอบเข้า LINE...',
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading()
+      });
+
+      try {
+        const res = await fetch(CONFIG.GAS_WEB_APP_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({
+            action: 'sendTestSurveyFlex',
+            targetInput: testForm.value.targetInput,
+            lineUserId: feedbackState.lineUserId,
+            pin: testForm.value.pin
+          }),
+          redirect: 'follow'
+        }).then((r) => r.json());
+
+        Swal.fire({
+          icon: res.success ? 'success' : 'error',
+          title: res.success ? 'ส่งการ์ดทดสอบสำเร็จ!' : 'ส่งทดสอบไม่สำเร็จ',
+          html:
+            '<div class="text-xs leading-relaxed space-y-2">' +
+            '<p class="text-white">' + escapeHtml(res.message || '') + '</p>' +
+            (res.success
+              ? '<p class="text-amber-300/90">💡 ทริค: หากทดลองกดส่งผลประเมินจากเครื่องแอดมินด้วย อย่าลืมลบแถวทดสอบออกจากแท็บ <b>Web_Feedback</b> หลังเช็กเสร็จครับ</p>'
+              : '') +
+            '</div>',
+          confirmButtonColor: '#E60012'
+        });
+      } catch (err) {
+        Swal.fire({
+          icon: 'error',
+          title: 'การเชื่อมต่อขัดข้อง',
+          text: err.message,
+          confirmButtonColor: '#E60012'
+        });
+      }
+    }
+
     async function openAdminSurveyBroadcastModal() {
       Swal.fire({
         title: 'กำลังดึงยอดผู้รับการ์ดแบบประเมิน...',
@@ -2033,7 +2164,7 @@
         Swal.fire({
           icon: 'warning',
           title: 'ยังไม่พบคำสั่ง getSurveyBroadcastStats',
-          text: 'กรุณาเพิ่ม case ใน Code.gs และกด Deploy -> New version ก่อนใช้งานครับ',
+          text: 'กรุณาเพิ่ม case ใน Code.gs และกด Deploy (New version) ก่อนใช้งานครับ',
           confirmButtonColor: '#E60012'
         });
         return;
@@ -2047,7 +2178,7 @@
           '</div>';
 
       const formResult = await Swal.fire({
-        title: 'ส่ง LINE Flex แบบประเมิน',
+        title: '📤 ส่งจริงทั้งหมด (Multicast)',
         html:
           '<div class="text-left text-xs space-y-3">' +
           iconBadgeHtml +
