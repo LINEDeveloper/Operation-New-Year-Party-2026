@@ -16,7 +16,7 @@
   <!-- SweetAlert2 -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-  <!-- LINE LIFF SDK v2 (ดึงโปรไฟล์ผูกข้อมูลพนักงานอัตโนมัติเมื่อเปิดใน LINE) -->
+  <!-- LINE LIFF SDK v2 -->
   <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 
   <script>
@@ -174,48 +174,83 @@
     }
 
     /* ====================================================================
-       สไตล์ป๊อปอัปประเมินความพึงพอใจ USER FEEDBACK
+       ZERO-FLICKER SMOOTH TRANSITIONS (สลับใบหน้า 1-5 ลื่นไหล 60fps ไม่กระพริบ)
        ==================================================================== */
-    .rating-box-active {
-      background: linear-gradient(180deg, #FFFFFF 0%, #FFF5F5 100%) !important;
-      border: 2px solid #E11D48 !important;
+    .fb-rate-btn {
+      background: #FFFFFF;
+      border: 1.5px solid #E2E8F0;
+      opacity: 0.84;
+      transform: translate3d(0, 0, 0) scale(1);
+      transition:
+        transform 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+        border-color 0.2s ease,
+        box-shadow 0.22s ease,
+        background-color 0.2s ease,
+        opacity 0.2s ease;
+      will-change: transform, opacity;
+    }
+    .fb-rate-btn:hover {
+      opacity: 1;
+      border-color: #CBD5E1;
+    }
+    .fb-rate-btn.is-selected {
+      background: linear-gradient(180deg, #FFFFFF 0%, #FFF5F5 100%);
+      border: 2px solid #E11D48;
       box-shadow:
-        0 10px 22px -4px rgba(225, 29, 72, 0.18),
-        0 0 0 3px rgba(254, 205, 211, 0.5);
-      transform: translateY(-2px) scale(1.03);
-      opacity: 1 !important;
+        0 10px 22px -4px rgba(225, 29, 72, 0.2),
+        0 0 0 3px rgba(254, 205, 211, 0.52);
+      transform: translate3d(0, -3px, 0) scale(1.04);
+      opacity: 1;
+      z-index: 10;
+    }
+    .fb-rate-btn .face-svg-on {
+      opacity: 0;
+      transform: scale(0.92);
+      transition: opacity 0.2s ease, transform 0.24s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .fb-rate-btn .face-svg-off {
+      opacity: 1;
+      transition: opacity 0.2s ease;
+    }
+    .fb-rate-btn.is-selected .face-svg-on {
+      opacity: 1;
+      transform: scale(1.05);
+    }
+    .fb-rate-btn.is-selected .face-svg-off {
+      opacity: 0;
     }
 
-    @keyframes smartPopupIn {
-      0% {
-        opacity: 0;
-        transform: translate3d(0, 22px, 0) scale(0.93);
-      }
-      100% {
-        opacity: 1;
-        transform: translate3d(0, 0, 0) scale(1);
-      }
+    .fb-modal-backdrop {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.26s ease;
     }
-    .animate-smart-popup {
-      animation: smartPopupIn 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    .fb-modal-backdrop.is-open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .fb-modal-card {
+      transform: translate3d(0, 18px, 0) scale(0.95);
+      transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .fb-modal-backdrop.is-open .fb-modal-card {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+
+    .fb-tag-chip {
+      transition: background-color 0.16s ease, border-color 0.16s ease, color 0.16s ease, transform 0.12s ease;
+    }
+    .fb-tag-chip:active {
+      transform: scale(0.96);
     }
 
     @keyframes miniPillPop {
-      0% {
-        opacity: 0;
-        transform: scale(0.82) translateY(8px);
-      }
-      65% {
-        opacity: 1;
-        transform: scale(1.05) translateY(0);
-      }
-      100% {
-        opacity: 1;
-        transform: scale(1) translateY(0);
-      }
+      0%   { opacity: 0; transform: scale(0.84) translateY(8px); }
+      65%  { opacity: 1; transform: scale(1.04) translateY(0); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
     }
     .animate-mini-pill {
-      animation: miniPillPop 0.34s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      animation: miniPillPop 0.32s cubic-bezier(0.22, 1, 0.36, 1) forwards;
     }
 
     .no-scrollbar::-webkit-scrollbar {
@@ -245,11 +280,38 @@
 
 <body class="antialiased pb-20">
   <!-- ==================================================================== -->
+  <!-- ADMIN BAR: แสดงเฉพาะเมื่อแอดมินเปิดลิงก์ ?adminSurvey=1 เท่านั้น          -->
+  <!-- ==================================================================== -->
+  <div id="adminSurveyTopBar" class="hidden sticky top-0 z-30 bg-obsidian-950/95 backdrop-blur-md border-b border-champagne/60 px-4 py-2.5">
+    <div class="max-w-2xl lg:max-w-5xl mx-auto flex flex-wrap items-center justify-between gap-2">
+      <div class="flex items-center gap-2 text-xs">
+        <span class="gold-pill-tag px-2.5 py-0.5 rounded-full font-extrabold">ADMIN SURVEY</span>
+        <span class="text-champagne-light font-semibold">ระบบจัดการและส่งการ์ด LINE Flex แบบประเมิน</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <button
+          type="button"
+          onclick="forcePreviewFeedbackModal()"
+          class="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white text-xs font-semibold transition"
+        >
+          👁️ ทดสอบเปิดป๊อปอัป
+        </button>
+        <button
+          type="button"
+          onclick="openAdminSurveyBroadcastModal()"
+          class="gold-pill-tag px-3.5 py-1.5 rounded-xl text-xs font-extrabold hover:brightness-105 transition"
+        >
+          📤 ส่ง LINE Flex แบบประเมิน (Multicast)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================================================================== -->
   <!-- HERO HEADER: โลโก้ True เด่นสมดุล + ชื่องานปาดแสงทอง + แถบสถานะไม่ตัดคำ -->
   <!-- ==================================================================== -->
   <header class="header-true-luxury px-4 sm:px-6 pt-4 sm:pt-5 pb-11 sm:pb-12 text-white shadow-xl relative overflow-hidden">
     <div class="max-w-2xl lg:max-w-5xl mx-auto">
-      <!-- แถวบน: โลโก้ True ขนาดใหญ่สมดุล + ป้ายพื้นหลังสีทอง OFFICIAL WINNERS -->
       <div class="flex items-center justify-between gap-2.5">
         <img
           src="https://img2.pic.in.th/True--W9082df0ce2da3b92.png"
@@ -266,7 +328,6 @@
         </div>
       </div>
 
-      <!-- แถวล่าง: ชื่องานปาดแสงทอง 24K + แถบสถานะประกาศผลเห็นครบทุกตัวอักษร -->
       <div class="mt-3.5 sm:mt-4 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3.5 lg:gap-6">
         <div class="min-w-0">
           <div class="flex items-center gap-1.5">
@@ -283,7 +344,6 @@
           </p>
         </div>
 
-        <!-- แถบสถานะประกาศผลรางวัล (ไม่ใช้ truncate เพื่อให้เห็นตัวเลขครบ 100% ทุกหน้าจอ) -->
         <button
           type="button"
           onclick="fetchWinnersData(true)"
@@ -318,8 +378,22 @@
   <!-- SEARCH & FILTER GLASS CARD: กล่องค้นหาและป้ายแท็บหมวดของรางวัลสีทอง     -->
   <!-- ==================================================================== -->
   <section class="max-w-2xl lg:max-w-5xl mx-auto px-3.5 sm:px-6 -mt-6 relative z-20">
+    <!-- แบนเนอร์แจ้งเตือนโบนัส Mode C กรณีผู้ประเมินเป็นผู้โชคดีได้รับรางวัล -->
+    <div id="myPrizeCongratsBanner" class="hidden mb-3 rounded-[22px] bg-gradient-to-r from-amber-500/20 via-obsidian-900/95 to-emerald-500/20 border border-champagne p-3.5 shadow-xl items-center justify-between gap-3">
+      <div class="min-w-0">
+        <p class="text-[11px] font-extrabold text-champagne-light uppercase tracking-wider">★ CONGRATULATIONS • คุณได้รับรางวัล!</p>
+        <p id="myPrizeCongratsText" class="thai-safe text-xs sm:text-sm font-bold text-white mt-0.5 truncate"></p>
+      </div>
+      <button
+        type="button"
+        id="btnFilterMyPrize"
+        class="gold-pill-tag shrink-0 px-3.5 py-2 rounded-xl text-xs font-extrabold"
+      >
+        ดูรางวัลของฉัน
+      </button>
+    </div>
+
     <div class="glass-card rounded-[26px] p-4 sm:p-5 space-y-3">
-      <!-- ช่องค้นหา -->
       <div class="relative">
         <svg class="w-4 h-4 text-champagne-light absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35m1.85-5.15a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -342,13 +416,11 @@
         </button>
       </div>
 
-      <!-- แถบคำค้นหาลัด (สร้างอัตโนมัติจากข้อมูลผู้โชคดีจริง) -->
       <div id="quickSearchRow" class="hidden items-center gap-1.5 overflow-x-auto no-scrollbar text-xs">
         <span class="text-silver shrink-0 mr-0.5">ลองค้นหา:</span>
         <div id="quickSearchChips" class="flex items-center gap-1.5 shrink-0"></div>
       </div>
 
-      <!-- แถบปุ่มหมวดหมู่รางวัล (PrizeGroup Tabs พื้นหลังสีทองเมทัลลิกเมื่อเลือก) -->
       <div id="groupFilterBar" class="flex items-center gap-2 overflow-x-auto no-scrollbar pt-0.5">
         <button
           type="button"
@@ -365,7 +437,6 @@
   <!-- MAIN CONTENT: แถบสรุปจำนวนหมวด + การ์ดรางวัลยุบ/ขยายรายชื่อ            -->
   <!-- ==================================================================== -->
   <main class="max-w-2xl lg:max-w-5xl mx-auto px-3.5 sm:px-6 pt-4">
-    <!-- แถบข้อความสรุปจำนวนรางวัลในหมวดที่เลือก -->
     <div id="summaryHintRow" class="hidden items-center justify-between px-1 mb-3 text-xs">
       <span id="filteredSummaryText" class="font-bold text-champagne-light">
         แสดงหมวดนี้รวม 0 รางวัล
@@ -380,16 +451,13 @@
       </button>
     </div>
 
-    <!-- Loading State -->
     <div id="initialLoading" class="glass-card rounded-[26px] p-12 text-center space-y-3">
       <div class="w-11 h-11 rounded-full border-4 border-t-truered border-r-champagne-light border-b-transparent border-l-transparent animate-spin mx-auto"></div>
       <p class="text-sm text-champagne-light font-medium">กำลังดึงรายชื่อผู้โชคดีแบบ Real-time...</p>
     </div>
 
-    <!-- รายการการ์ดของรางวัล (ยุบ/ขยายรายชื่ออัตโนมัติ) -->
     <div id="winnersContainer" class="hidden space-y-3.5"></div>
 
-    <!-- Empty State -->
     <div id="emptyStateBox" class="hidden glass-card rounded-[26px] p-9 text-center space-y-2.5">
       <div class="w-14 h-14 rounded-2xl prize-icon-ruby mx-auto flex items-center justify-center text-champagne-light">
         <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9">
@@ -406,7 +474,7 @@
   </main>
 
   <!-- ==================================================================== -->
-  <!-- FOOTER: ฟอนต์ ขนาด และสีเหมือนกันทั้ง 2 บรรทัด                          -->
+  <!-- FOOTER                                                               -->
   <!-- ==================================================================== -->
   <footer class="max-w-2xl lg:max-w-5xl mx-auto px-4 mt-10 text-center space-y-1">
     <p class="text-[11px] font-normal text-silver/65">
@@ -418,7 +486,7 @@
   </footer>
 
   <!-- ==================================================================== -->
-  <!-- LIGHTBOX: ซูมดูภาพของรางวัลขนาดใหญ่กรณีมีรูปสินค้าจริง                    -->
+  <!-- LIGHTBOX: ซูมดูภาพของรางวัลขนาดใหญ่                                    -->
   <!-- ==================================================================== -->
   <div
     id="prizeLightboxModal"
@@ -441,14 +509,180 @@
   </div>
 
   <!-- ==================================================================== -->
-  <!-- SMART DELAY FEEDBACK MOUNT: ซิงก์กับชีทจริง + ดึงชื่อพนักงานอัตโนมัติ   -->
+  <!-- ZERO-FLICKER FEEDBACK SYSTEM (สร้าง DOM ครั้งเดียว อัปเดตเฉพาะจุด 60fps) -->
   <!-- ==================================================================== -->
-  <div id="ny27SmartFeedbackRoot"></div>
+  <!-- 1) ป๊อปอัปประเมินหลัก -->
+  <div
+    id="ny27FeedbackBackdrop"
+    class="fb-modal-backdrop fixed inset-0 z-40 bg-black/70 backdrop-blur-[3px] p-3.5 sm:p-5 flex items-center justify-center overflow-y-auto"
+  >
+    <div
+      id="ny27FeedbackCard"
+      class="fb-modal-card w-full max-w-[425px] rounded-[28px] bg-white border border-slate-200 shadow-[0_24px_65px_rgba(0,0,0,0.65)] px-4 sm:px-5 pt-4 pb-4 max-h-[92vh] overflow-y-auto relative text-slate-800 my-auto"
+    >
+      <button
+        type="button"
+        onclick="minimizeFeedbackModal()"
+        class="absolute top-3.5 right-3.5 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center transition"
+        title="ย่อเก็บไปมุมขวาล่าง"
+      >
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+          <path d="M6 6l12 12M18 6L6 18" />
+        </svg>
+      </button>
+
+      <div class="text-center pt-0.5">
+        <div class="inline-flex items-center gap-1.5 rounded-full bg-[#FFFBEB] border border-[#FDE68A] px-3.5 py-1 shadow-sm">
+          <svg class="w-3.5 h-3.5 text-[#F59E0B]" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 2L14.2 8.8L21 11L14.2 13.2L12 20L9.8 13.2L3 11L9.8 8.8L12 2Z" />
+            <path d="M19 16L19.9 18.6L22.5 19.5L19.9 20.4L19 23L18.1 20.4L15.5 19.5L18.1 18.6L19 16Z" />
+          </svg>
+          <span class="text-[11px] font-extrabold tracking-wider uppercase text-[#B45309]">USER FEEDBACK</span>
+        </div>
+
+        <h3 class="thai-safe text-[16.5px] sm:text-[18px] font-bold text-[#1E293B] mt-2 px-5 leading-snug">
+          ประเมินความพึงพอใจการใช้งานระบบลงทะเบียนและกิจกรรมปีใหม่
+        </h3>
+        <p class="thai-safe text-xs text-[#64748B] mt-0.5">
+          แตะเลือกไอคอนเพื่อให้คะแนนและเสนอแนะเพิ่มเติม
+        </p>
+
+        <!-- แถวปุ่มใบหน้า 1-5 (สร้างครั้งเดียว สลับคลาสแบบไม่กระพริบ) -->
+        <div id="ny27RatingGrid" class="grid grid-cols-5 gap-1.5 mt-3"></div>
+
+        <!-- กล่องรายละเอียดด้านล่าง -->
+        <div class="mt-3.5 rounded-[20px] bg-[#F8FAFC] border border-[#E2E8F0] p-3.5 space-y-2.5 text-left">
+          <!-- แถบแสดงชื่อพนักงานอัตโนมัติ (จาก LINE LIFF) -->
+          <div
+            id="ny27AutoEmpBadge"
+            class="hidden rounded-[14px] bg-emerald-50/90 border border-emerald-200 px-3 py-2 items-center justify-between gap-2"
+          >
+            <div class="min-w-0">
+              <p id="ny27AutoEmpName" class="thai-safe text-[11.5px] font-bold text-emerald-900 truncate"></p>
+              <p id="ny27AutoEmpMeta" class="thai-safe text-[10.5px] text-emerald-700 truncate"></p>
+            </div>
+            <button
+              type="button"
+              onclick="enableManualEmployeeSwitch()"
+              class="shrink-0 text-[10.5px] font-semibold text-slate-500 hover:text-[#E11D48] underline"
+            >
+              เปลี่ยน
+            </button>
+          </div>
+
+          <!-- ช่องกรอกรหัสพนักงาน (แสดงเฉพาะเมื่อเปิดนอก LINE หรือกดเปลี่ยน) -->
+          <div id="ny27ManualEmpBox" class="hidden">
+            <label for="ny27EmpIdInput" class="thai-safe block text-[11.5px] font-semibold text-[#1E293B] mb-1">
+              รหัสพนักงาน <span class="font-normal text-slate-500">(ดึงชื่อและทีมอัตโนมัติ)</span>
+            </label>
+            <input
+              id="ny27EmpIdInput"
+              type="text"
+              placeholder="พิมพ์รหัสพนักงาน เช่น 90006323"
+              autocomplete="off"
+              class="thai-safe w-full rounded-[13px] bg-white border border-[#CBD5E1] focus:border-[#E11D48] focus:outline-none px-3 py-2 text-xs font-semibold text-slate-900 uppercase placeholder:font-normal placeholder:text-[#94A3B8] transition"
+            />
+            <span id="ny27EmpLookupStatus" class="hidden"></span>
+          </div>
+
+          <p class="thai-safe text-xs font-semibold text-[#1E293B] pt-0.5">
+            คุณเลือก:
+            <span id="ny27SelectedScoreLabel" class="text-[#E11D48] font-bold">ระดับ 5 (ยอดเยี่ยม)</span>
+            • แตะเลือกหัวข้อหรือพิมพ์เสริมได้ครับ
+          </p>
+
+          <!-- ปุ่มหัวข้อด่วน Quick Tags (สลับตามสถานะร่วมงานและระดับคะแนน) -->
+          <div id="ny27TagsContainer" class="flex flex-wrap gap-1.5"></div>
+
+          <div>
+            <textarea
+              id="ny27FeedbackComment"
+              rows="2"
+              maxlength="500"
+              placeholder="พิมพ์ข้อเสนอแนะเพิ่มเติม (ไม่บังคับ)..."
+              class="thai-safe w-full rounded-[15px] bg-white border border-[#CBD5E1] focus:border-[#E11D48] focus:outline-none px-3.5 py-2 text-xs text-slate-800 placeholder:text-[#94A3B8] resize-none transition"
+            ></textarea>
+          </div>
+
+          <p
+            id="ny27FeedbackError"
+            class="hidden thai-safe text-[11.5px] font-semibold text-rose-600 bg-rose-50 border border-rose-200 rounded-xl px-3 py-1.5 text-center"
+          ></p>
+
+          <button
+            type="button"
+            id="ny27SubmitBtn"
+            onclick="submitSmartFeedbackForm()"
+            class="thai-safe w-full rounded-full bg-[#DC2626] hover:bg-[#B91C1C] disabled:opacity-60 text-white font-bold text-[13.5px] py-2.5 px-4 shadow-[0_6px_18px_rgba(220,38,38,0.28)] transition active:scale-[0.99]"
+          >
+            ส่งผลประเมิน
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2) ปุ่มลอยมุมขวาล่างเมื่อย่อป๊อปอัป -->
+  <div id="ny27MinimizedWrap" class="hidden fixed bottom-4 right-4 z-30">
+    <button
+      type="button"
+      onclick="reopenFeedbackModal()"
+      class="animate-mini-pill rounded-full bg-white hover:bg-amber-50 border-2 border-[#E11D48] pl-2.5 pr-4 py-1.5 shadow-[0_12px_28px_rgba(0,0,0,0.5)] flex items-center gap-2 text-xs font-bold text-slate-900 transition active:scale-95"
+    >
+      <span id="ny27MinimizedIconSlot" class="w-6 h-6 rounded-full bg-[#FFFBEB] border border-[#FDE68A] flex items-center justify-center shrink-0"></span>
+      <span class="thai-safe">ร่วมประเมินงาน</span>
+    </button>
+  </div>
+
+  <!-- 3) ป้ายสีเขียวขอบคุณหลังส่งสำเร็จ -->
+  <div id="ny27ThankToastWrap" class="hidden fixed inset-x-4 bottom-5 z-50 justify-center pointer-events-none">
+    <div class="animate-mini-pill rounded-full bg-emerald-600 text-white px-5 py-2.5 shadow-2xl border border-emerald-400/50 flex items-center gap-2 text-xs sm:text-sm font-bold">
+      <span id="ny27ThankToastText">✓ ขอบคุณสำหรับคำแนะนำครับ</span>
+    </div>
+  </div>
 
   <script>
     /**
+     * เก็บค่า Query Parameters ตั้งแต่เสี้ยววินาทีแรกก่อนที่ LINE LIFF SDK จะล้าง URL ตอน Redirect
+     */
+    const INITIAL_LAUNCH_PARAMS = (function captureLaunchParams() {
+      const merged = new URLSearchParams(window.location.search);
+      const liffState = merged.get('liff.state');
+      if (liffState) {
+        const qIdx = liffState.indexOf('?');
+        const queryPart = qIdx >= 0 ? liffState.slice(qIdx + 1) : liffState.replace(/^\//, '');
+        const inner = new URLSearchParams(queryPart);
+        inner.forEach((v, k) => {
+          if (!merged.has(k)) merged.set(k, v);
+        });
+      }
+
+      const result = {
+        openSurvey: merged.get('openSurvey') === '1',
+        rate: Number(merged.get('rate') || 0),
+        src: merged.get('src') || '',
+        adminSurvey: merged.get('adminSurvey') === '1'
+      };
+
+      try {
+        if (result.openSurvey || result.rate > 0 || result.src || result.adminSurvey) {
+          sessionStorage.setItem('ny27_launch_params', JSON.stringify(result));
+        } else {
+          const saved = sessionStorage.getItem('ny27_launch_params');
+          if (saved) {
+            const parsed = JSON.parse(saved);
+            sessionStorage.removeItem('ny27_launch_params');
+            return parsed;
+          }
+        }
+      } catch (_) {}
+
+      return result;
+    })();
+
+    /**
      * ========================================================================
-     * CONFIG: ตั้งค่าระบบประกาศผลและป๊อปอัปประเมินความพึงพอใจ
+     * CONFIG
      * ========================================================================
      */
     const CONFIG = {
@@ -456,6 +690,7 @@
       WINNERS_LIFF_ID: '1657584836-rVBgBjPq',
       GAS_WEB_APP_URL: 'https://script.google.com/macros/s/AKfycbzL9SNCIhSiDC2hgaQ8xSiVqbT9GpEFErE2UAJX5CM1tleziGBfLT2eGdASj7pD_eg/exec',
       WINNERS_PAGE_URL: 'https://linedeveloper.github.io/Operation-New-Year-Party-2026/winners.html',
+      FACE_ICON_BASE_URL: 'https://linedeveloper.github.io/Operation-New-Year-Party-2026/images/',
       SOUVENIR_IMAGE_URL: 'https://images.unsplash.com/photo-1513885535751-8b9238bd345a?auto=format&fit=crop&w=1000&q=80',
       DEFAULT_PRIZE_IMAGE_URL: 'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&w=800&q=80',
       MAP_URL: 'https://maps.app.goo.gl/85FVz4J4Ai2xE8h88',
@@ -466,7 +701,6 @@
       AUTO_COLLAPSE_THRESHOLD: 5,
       FETCH_TIMEOUT_MS: 15000,
 
-      // ตั้งค่าป๊อปอัปประเมินความพึงพอใจ (เครื่องละ 1 ครั้ง + ลบจากชีทแล้วเด้งใหม่ทันที)
       ENABLE_SMART_FEEDBACK: true,
       FEEDBACK_DELAY_MS: 3000,
       MINIMIZED_ICON_STYLE: 'GIFT',
@@ -486,11 +720,15 @@
     };
 
     document.addEventListener('DOMContentLoaded', async () => {
+      if (INITIAL_LAUNCH_PARAMS.adminSurvey) {
+        document.getElementById('adminSurveyTopBar').classList.remove('hidden');
+      }
+
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') closePrizeLightbox();
       });
 
-      // โหลดรายชื่อรางวัลคู่กับการเช็กสิทธิ์ประเมินจากชีทพร้อมกันทันที
+      setupZeroFlickerFeedbackDOM();
       fetchWinnersData(false);
       initSmartFeedbackPopup();
 
@@ -502,6 +740,11 @@
       }, CONFIG.AUTO_REFRESH_INTERVAL_MS);
     });
 
+    /**
+     * ========================================================================
+     * WINNERS BOARD MODULE (การ์ดรูปรางวัลใหญ่ + ยุบรวมรายชื่อเดิม 100%)
+     * ========================================================================
+     */
     async function fetchWinnersData(isManualClick) {
       if (boardState.isFetching) return;
       boardState.isFetching = true;
@@ -513,34 +756,21 @@
       const timeoutId = setTimeout(() => controller.abort(), CONFIG.FETCH_TIMEOUT_MS);
 
       try {
-        if (
-          !CONFIG.GAS_WEB_APP_URL ||
-          CONFIG.GAS_WEB_APP_URL.includes('PUT_YOUR_DEPLOYMENT_ID')
-        ) {
-          throw new Error('กรุณาตั้งค่า GAS_WEB_APP_URL ในส่วน CONFIG ของไฟล์ winners.html');
-        }
-
         const response = await fetch(CONFIG.GAS_WEB_APP_URL, {
           method: 'POST',
-          headers: {
-            'Content-Type': 'text/plain;charset=utf-8'
-          },
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
           body: JSON.stringify({ action: 'getWinners' }),
           redirect: 'follow',
           signal: controller.signal
         });
         clearTimeout(timeoutId);
 
-        if (!response.ok) {
-          throw new Error('HTTP Error ' + response.status);
-        }
+        if (!response.ok) throw new Error('HTTP Error ' + response.status);
 
         const res = await response.json();
         document.getElementById('initialLoading').classList.add('hidden');
 
-        if (!res.success) {
-          throw new Error(res.message || 'ไม่สามารถดึงรายชื่อผู้โชคดีได้');
-        }
+        if (!res.success) throw new Error(res.message || 'ไม่สามารถดึงรายชื่อผู้โชคดีได้');
 
         const rawEvt = String(res.eventName || '').trim();
         const normalizedEvt =
@@ -576,7 +806,6 @@
             confirmButtonColor: '#E60012'
           });
         } else {
-          console.warn('Winners fetch skipped:', err);
           updateHeaderProgressUI('');
           renderFilteredWinners();
         }
@@ -639,16 +868,12 @@
 
       const allPrizeText = boardState.winners.map((w) => w.prizeName || '').join(' ');
       ['ทองคำ', 'iPhone', 'iPad', 'Dyson', 'Apple', 'Voucher'].forEach((kw) => {
-        if (allPrizeText.toLowerCase().includes(kw.toLowerCase())) {
-          addUnique(kw);
-        }
+        if (allPrizeText.toLowerCase().includes(kw.toLowerCase())) addUnique(kw);
       });
 
       for (let i = 0; i < boardState.winners.length && suggestions.length < 4; i++) {
         const teamName = String(boardState.winners[i].team || '').trim();
-        if (teamName && teamName !== '-' && teamName.length <= 22) {
-          addUnique(teamName);
-        }
+        if (teamName && teamName !== '-' && teamName.length <= 22) addUnique(teamName);
       }
 
       if (suggestions.length === 0) {
@@ -693,7 +918,6 @@
 
     function renderGroupFilterChips() {
       const bar = document.getElementById('groupFilterBar');
-
       const activeGroupSet = new Set(boardState.prizeGroups);
       boardState.winners.forEach((w) => {
         if (w.prizeGroup) activeGroupSet.add(w.prizeGroup);
@@ -705,10 +929,7 @@
       }
 
       const chipsHtml = [
-        {
-          key: 'ALL',
-          label: 'ทั้งหมด (' + boardState.winners.length.toLocaleString() + ')'
-        }
+        { key: 'ALL', label: 'ทั้งหมด (' + boardState.winners.length.toLocaleString() + ')' }
       ]
         .concat(
           allGroups.map((grp) => {
@@ -788,7 +1009,6 @@
 
     function getPrizeSvgIconHtml(prizeGroup, prizeName) {
       const text = (String(prizeGroup || '') + ' ' + String(prizeName || '')).toLowerCase();
-
       if (
         text.includes('ใหญ่') ||
         text.includes('grand') ||
@@ -804,7 +1024,6 @@
           '</svg>'
         );
       }
-
       return (
         '<svg class="w-7 h-7 sm:w-8 sm:h-8 text-champagne-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9">' +
         '<rect x="3" y="8" width="18" height="4" rx="1" />' +
@@ -827,11 +1046,8 @@
       const summaryRow = document.getElementById('summaryHintRow');
       const summaryText = document.getElementById('filteredSummaryText');
 
-      if (query.length > 0) {
-        clearBtn.classList.remove('hidden');
-      } else {
-        clearBtn.classList.add('hidden');
-      }
+      if (query.length > 0) clearBtn.classList.remove('hidden');
+      else clearBtn.classList.add('hidden');
 
       const container = document.getElementById('winnersContainer');
       const emptyBox = document.getElementById('emptyStateBox');
@@ -840,7 +1056,6 @@
         const matchGroup =
           boardState.selectedGroup === 'ALL' || w.prizeGroup === boardState.selectedGroup;
         if (!matchGroup) return false;
-
         if (!query) return true;
         const haystack = [w.fullName, w.team, w.empId, w.prizeName, w.prizeGroup]
           .join(' ')
@@ -855,15 +1070,11 @@
         emptyBox.classList.remove('hidden');
 
         if (boardState.winners.length === 0) {
-          document.getElementById('emptyStateTitle').textContent =
-            'ยังไม่มีรายชื่อผู้ได้รับรางวัลในขณะนี้';
-          document.getElementById('emptyStateDesc').textContent =
-            'รายชื่อผู้โชคดีจะแสดงผลบนหน้านี้แบบ Real-time ทันทีที่มีการกดยืนยันรับรางวัลบนเวที';
+          document.getElementById('emptyStateTitle').textContent = 'ยังไม่มีรายชื่อผู้ได้รับรางวัลในขณะนี้';
+          document.getElementById('emptyStateDesc').textContent = 'รายชื่อผู้โชคดีจะแสดงผลบนหน้านี้แบบ Real-time ทันทีที่มีการกดยืนยันรับรางวัลบนเวที';
         } else {
-          document.getElementById('emptyStateTitle').textContent =
-            'ไม่พบรายชื่อหรือของรางวัลที่ตรงกับการค้นหา';
-          document.getElementById('emptyStateDesc').textContent =
-            'ลองเปลี่ยนคำค้นหา หรือกดเลือกหมวดหมู่ "ทั้งหมด" ด้านบน';
+          document.getElementById('emptyStateTitle').textContent = 'ไม่พบรายชื่อหรือของรางวัลที่ตรงกับการค้นหา';
+          document.getElementById('emptyStateDesc').textContent = 'ลองเปลี่ยนคำค้นหา หรือกดเลือกหมวดหมู่ "ทั้งหมด" ด้านบน';
         }
         return;
       }
@@ -923,7 +1134,6 @@
       const cardsHtml = allPrizeBuckets
         .map((bucket) => {
           const count = bucket.winners.length;
-
           let isOpen = false;
           if (query.length > 0) {
             isOpen = true;
@@ -958,17 +1168,12 @@
               '</div>';
 
           const gridColsClass =
-            count === 1
-              ? 'grid-cols-1'
-              : count === 2
-              ? 'grid-cols-1 sm:grid-cols-2'
-              : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3';
+            count === 1 ? 'grid-cols-1' : count === 2 ? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3';
 
           const winnerRowsHtml = bucket.winners
             .map((w) => {
               const isMatched =
-                query.length > 0 &&
-                [w.fullName, w.empId, w.team].join(' ').toLowerCase().includes(query);
+                query.length > 0 && [w.fullName, w.empId, w.team].join(' ').toLowerCase().includes(query);
               const rowCls = isMatched
                 ? 'bg-champagne/15 border-champagne-light'
                 : 'bg-obsidian-900/90 border-white/10 hover:border-champagne/35';
@@ -990,9 +1195,7 @@
                 '</p>' +
                 '</div>' +
                 (wonTimeStr
-                  ? '<span class="text-[11px] text-silver/75 font-medium shrink-0">' +
-                    escapeHtml(wonTimeStr) +
-                    '</span>'
+                  ? '<span class="text-[11px] text-silver/75 font-medium shrink-0">' + escapeHtml(wonTimeStr) + '</span>'
                   : '') +
                 '</div>'
               );
@@ -1018,9 +1221,7 @@
             escapeHtml(bucket.prizeName) +
             '</h3>' +
             '<p class="text-xs text-silver mt-0.5">' +
-            (isOpen
-              ? 'แตะเพื่อย่อรายชื่อผู้โชคดี'
-              : 'แตะเพื่อดูรายชื่อผู้โชคดีทั้ง ' + count.toLocaleString() + ' ท่าน') +
+            (isOpen ? 'แตะเพื่อย่อรายชื่อผู้โชคดี' : 'แตะเพื่อดูรายชื่อผู้โชคดีทั้ง ' + count.toLocaleString() + ' ท่าน') +
             '</p>' +
             '</div>' +
             '<span class="w-8 h-8 rounded-full ' +
@@ -1028,9 +1229,7 @@
             ' flex items-center justify-center shrink-0 transition">' +
             '<svg class="w-3.5 h-3.5 transition-transform duration-200 ' +
             (isOpen ? '' : 'rotate-180') +
-            '" viewBox="0 0 24 24" fill="currentColor">' +
-            '<path d="M12 7l8 10H4l8-10z" />' +
-            '</svg>' +
+            '" viewBox="0 0 24 24" fill="currentColor"><path d="M12 7l8 10H4l8-10z" /></svg>' +
             '</span>' +
             '</button>' +
             '<div class="' +
@@ -1052,7 +1251,7 @@
 
     /**
      * ========================================================================
-     * USER FEEDBACK MODULE (Sheet-Synced 1-Per-Device + Auto Employee Info)
+     * ZERO-FLICKER FEEDBACK MODULE (Mode A+C + Sheet Sync + Dynamic Tags)
      * ========================================================================
      */
     const FEEDBACK_LEVELS = {
@@ -1063,15 +1262,15 @@
       5: { score: 5, label: 'ยอดเยี่ยม', high: true }
     };
 
-    const QUICK_TAGS_POSITIVE = [
+    // ชุดหัวข้อสำหรับผู้เช็คอินหน้างาน (Checked-In)
+    const TAGS_ATTENDED_POS = [
       'ลงทะเบียนรับบัตร QR ง่าย',
       'สแกนเช็คอินหน้างานรวดเร็ว',
       'ลุ้นและเช็กรางวัลสะดวก',
       'แจ้งเตือนผ่าน LINE ชัดเจน',
       'กิจกรรมปีใหม่สนุกประทับใจ'
     ];
-
-    const QUICK_TAGS_IMPROVE = [
+    const TAGS_ATTENDED_IMP = [
       'ขั้นตอนลงทะเบียนซับซ้อน',
       'จุดสแกนเช็คอินคิวยาว/ช้า',
       'ค้นหารายชื่อผลรางวัลยาก',
@@ -1079,18 +1278,41 @@
       'อยากให้ปรับปรุงรูปแบบกิจกรรม'
     ];
 
+    // ชุดหัวข้อสำหรับผู้ลงทะเบียนแต่ไม่ได้สแกนเข้าหน้างาน (ป้องกันคะแนนบรรยากาศงานเพี้ยน)
+    const TAGS_REMOTE_POS = [
+      'ลงทะเบียนแจ้งสิทธิ์ง่าย',
+      'รับข่าวสารผ่าน LINE ชัดเจน',
+      'ลุ้นรางวัลออนไลน์สะดวก',
+      'เช็กรายชื่อผู้โชคดีง่าย',
+      'ระบบเสถียรโหลดไว'
+    ];
+    const TAGS_REMOTE_IMP = [
+      'ขั้นตอนลงทะเบียนซับซ้อน',
+      'ค้นหารายชื่อผลรางวัลยาก',
+      'แจ้งเตือน LINE ล่าช้า',
+      'หน้าเว็บโหลดช้าบางช่วง',
+      'อยากให้เพิ่มรายละเอียดรับรางวัล'
+    ];
+
     const feedbackState = {
-      score: 5,
+      score:
+        INITIAL_LAUNCH_PARAMS.rate >= 1 && INITIAL_LAUNCH_PARAMS.rate <= 5
+          ? INITIAL_LAUNCH_PARAMS.rate
+          : 5,
+      source: INITIAL_LAUNCH_PARAMS.src === 'flex' ? 'flex' : 'web',
+      launchedFromFlex: Boolean(
+        INITIAL_LAUNCH_PARAMS.openSurvey ||
+        (INITIAL_LAUNCH_PARAMS.rate >= 1 && INITIAL_LAUNCH_PARAMS.rate <= 5)
+      ),
       selectedTags: [],
+      renderedTagPoolKey: '',
       comment: '',
       empInput: '',
       employee: null,
       serverEmployee: null,
       manualEmpOverride: false,
-      errorMsg: '',
       isOpen: false,
       isMinimized: false,
-      showThankYou: false,
       isSubmitting: false,
       isCheckingSheet: false,
       lastCheckAt: 0,
@@ -1102,13 +1324,14 @@
       deviceId: ''
     };
 
-    function getEmotionFaceSvg(level, isSelected) {
+    function getEmotionFaceSvgRaw(level, isSelected, customSizeAttr) {
+      const sizeAttr = customSizeAttr || 'class="w-9 h-9 sm:w-10 sm:h-10 mx-auto"';
       if (level === 1) {
         const bg = isSelected ? '#FFE4E6' : '#FFF7F7';
         const ring = isSelected ? '#E11D48' : '#E5B8B8';
         const line = isSelected ? '#BE123C' : '#D99292';
         return (
-          '<svg class="w-9 h-9 sm:w-10 sm:h-10 mx-auto" viewBox="0 0 48 48" fill="none">' +
+          '<svg ' + sizeAttr + ' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">' +
           '<circle cx="24" cy="24" r="18.5" fill="' + bg + '" stroke="' + ring + '" stroke-width="2.5"/>' +
           '<path d="M16 18.8L20.5 21.5L16.5 23.2" stroke="' + line + '" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>' +
           '<path d="M32 18.8L27.5 21.5L31.5 23.2" stroke="' + line + '" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>' +
@@ -1116,13 +1339,12 @@
           '</svg>'
         );
       }
-
       if (level === 2) {
         const bg = isSelected ? '#FFEDD5' : '#FFF9F4';
         const ring = isSelected ? '#EA580C' : '#E7C4AA';
         const line = isSelected ? '#C2410C' : '#DA9F78';
         return (
-          '<svg class="w-9 h-9 sm:w-10 sm:h-10 mx-auto" viewBox="0 0 48 48" fill="none">' +
+          '<svg ' + sizeAttr + ' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">' +
           '<circle cx="24" cy="24" r="18.5" fill="' + bg + '" stroke="' + ring + '" stroke-width="2.5"/>' +
           '<circle cx="18.5" cy="21" r="2" fill="' + line + '"/>' +
           '<circle cx="29.5" cy="21" r="2" fill="' + line + '"/>' +
@@ -1130,13 +1352,12 @@
           '</svg>'
         );
       }
-
       if (level === 3) {
         const bg = isSelected ? '#FEF08A' : '#FFFEF4';
         const ring = isSelected ? '#CA8A04' : '#E7D89E';
         const line = isSelected ? '#A16207' : '#D2BE75';
         return (
-          '<svg class="w-9 h-9 sm:w-10 sm:h-10 mx-auto" viewBox="0 0 48 48" fill="none">' +
+          '<svg ' + sizeAttr + ' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">' +
           '<circle cx="24" cy="24" r="18.5" fill="' + bg + '" stroke="' + ring + '" stroke-width="2.5"/>' +
           '<circle cx="18.5" cy="21" r="2" fill="' + line + '"/>' +
           '<circle cx="29.5" cy="21" r="2" fill="' + line + '"/>' +
@@ -1144,14 +1365,13 @@
           '</svg>'
         );
       }
-
       if (level === 4) {
         const bg = isSelected ? '#DCFCE7' : '#F6FEF9';
         const ring = isSelected ? '#16A34A' : '#A9DABF';
         const line = isSelected ? '#15803D' : '#82C39E';
         const cheek = isSelected ? '#FDA4AF' : '#F9CDD5';
         return (
-          '<svg class="w-9 h-9 sm:w-10 sm:h-10 mx-auto" viewBox="0 0 48 48" fill="none">' +
+          '<svg ' + sizeAttr + ' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">' +
           '<circle cx="24" cy="24" r="18.5" fill="' + bg + '" stroke="' + ring + '" stroke-width="2.5"/>' +
           '<path d="M15.8 21.5C17 19.2 19.8 19.2 21 21.5" stroke="' + line + '" stroke-width="2.3" stroke-linecap="round"/>' +
           '<path d="M27 21.5C28.2 19.2 31 19.2 32.2 21.5" stroke="' + line + '" stroke-width="2.3" stroke-linecap="round"/>' +
@@ -1168,9 +1388,8 @@
       const cheek5 = isSelected ? '#F472B6' : '#F9A8D4';
       const mouth5 = isSelected ? '#853214' : '#B5894A';
       const tongue5 = isSelected ? '#FB7185' : '#FDA4AF';
-
       return (
-        '<svg class="w-9 h-9 sm:w-10 sm:h-10 mx-auto" viewBox="0 0 48 48" fill="none">' +
+        '<svg ' + sizeAttr + ' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">' +
         '<circle cx="24" cy="24" r="18.5" fill="' + bg5 + '" stroke="' + ring5 + '" stroke-width="2.6"/>' +
         '<path d="M15.2 20.8C16.6 17.8 19.8 17.8 21.2 20.8" stroke="' + eye5 + '" stroke-width="2.6" stroke-linecap="round"/>' +
         '<path d="M26.8 20.8C28.2 17.8 31.4 17.8 32.8 20.8" stroke="' + eye5 + '" stroke-width="2.6" stroke-linecap="round"/>' +
@@ -1180,6 +1399,182 @@
         '<path d="M19.8 32.4C21 30.8 27 30.8 28.2 32.4C27 34 21 34 19.8 32.4Z" fill="' + tongue5 + '"/>' +
         '</svg>'
       );
+    }
+
+    /**
+     * สร้างปุ่มใบหน้า 1-5 และผูก Event ครั้งเดียวตอนเริ่มหน้าเว็บ (ไม่เขียนทับ DOM ซ้ำ = ไม่กระพริบ 100%)
+     */
+    function setupZeroFlickerFeedbackDOM() {
+      const grid = document.getElementById('ny27RatingGrid');
+      let html = '';
+      for (let lv = 1; lv <= 5; lv++) {
+        const item = FEEDBACK_LEVELS[lv];
+        html +=
+          '<button type="button" id="ny27RateBtn_' + lv + '" onclick="chooseFeedbackScore(' + lv + ')" ' +
+          'class="fb-rate-btn rounded-[18px] py-2.5 px-1 flex flex-col items-center justify-between focus:outline-none">' +
+          '  <div class="relative w-9 h-9 sm:w-10 sm:h-10 mx-auto">' +
+          '    <div class="face-svg-off absolute inset-0">' + getEmotionFaceSvgRaw(lv, false, 'class="w-full h-full"') + '</div>' +
+          '    <div class="face-svg-on absolute inset-0">' + getEmotionFaceSvgRaw(lv, true, 'class="w-full h-full"') + '</div>' +
+          '  </div>' +
+          '  <span id="ny27RateNum_' + lv + '" class="text-[15px] leading-none mt-1.5 font-bold text-slate-400 transition-colors">' + lv + '</span>' +
+          '  <span id="ny27RateTxt_' + lv + '" class="thai-safe text-[9.5px] sm:text-[10px] mt-0.5 text-center tracking-tight text-slate-400 transition-colors">' +
+               escapeHtml(item.label) +
+          '  </span>' +
+          '</button>';
+      }
+      grid.innerHTML = html;
+
+      const miniIconSlot = document.getElementById('ny27MinimizedIconSlot');
+      miniIconSlot.innerHTML =
+        CONFIG.MINIMIZED_ICON_STYLE === 'STAR'
+          ? '<svg class="w-4 h-4 text-amber-500" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L14.6 8.9L22 9.5L16.3 14.3L18.1 21.5L12 17.6L5.9 21.5L7.7 14.3L2 9.5L9.4 8.9L12 2Z"/></svg>'
+          : '<svg class="w-4 h-4 text-amber-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"/></svg>';
+
+      const empEl = document.getElementById('ny27EmpIdInput');
+      empEl.addEventListener('input', (e) => handleEmpIdTyping(e.target.value));
+
+      const commentEl = document.getElementById('ny27FeedbackComment');
+      commentEl.addEventListener('input', (e) => {
+        feedbackState.comment = e.target.value;
+      });
+
+      syncZeroFlickerRatingUI();
+      syncZeroFlickerEmployeeUI();
+    }
+
+    function getActiveTagPoolInfo() {
+      const meta = FEEDBACK_LEVELS[feedbackState.score];
+      const activeEmp = !feedbackState.manualEmpOverride
+        ? (feedbackState.serverEmployee || feedbackState.employee)
+        : feedbackState.employee;
+
+      const isKnownRemote =
+        Boolean(activeEmp && activeEmp.empId && activeEmp.checkInStatus !== 'Checked-In');
+
+      if (isKnownRemote) {
+        return {
+          key: meta.high ? 'REMOTE_POS' : 'REMOTE_IMP',
+          list: meta.high ? TAGS_REMOTE_POS : TAGS_REMOTE_IMP
+        };
+      }
+      return {
+        key: meta.high ? 'ATT_POS' : 'ATT_IMP',
+        list: meta.high ? TAGS_ATTENDED_POS : TAGS_ATTENDED_IMP
+      };
+    }
+
+    function syncZeroFlickerRatingUI() {
+      const meta = FEEDBACK_LEVELS[feedbackState.score];
+      document.getElementById('ny27SelectedScoreLabel').textContent =
+        'ระดับ ' + meta.score + ' (' + meta.label + ')';
+
+      for (let lv = 1; lv <= 5; lv++) {
+        const selected = feedbackState.score === lv;
+        const btn = document.getElementById('ny27RateBtn_' + lv);
+        const num = document.getElementById('ny27RateNum_' + lv);
+        const txt = document.getElementById('ny27RateTxt_' + lv);
+        if (!btn) continue;
+
+        btn.classList.toggle('is-selected', selected);
+        num.className = selected
+          ? 'text-[15px] leading-none mt-1.5 font-extrabold text-slate-900 transition-colors'
+          : 'text-[15px] leading-none mt-1.5 font-bold text-slate-400 transition-colors';
+        txt.className = selected
+          ? 'thai-safe text-[9.5px] sm:text-[10px] mt-0.5 text-center tracking-tight font-semibold text-slate-700 transition-colors'
+          : 'thai-safe text-[9.5px] sm:text-[10px] mt-0.5 text-center tracking-tight font-normal text-slate-400 transition-colors';
+      }
+
+      syncZeroFlickerTagsUI();
+    }
+
+    function syncZeroFlickerTagsUI() {
+      const poolInfo = getActiveTagPoolInfo();
+      const container = document.getElementById('ny27TagsContainer');
+
+      // สร้างปุ่มชุดใหม่เฉพาะเมื่อเปลี่ยนกลุ่มคะแนน (บวก <-> ปรับปรุง) หรือเปลี่ยนสถานะเช็คอินเท่านั้น
+      if (feedbackState.renderedTagPoolKey !== poolInfo.key) {
+        feedbackState.renderedTagPoolKey = poolInfo.key;
+        feedbackState.selectedTags = feedbackState.selectedTags.filter((t) => poolInfo.list.includes(t));
+
+        container.innerHTML = poolInfo.list
+          .map((tag) => {
+            return (
+              '<button type="button" data-fbtag="' +
+              escapeHtml(tag) +
+              '" onclick="toggleFeedbackQuickTag(this)" class="fb-tag-chip thai-safe rounded-full border px-3 py-1 text-[11.5px]"></button>'
+            );
+          })
+          .join('');
+      }
+
+      // อัปเดตเฉพาะสีและข้อความปุ่มเดิมแบบไม่ล้าง DOM (ลื่น 0% กระพริบ)
+      const buttons = container.querySelectorAll('button[data-fbtag]');
+      buttons.forEach((btn) => {
+        const tag = btn.getAttribute('data-fbtag');
+        const picked = feedbackState.selectedTags.includes(tag);
+        btn.className = picked
+          ? 'fb-tag-chip thai-safe rounded-full border px-3 py-1 text-[11.5px] bg-[#FFF1F2] border-[#E11D48] text-[#BE123C] font-semibold shadow-sm'
+          : 'fb-tag-chip thai-safe rounded-full border px-3 py-1 text-[11.5px] bg-white border-slate-300 text-slate-700 hover:border-slate-400 font-normal';
+        btn.textContent = (picked ? '✓ ' : '+ ') + tag;
+      });
+    }
+
+    function syncZeroFlickerEmployeeUI() {
+      const autoBadge = document.getElementById('ny27AutoEmpBadge');
+      const manualBox = document.getElementById('ny27ManualEmpBox');
+
+      const hasAutoEmp =
+        Boolean(feedbackState.serverEmployee && feedbackState.serverEmployee.empId) &&
+        !feedbackState.manualEmpOverride;
+
+      if (hasAutoEmp) {
+        const emp = feedbackState.serverEmployee;
+        const attSuffix = emp.checkInStatus === 'Checked-In' ? ' • เช็คอินหน้างาน' : '';
+        document.getElementById('ny27AutoEmpName').textContent = '✓ ' + emp.fullName;
+        document.getElementById('ny27AutoEmpMeta').textContent =
+          'รหัส ' + emp.empId + ' • ' + (emp.team || '-') + attSuffix;
+
+        autoBadge.classList.remove('hidden');
+        autoBadge.classList.add('flex');
+        manualBox.classList.add('hidden');
+      } else {
+        autoBadge.classList.add('hidden');
+        autoBadge.classList.remove('flex');
+        manualBox.classList.remove('hidden');
+      }
+
+      syncZeroFlickerTagsUI();
+    }
+
+    function syncZeroFlickerVisibility() {
+      const backdrop = document.getElementById('ny27FeedbackBackdrop');
+      const miniWrap = document.getElementById('ny27MinimizedWrap');
+      const done = isFeedbackDoneLocally();
+
+      if (feedbackState.isOpen && !done) {
+        backdrop.classList.add('is-open');
+      } else {
+        backdrop.classList.remove('is-open');
+      }
+
+      if (!feedbackState.isOpen && feedbackState.isMinimized && !done) {
+        miniWrap.classList.remove('hidden');
+      } else {
+        miniWrap.classList.add('hidden');
+      }
+    }
+
+    function showFeedbackToastBanner(msg, durationMs) {
+      const wrap = document.getElementById('ny27ThankToastWrap');
+      const textEl = document.getElementById('ny27ThankToastText');
+      textEl.textContent = msg || '✓ ขอบคุณสำหรับคำแนะนำครับ';
+      wrap.classList.remove('hidden');
+      wrap.classList.add('flex');
+
+      setTimeout(() => {
+        wrap.classList.add('hidden');
+        wrap.classList.remove('flex');
+      }, durationMs || 2600);
     }
 
     async function initSmartFeedbackPopup() {
@@ -1198,15 +1593,10 @@
         feedbackState.deviceId = 'DEV-' + Date.now().toString(36);
       }
 
-      // เช็กชีทซ้ำทันทีเมื่อสลับหน้าต่างกลับมา (กรณีแอดมินเพิ่งลบแถวใน Google Sheets)
       document.addEventListener('visibilitychange', () => {
-        if (document.visibilityState === 'visible') {
-          syncFeedbackStatusWithSheet(false);
-        }
+        if (document.visibilityState === 'visible') syncFeedbackStatusWithSheet(false);
       });
-      window.addEventListener('focus', () => {
-        syncFeedbackStatusWithSheet(false);
-      });
+      window.addEventListener('focus', () => syncFeedbackStatusWithSheet(false));
 
       await initSilentLiffIdentity();
       await syncFeedbackStatusWithSheet(true);
@@ -1224,7 +1614,7 @@
                 feedbackState.displayName = profile.displayName || '';
               }
             })(),
-            new Promise((resolve) => setTimeout(resolve, 2000))
+            new Promise((resolve) => setTimeout(resolve, 2200))
           ]);
         }
       } catch (_) {}
@@ -1240,28 +1630,18 @@
 
     function setFeedbackDoneLocally(done) {
       try {
-        if (done) {
-          localStorage.setItem(CONFIG.FEEDBACK_DONE_KEY, '1');
-        } else {
-          localStorage.removeItem(CONFIG.FEEDBACK_DONE_KEY);
-        }
+        if (done) localStorage.setItem(CONFIG.FEEDBACK_DONE_KEY, '1');
+        else localStorage.removeItem(CONFIG.FEEDBACK_DONE_KEY);
       } catch (_) {}
     }
 
-    /**
-     * ซิงก์สถานะกับแท็บ Web_Feedback ใน Google Sheets
-     * - มีข้อมูลอยู่ในชีท -> ล็อก 1 เครื่อง 1 ครั้ง ไม่เด้งซ้ำ
-     * - ลบข้อมูลออกจากชีท -> ปลดล็อกและเด้งป๊อปอัปกลับมาทันที
-     */
     async function syncFeedbackStatusWithSheet(isInitialLoad) {
       if (!CONFIG.ENABLE_SMART_FEEDBACK || feedbackState.isSubmitting || feedbackState.isCheckingSheet) {
         return;
       }
 
       const now = Date.now();
-      if (!isInitialLoad && now - feedbackState.lastCheckAt < 2500) {
-        return;
-      }
+      if (!isInitialLoad && now - feedbackState.lastCheckAt < 2500) return;
       feedbackState.lastCheckAt = now;
       feedbackState.isCheckingSheet = true;
 
@@ -1284,10 +1664,7 @@
         const json = await res.json();
 
         if (!json || !json.success) {
-          // กรณีหลังบ้านยังไม่ได้ Deploy ฟังก์ชันใหม่ ให้ยึดค่าเครื่องเป็นหลักชั่วคราว
-          if (isInitialLoad && !wasDone) {
-            scheduleInitialFeedbackPopup();
-          }
+          if (isInitialLoad && !wasDone) scheduleInitialFeedbackPopup();
           return;
         }
 
@@ -1297,48 +1674,65 @@
             feedbackState.employee = json.employee;
             feedbackState.empInput = json.employee.empId;
           }
+          syncZeroFlickerEmployeeUI();
         }
 
-        // กรณีที่ 1: ยังมีข้อมูลอยู่ในชีท -> ไม่แสดงป๊อปอัปซ้ำ (เครื่องละ 1 ครั้ง)
+        // 1) เคยทำประเมินแล้วและข้อมูลยังอยู่ในชีท Web_Feedback
         if (json.hasSubmitted) {
           setFeedbackDoneLocally(true);
           if (feedbackState.delayPopupTimer) {
             clearTimeout(feedbackState.delayPopupTimer);
             feedbackState.delayPopupTimer = null;
           }
-          if (feedbackState.isOpen || feedbackState.isMinimized) {
-            feedbackState.isOpen = false;
-            feedbackState.isMinimized = false;
-            renderSmartFeedbackUI();
+          feedbackState.isOpen = false;
+          feedbackState.isMinimized = false;
+          syncZeroFlickerVisibility();
+
+          if (isInitialLoad && feedbackState.launchedFromFlex) {
+            showFeedbackToastBanner('✓ คุณได้ร่วมประเมินเรียบร้อยแล้ว ขอบคุณครับ', 2800);
+            if (json.employee && json.employee.empId) {
+              highlightEmployeePrizeIfWon(json.employee.empId);
+            }
           }
           return;
         }
 
-        // กรณีที่ 2: เคยทำประเมินไปแล้ว แต่แอดมินลบแถวข้อมูลออกจากชีท -> เด้งป๊อปอัปกลับมาทันที!
+        // 2) แอดมินลบแถวข้อมูลออกจากชีท -> ปลดล็อกและเด้งป๊อปอัปกลับมาทันที
         if (wasDone && !json.hasSubmitted) {
           setFeedbackDoneLocally(false);
-          feedbackState.score = 5;
           feedbackState.selectedTags = [];
           feedbackState.comment = '';
-          feedbackState.errorMsg = '';
+          document.getElementById('ny27FeedbackComment').value = '';
+          setFeedbackError('');
           feedbackState.manualEmpOverride = false;
           feedbackState.employee = feedbackState.serverEmployee || null;
           feedbackState.empInput = feedbackState.serverEmployee ? feedbackState.serverEmployee.empId : '';
+          syncZeroFlickerEmployeeUI();
+          syncZeroFlickerRatingUI();
           feedbackState.isMinimized = false;
           feedbackState.isOpen = true;
-          renderSmartFeedbackUI();
+          syncZeroFlickerVisibility();
           return;
         }
 
-        // กรณีที่ 3: เข้าใช้งานครั้งแรก (ยังไม่เคยส่งประเมิน) -> หน่วงเวลา 3 วินาทีให้ดูรางวัลก่อน
+        // 3) ยังไม่เคยประเมิน: ถ้ากดมาจาก LINE Flex ให้เปิดทันทีพร้อมล็อกคะแนนใบหน้าที่เลือก!
         if (isInitialLoad && !wasDone) {
-          scheduleInitialFeedbackPopup();
-        } else if (feedbackState.isOpen) {
-          renderSmartFeedbackUI();
+          if (feedbackState.launchedFromFlex) {
+            syncZeroFlickerRatingUI();
+            feedbackState.isOpen = true;
+            syncZeroFlickerVisibility();
+          } else {
+            scheduleInitialFeedbackPopup();
+          }
         }
       } catch (_) {
         if (isInitialLoad && !wasDone) {
-          scheduleInitialFeedbackPopup();
+          if (feedbackState.launchedFromFlex) {
+            feedbackState.isOpen = true;
+            syncZeroFlickerVisibility();
+          } else {
+            scheduleInitialFeedbackPopup();
+          }
         }
       } finally {
         feedbackState.isCheckingSheet = false;
@@ -1353,66 +1747,54 @@
       feedbackState.delayPopupTimer = setTimeout(() => {
         if (!feedbackState.isMinimized && !isFeedbackDoneLocally()) {
           feedbackState.isOpen = true;
-          renderSmartFeedbackUI();
+          syncZeroFlickerVisibility();
         }
       }, waitMs);
     }
 
     function chooseFeedbackScore(lv) {
-      const prevHigh = FEEDBACK_LEVELS[feedbackState.score].high;
-      const nextHigh = FEEDBACK_LEVELS[lv].high;
       feedbackState.score = lv;
-      if (prevHigh !== nextHigh) {
-        feedbackState.selectedTags = [];
-      }
-      renderSmartFeedbackUI();
+      syncZeroFlickerRatingUI();
     }
 
-    function toggleFeedbackQuickTag(tagText) {
+    function toggleFeedbackQuickTag(btnEl) {
+      const tagText = btnEl.getAttribute('data-fbtag');
+      if (!tagText) return;
       const idx = feedbackState.selectedTags.indexOf(tagText);
-      if (idx >= 0) {
-        feedbackState.selectedTags.splice(idx, 1);
-      } else {
-        feedbackState.selectedTags.push(tagText);
-      }
-      renderSmartFeedbackUI();
+      if (idx >= 0) feedbackState.selectedTags.splice(idx, 1);
+      else feedbackState.selectedTags.push(tagText);
+      syncZeroFlickerTagsUI();
     }
 
     function enableManualEmployeeSwitch() {
       feedbackState.manualEmpOverride = true;
       feedbackState.employee = null;
       feedbackState.empInput = '';
-      feedbackState.errorMsg = '';
-      renderSmartFeedbackUI();
-      setTimeout(() => {
-        const el = document.getElementById('ny27EmpIdInput');
-        if (el) el.focus();
-      }, 60);
+      const inp = document.getElementById('ny27EmpIdInput');
+      inp.value = '';
+      document.getElementById('ny27EmpLookupStatus').className = 'hidden';
+      setFeedbackError('');
+      syncZeroFlickerEmployeeUI();
+      setTimeout(() => inp.focus(), 50);
     }
 
     function handleEmpIdTyping(val) {
       feedbackState.empInput = String(val || '').trim().toUpperCase();
       feedbackState.employee = null;
-      feedbackState.errorMsg = '';
+      setFeedbackError('');
 
       const statusBox = document.getElementById('ny27EmpLookupStatus');
-      const errBox = document.getElementById('ny27FeedbackError');
-      if (errBox) errBox.classList.add('hidden');
-
       if (feedbackState.empLookupTimer) clearTimeout(feedbackState.empLookupTimer);
 
       if (feedbackState.empInput.length < 4) {
-        if (statusBox) {
-          statusBox.textContent = '';
-          statusBox.className = 'hidden';
-        }
+        statusBox.textContent = '';
+        statusBox.className = 'hidden';
+        syncZeroFlickerTagsUI();
         return;
       }
 
-      if (statusBox) {
-        statusBox.textContent = 'กำลังดึงข้อมูลพนักงาน...';
-        statusBox.className = 'thai-safe text-[11px] text-slate-500 mt-1 block';
-      }
+      statusBox.textContent = 'กำลังดึงข้อมูลพนักงาน...';
+      statusBox.className = 'thai-safe text-[11px] text-slate-500 mt-1 block';
 
       const targetId = feedbackState.empInput;
       feedbackState.empLookupTimer = setTimeout(async () => {
@@ -1426,57 +1808,74 @@
           const json = await res.json();
           if (feedbackState.empInput !== targetId) return;
 
-          const liveBox = document.getElementById('ny27EmpLookupStatus');
           if (json && json.success && json.employee) {
             feedbackState.employee = json.employee;
-            if (liveBox) {
-              liveBox.textContent =
-                '✓ ' + json.employee.fullName + ' • ทีม ' + (json.employee.team || '-');
-              liveBox.className = 'thai-safe text-[11.5px] font-semibold text-emerald-700 mt-1 block';
-            }
-          } else if (liveBox) {
-            liveBox.textContent = 'ยังไม่พบรหัสพนักงานนี้ในระบบ';
-            liveBox.className = 'thai-safe text-[11px] text-rose-600 mt-1 block';
+            statusBox.textContent =
+              '✓ ' + json.employee.fullName + ' • ทีม ' + (json.employee.team || '-');
+            statusBox.className = 'thai-safe text-[11.5px] font-semibold text-emerald-700 mt-1 block';
+            syncZeroFlickerTagsUI();
+          } else {
+            statusBox.textContent = 'ยังไม่พบรหัสพนักงานนี้ในระบบ';
+            statusBox.className = 'thai-safe text-[11px] text-rose-600 mt-1 block';
           }
         } catch (_) {}
-      }, 450);
+      }, 420);
+    }
+
+    function setFeedbackError(msg) {
+      const errEl = document.getElementById('ny27FeedbackError');
+      if (msg) {
+        errEl.textContent = msg;
+        errEl.classList.remove('hidden');
+      } else {
+        errEl.textContent = '';
+        errEl.classList.add('hidden');
+      }
     }
 
     function minimizeFeedbackModal() {
       if (feedbackState.isSubmitting) return;
       feedbackState.isOpen = false;
       feedbackState.isMinimized = true;
-      renderSmartFeedbackUI();
+      syncZeroFlickerVisibility();
     }
 
     function reopenFeedbackModal() {
       if (isFeedbackDoneLocally()) return;
       feedbackState.isMinimized = false;
       feedbackState.isOpen = true;
-      renderSmartFeedbackUI();
+      syncZeroFlickerVisibility();
+    }
+
+    function forcePreviewFeedbackModal() {
+      setFeedbackDoneLocally(false);
+      feedbackState.isMinimized = false;
+      feedbackState.isOpen = true;
+      syncZeroFlickerVisibility();
     }
 
     async function submitSmartFeedbackForm() {
       if (feedbackState.isSubmitting || isFeedbackDoneLocally()) return;
 
+      const activeEmp = !feedbackState.manualEmpOverride
+        ? (feedbackState.serverEmployee || feedbackState.employee)
+        : feedbackState.employee;
+
       const resolvedEmpId =
-        (feedbackState.employee && feedbackState.employee.empId) ||
+        (activeEmp && activeEmp.empId) ||
         String(feedbackState.empInput || '').trim().toUpperCase();
 
-      // กรณีเปิดนอก LINE แล้วไม่ได้กรอกรหัสพนักงาน ให้แจ้งเตือนสั้นๆ เพื่อให้ชีทมีข้อมูลพนักงานครบทุกคน
       if (!resolvedEmpId && !feedbackState.lineUserId) {
-        feedbackState.errorMsg = 'กรุณากรอกรหัสพนักงานเพื่อดึงชื่อและสังกัดก่อนส่งผลประเมินครับ';
-        renderSmartFeedbackUI();
-        setTimeout(() => {
-          const inp = document.getElementById('ny27EmpIdInput');
-          if (inp) inp.focus();
-        }, 50);
+        setFeedbackError('กรุณากรอกรหัสพนักงานเพื่อดึงชื่อและสังกัดก่อนส่งผลประเมินครับ');
+        document.getElementById('ny27EmpIdInput').focus();
         return;
       }
 
       feedbackState.isSubmitting = true;
-      feedbackState.errorMsg = '';
-      renderSmartFeedbackUI();
+      setFeedbackError('');
+      const submitBtn = document.getElementById('ny27SubmitBtn');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'กำลังบันทึกข้อมูล...';
 
       try {
         const res = await fetch(CONFIG.GAS_WEB_APP_URL, {
@@ -1488,6 +1887,7 @@
             score: feedbackState.score,
             tags: feedbackState.selectedTags.slice(),
             comment: String(feedbackState.comment || '').trim(),
+            source: feedbackState.source,
             lineUserId: feedbackState.lineUserId,
             displayName: feedbackState.displayName,
             deviceId: feedbackState.deviceId
@@ -1497,226 +1897,227 @@
 
         const json = await res.json();
         feedbackState.isSubmitting = false;
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'ส่งผลประเมิน';
 
         if (!json || !json.success) {
-          feedbackState.errorMsg = (json && json.message) || 'ไม่สามารถบันทึกข้อมูลได้ กรุณาลองอีกครั้งครับ';
-          renderSmartFeedbackUI();
+          setFeedbackError((json && json.message) || 'ไม่สามารถบันทึกข้อมูลได้ กรุณาลองอีกครั้งครับ');
           return;
         }
 
         setFeedbackDoneLocally(true);
         feedbackState.isOpen = false;
         feedbackState.isMinimized = false;
-        feedbackState.showThankYou = true;
-        renderSmartFeedbackUI();
+        syncZeroFlickerVisibility();
+        showFeedbackToastBanner('✓ ขอบคุณสำหรับคำแนะนำครับ', 2600);
 
-        setTimeout(() => {
-          feedbackState.showThankYou = false;
-          renderSmartFeedbackUI();
-        }, 2500);
+        const finalEmpId = (json.employee && json.employee.empId) || resolvedEmpId;
+        if (finalEmpId && finalEmpId !== '-') {
+          highlightEmployeePrizeIfWon(finalEmpId);
+        }
       } catch (_) {
         feedbackState.isSubmitting = false;
-        feedbackState.errorMsg = 'สัญญาณอินเทอร์เน็ตขัดข้อง กรุณากดส่งผลประเมินอีกครั้งครับ';
-        renderSmartFeedbackUI();
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'ส่งผลประเมิน';
+        setFeedbackError('สัญญาณอินเทอร์เน็ตขัดข้อง กรุณากดส่งผลประเมินอีกครั้งครับ');
       }
     }
 
-    function renderSmartFeedbackUI() {
-      const root = document.getElementById('ny27SmartFeedbackRoot');
-      if (!root) return;
+    /**
+     * โบนัส Mode C: หากพนักงานที่ส่งประเมินมีชื่อได้รับรางวัลใน 251 รางวัล แจ้งข่าวดีให้ทราบทันที
+     */
+    function highlightEmployeePrizeIfWon(empId) {
+      const norm = String(empId || '').trim().toUpperCase();
+      if (!norm || !boardState.winners || boardState.winners.length === 0) return;
 
-      if (feedbackState.showThankYou) {
-        root.innerHTML =
-          '<div class="fixed inset-x-4 bottom-5 z-50 flex justify-center pointer-events-none">' +
-          '  <div class="animate-mini-pill rounded-full bg-emerald-600 text-white px-5 py-2.5 shadow-2xl border border-emerald-400/50 flex items-center gap-2 text-xs sm:text-sm font-bold">' +
-          '    <span>✓ ขอบคุณสำหรับคำแนะนำครับ</span>' +
-          '  </div>' +
+      const wonItem = boardState.winners.find(
+        (w) => String(w.empId || '').trim().toUpperCase() === norm
+      );
+      if (!wonItem) return;
+
+      const banner = document.getElementById('myPrizeCongratsBanner');
+      const txt = document.getElementById('myPrizeCongratsText');
+      const btn = document.getElementById('btnFilterMyPrize');
+
+      txt.textContent = 'คุณ' + wonItem.fullName + ' ได้รับ "' + wonItem.prizeName + '"';
+      btn.onclick = () => {
+        boardState.selectedGroup = 'ALL';
+        renderGroupFilterChips();
+        document.getElementById('searchInput').value = wonItem.empId;
+        renderFilteredWinners();
+        window.scrollTo({ top: 180, behavior: 'smooth' });
+      };
+
+      banner.classList.remove('hidden');
+      banner.classList.add('flex');
+    }
+
+    /**
+     * ========================================================================
+     * ADMIN SURVEY BROADCAST & PNG EXPORTER (?adminSurvey=1)
+     * ========================================================================
+     */
+    function downloadAll5FacePngs() {
+      [1, 2, 3, 4, 5].forEach((lv, idx) => {
+        setTimeout(() => {
+          const svgMarkup = getEmotionFaceSvgRaw(lv, true, 'width="240" height="240"');
+          const blob = new Blob([svgMarkup], { type: 'image/svg+xml;charset=utf-8' });
+          const url = URL.createObjectURL(blob);
+          const img = new Image();
+          img.onload = () => {
+            const canvas = document.createElement('canvas');
+            canvas.width = 240;
+            canvas.height = 240;
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, 240, 240);
+            ctx.drawImage(img, 0, 0, 240, 240);
+            URL.revokeObjectURL(url);
+
+            const a = document.createElement('a');
+            a.download = 'face-' + lv + '.png';
+            a.href = canvas.toDataURL('image/png');
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+          };
+          img.src = url;
+        }, idx * 240);
+      });
+    }
+
+    function checkGithubFaceImagesStatus() {
+      const checks = [1, 2, 3, 4, 5].map((lv) => {
+        return new Promise((resolve) => {
+          const img = new Image();
+          img.onload = () => resolve(true);
+          img.onerror = () => resolve(false);
+          img.src = CONFIG.FACE_ICON_BASE_URL + 'face-' + lv + '.png?t=' + Date.now();
+        });
+      });
+      return Promise.all(checks).then((results) => results.every(Boolean));
+    }
+
+    async function openAdminSurveyBroadcastModal() {
+      Swal.fire({
+        title: 'กำลังดึงยอดผู้รับการ์ดแบบประเมิน...',
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading()
+      });
+
+      let stats = null;
+      let iconsReady = false;
+
+      try {
+        const [statsRes, imgOk] = await Promise.all([
+          fetch(CONFIG.GAS_WEB_APP_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify({ action: 'getSurveyBroadcastStats' }),
+            redirect: 'follow'
+          }).then((r) => r.json()),
+          checkGithubFaceImagesStatus()
+        ]);
+        stats = statsRes;
+        iconsReady = imgOk;
+      } catch (err) {
+        Swal.fire({
+          icon: 'error',
+          title: 'เชื่อมต่อหลังบ้านไม่สำเร็จ',
+          text: 'ตรวจสอบว่าอัปเดต Flex5_Survey.gs และกด Deploy (New version) แล้วครับ',
+          confirmButtonColor: '#E60012'
+        });
+        return;
+      }
+
+      if (!stats || !stats.success) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'ยังไม่พบคำสั่ง getSurveyBroadcastStats',
+          text: 'กรุณาเพิ่ม case ใน Code.gs และกด Deploy -> New version ก่อนใช้งานครับ',
+          confirmButtonColor: '#E60012'
+        });
+        return;
+      }
+
+      const iconBadgeHtml = iconsReady
+        ? '<div class="p-2.5 rounded-xl bg-emerald-950/80 border border-emerald-500/40 text-emerald-300 text-xs font-semibold">✓ ตรวจพบรูป face-1.png ถึง face-5.png บน GitHub Pages ครบถ้วน พร้อมส่ง!</div>'
+        : '<div class="p-2.5 rounded-xl bg-amber-950/80 border border-amber-400/50 text-amber-200 text-xs space-y-1.5">' +
+          '<p class="font-bold">⚠️ ยังไม่พบรูป face-1.png – face-5.png ในโฟลเดอร์ images/ บน GitHub</p>' +
+          '<button type="button" onclick="downloadAll5FacePngs()" class="px-3 py-1 rounded-lg bg-amber-400 text-black font-bold text-[11px]">📥 คลิกดาวน์โหลดรูปทั้ง 5 ไฟล์ (PNG)</button>' +
           '</div>';
-        return;
-      }
 
-      if (isFeedbackDoneLocally()) {
-        root.innerHTML = '';
-        return;
-      }
-
-      if (!feedbackState.isOpen) {
-        if (!feedbackState.isMinimized) {
-          root.innerHTML = '';
-          return;
+      const formResult = await Swal.fire({
+        title: 'ส่ง LINE Flex แบบประเมิน',
+        html:
+          '<div class="text-left text-xs space-y-3">' +
+          iconBadgeHtml +
+          '<div class="p-3 rounded-xl bg-obsidian-950 border border-champagne/40 space-y-1.5">' +
+          '  <p class="text-silver">ระบบตัดรายชื่อผู้ที่ทำประเมินในแท็บ <b class="text-white">Web_Feedback</b> แล้วออกให้อัตโนมัติ (ประเมินแล้ว ' +
+             stats.alreadyEvaluatedCount +
+          ' ท่าน)</p>' +
+          '  <label class="flex items-center justify-between p-2 rounded-lg bg-white/5 border border-white/15 cursor-pointer mt-1">' +
+          '    <span class="flex items-center gap-2"><input type="radio" name="surveyTargetMode" value="ALL_REGISTERED" checked /> <b class="text-white">ผู้ลงทะเบียนทั้งหมด (แนะนำ)</b></span>' +
+          '    <span class="text-champagne-light font-bold">ส่ง ' + stats.pendingAllCount + ' ท่าน</span>' +
+          '  </label>' +
+          '  <label class="flex items-center justify-between p-2 rounded-lg bg-white/5 border border-white/15 cursor-pointer">' +
+          '    <span class="flex items-center gap-2"><input type="radio" name="surveyTargetMode" value="CHECKED_IN_ONLY" /> <b class="text-white">เฉพาะผู้สแกน Checked-In</b></span>' +
+          '    <span class="text-emerald-300 font-bold">ส่ง ' + stats.pendingCheckedInCount + ' ท่าน</span>' +
+          '  </label>' +
+          '</div>' +
+          '<div>' +
+          '  <label class="block text-silver mb-1">กรอกรหัส <b class="text-white">Staff PIN</b> เพื่อยืนยันการส่ง Multicast:</label>' +
+          '  <input id="swalSurveyPin" type="password" maxlength="10" placeholder="รหัส Staff PIN (เช่น 2026)" class="w-full rounded-xl bg-obsidian-950 border border-champagne/50 px-3 py-2 text-white text-sm focus:outline-none" />' +
+          '</div>' +
+          '</div>',
+        showCancelButton: true,
+        confirmButtonColor: '#E60012',
+        cancelButtonColor: '#282834',
+        confirmButtonText: 'ยืนยันส่ง LINE Flex ทันที',
+        cancelButtonText: 'ยกเลิก',
+        preConfirm: () => {
+          const pin = String(document.getElementById('swalSurveyPin').value || '').trim();
+          const modeEl = document.querySelector('input[name="surveyTargetMode"]:checked');
+          const targetMode = modeEl ? modeEl.value : 'ALL_REGISTERED';
+          if (pin !== String(CONFIG.STAFF_PIN).trim()) {
+            Swal.showValidationMessage('รหัส Staff PIN ไม่ถูกต้อง');
+            return false;
+          }
+          return { pin: pin, targetMode: targetMode };
         }
+      });
 
-        const miniIconSvg =
-          CONFIG.MINIMIZED_ICON_STYLE === 'STAR'
-            ? '<svg class="w-4 h-4 text-amber-500" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L14.6 8.9L22 9.5L16.3 14.3L18.1 21.5L12 17.6L5.9 21.5L7.7 14.3L2 9.5L9.4 8.9L12 2Z"/></svg>'
-            : '<svg class="w-4 h-4 text-amber-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"/></svg>';
+      if (!formResult.isConfirmed || !formResult.value) return;
 
-        root.innerHTML =
-          '<div class="fixed bottom-4 right-4 z-40">' +
-          '  <button type="button" onclick="reopenFeedbackModal()" class="animate-mini-pill rounded-full bg-white hover:bg-amber-50 border-2 border-[#E11D48] pl-2.5 pr-4 py-1.5 shadow-[0_12px_28px_rgba(0,0,0,0.5)] flex items-center gap-2 text-xs font-bold text-slate-900 transition active:scale-95">' +
-          '    <span class="w-6 h-6 rounded-full bg-[#FFFBEB] border border-[#FDE68A] flex items-center justify-center shrink-0">' +
-                 miniIconSvg +
-          '    </span>' +
-          '    <span class="thai-safe">ร่วมประเมินงาน</span>' +
-          '  </button>' +
-          '</div>';
-        return;
-      }
+      Swal.fire({
+        title: 'กำลังส่งการ์ด LINE Flex แบบประเมิน...',
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading()
+      });
 
-      const meta = FEEDBACK_LEVELS[feedbackState.score];
-      const tagPool = meta.high ? QUICK_TAGS_POSITIVE : QUICK_TAGS_IMPROVE;
+      try {
+        const sendRes = await fetch(CONFIG.GAS_WEB_APP_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({
+            action: 'sendSurveyFlex',
+            pin: formResult.value.pin,
+            targetMode: formResult.value.targetMode
+          }),
+          redirect: 'follow'
+        }).then((r) => r.json());
 
-      // ส่วนแสดงชื่อพนักงานอัตโนมัติ (จาก LINE LIFF) หรือช่องกรอกรหัสพนักงาน (กรณีเปิดผ่านเว็บนอก LINE)
-      const hasAutoEmployee =
-        Boolean(feedbackState.serverEmployee && feedbackState.serverEmployee.empId) &&
-        !feedbackState.manualEmpOverride;
-
-      const employeeSectionHtml = hasAutoEmployee
-        ? '<div class="rounded-[14px] bg-emerald-50/90 border border-emerald-200 px-3 py-2 flex items-center justify-between gap-2 text-left">' +
-          '  <div class="min-w-0">' +
-          '    <p class="thai-safe text-[11.5px] font-bold text-emerald-900 truncate">✓ ' +
-                 escapeHtml(feedbackState.serverEmployee.fullName) +
-          '    </p>' +
-          '    <p class="thai-safe text-[10.5px] text-emerald-700 truncate">รหัส ' +
-                 escapeHtml(feedbackState.serverEmployee.empId) +
-                 ' • ' +
-                 escapeHtml(feedbackState.serverEmployee.team || '-') +
-          '    </p>' +
-          '  </div>' +
-          '  <button type="button" onclick="enableManualEmployeeSwitch()" class="shrink-0 text-[10.5px] font-semibold text-slate-500 hover:text-[#E11D48] underline">เปลี่ยน</button>' +
-          '</div>'
-        : '<div class="text-left">' +
-          '  <label for="ny27EmpIdInput" class="thai-safe block text-[11.5px] font-semibold text-[#1E293B] mb-1">รหัสพนักงาน <span class="font-normal text-slate-500">(ดึงชื่อและทีมอัตโนมัติ)</span></label>' +
-          '  <input id="ny27EmpIdInput" type="text" value="' +
-               escapeHtml(feedbackState.empInput) +
-               '" placeholder="พิมพ์รหัสพนักงาน เช่น 90006323" autocomplete="off" class="thai-safe w-full rounded-[13px] bg-white border border-[#CBD5E1] focus:border-[#E11D48] focus:outline-none px-3 py-2 text-xs font-semibold text-slate-900 uppercase placeholder:font-normal placeholder:text-[#94A3B8] transition" />' +
-          '  <span id="ny27EmpLookupStatus" class="' +
-               (feedbackState.employee
-                 ? 'thai-safe text-[11.5px] font-semibold text-emerald-700 mt-1 block'
-                 : 'hidden') +
-               '">' +
-               (feedbackState.employee
-                 ? '✓ ' + escapeHtml(feedbackState.employee.fullName) + ' • ทีม ' + escapeHtml(feedbackState.employee.team || '-')
-                 : '') +
-          '  </span>' +
-          '</div>';
-
-      let ratingCardsHtml = '';
-      for (let lv = 1; lv <= 5; lv++) {
-        const item = FEEDBACK_LEVELS[lv];
-        const selected = feedbackState.score === lv;
-        const cardStyle = selected
-          ? 'rating-box-active z-10'
-          : 'bg-white border border-slate-200/90 hover:border-slate-300 opacity-85 hover:opacity-100';
-        const numCls = selected ? 'text-slate-900 font-extrabold' : 'text-slate-400 font-bold';
-        const txtCls = selected ? 'text-slate-700 font-semibold' : 'text-slate-400 font-normal';
-
-        ratingCardsHtml +=
-          '<button type="button" onclick="chooseFeedbackScore(' +
-          lv +
-          ')" class="rounded-[18px] py-2.5 px-1 flex flex-col items-center justify-between transition-all duration-200 focus:outline-none ' +
-          cardStyle +
-          '">' +
-          getEmotionFaceSvg(lv, selected) +
-          '<span class="text-[15px] leading-none mt-1.5 ' +
-          numCls +
-          '">' +
-          lv +
-          '</span>' +
-          '<span class="thai-safe text-[9.5px] sm:text-[10px] mt-0.5 text-center tracking-tight ' +
-          txtCls +
-          '">' +
-          escapeHtml(item.label) +
-          '</span>' +
-          '</button>';
-      }
-
-      const tagsHtml = tagPool
-        .map((tag) => {
-          const picked = feedbackState.selectedTags.indexOf(tag) !== -1;
-          const cls = picked
-            ? 'bg-[#FFF1F2] border-[#E11D48] text-[#BE123C] font-semibold shadow-sm'
-            : 'bg-white border-slate-300 text-slate-700 hover:border-slate-400 font-normal';
-          const prefix = picked ? '✓ ' : '+ ';
-          return (
-            '<button type="button" data-fbtag="' +
-            escapeHtml(tag) +
-            '" onclick="toggleFeedbackQuickTag(this.dataset.fbtag)" class="thai-safe rounded-full border px-3 py-1 text-[11.5px] transition active:scale-95 ' +
-            cls +
-            '">' +
-            prefix +
-            escapeHtml(tag) +
-            '</button>'
-          );
-        })
-        .join('');
-
-      const errorHtml = feedbackState.errorMsg
-        ? '<p id="ny27FeedbackError" class="thai-safe text-[11.5px] font-semibold text-rose-600 bg-rose-50 border border-rose-200 rounded-xl px-3 py-1.5 text-center">' +
-          escapeHtml(feedbackState.errorMsg) +
-          '</p>'
-        : '<p id="ny27FeedbackError" class="hidden"></p>';
-
-      root.innerHTML =
-        '<div class="fixed inset-0 z-40 bg-black/70 backdrop-blur-[3px] p-3.5 sm:p-5 flex items-center justify-center overflow-y-auto">' +
-        '  <div class="w-full max-w-[425px] rounded-[28px] bg-white border border-slate-200 shadow-[0_24px_65px_rgba(0,0,0,0.65)] px-4 sm:px-5 pt-4 pb-4 max-h-[92vh] overflow-y-auto relative animate-smart-popup text-slate-800 my-auto">' +
-        '    <button type="button" onclick="minimizeFeedbackModal()" class="absolute top-3.5 right-3.5 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center transition" title="ย่อเก็บไปมุมขวาล่าง">' +
-        '      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18" /></svg>' +
-        '    </button>' +
-        '    <div class="text-center pt-0.5">' +
-        '      <div class="inline-flex items-center gap-1.5 rounded-full bg-[#FFFBEB] border border-[#FDE68A] px-3.5 py-1 shadow-sm">' +
-        '        <svg class="w-3.5 h-3.5 text-[#F59E0B]" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">' +
-        '          <path d="M12 2L14.2 8.8L21 11L14.2 13.2L12 20L9.8 13.2L3 11L9.8 8.8L12 2Z"/>' +
-        '          <path d="M19 16L19.9 18.6L22.5 19.5L19.9 20.4L19 23L18.1 20.4L15.5 19.5L18.1 18.6L19 16Z"/>' +
-        '        </svg>' +
-        '        <span class="text-[11px] font-extrabold tracking-wider uppercase text-[#B45309]">USER FEEDBACK</span>' +
-        '      </div>' +
-        '      <h3 class="thai-safe text-[16.5px] sm:text-[18px] font-bold text-[#1E293B] mt-2 px-5 leading-snug">' +
-        '        ประเมินความพึงพอใจการใช้งานระบบลงทะเบียนและกิจกรรมปีใหม่' +
-        '      </h3>' +
-        '      <p class="thai-safe text-xs text-[#64748B] mt-0.5">' +
-        '        แตะเลือกไอคอนเพื่อให้คะแนนและเสนอแนะเพิ่มเติม' +
-        '      </p>' +
-        '      <div class="grid grid-cols-5 gap-1.5 mt-3">' +
-                 ratingCardsHtml +
-        '      </div>' +
-        '      <div class="mt-3.5 rounded-[20px] bg-[#F8FAFC] border border-[#E2E8F0] p-3.5 space-y-2.5 text-left">' +
-                 employeeSectionHtml +
-        '        <p class="thai-safe text-xs font-semibold text-[#1E293B] pt-0.5">' +
-        '          คุณเลือก: <span class="text-[#E11D48] font-bold">ระดับ ' +
-                   meta.score +
-                   ' (' +
-                   escapeHtml(meta.label) +
-                   ')</span> • แตะเลือกหัวข้อหรือพิมพ์เสริมได้ครับ' +
-        '        </p>' +
-        '        <div class="flex flex-wrap gap-1.5">' +
-                   tagsHtml +
-        '        </div>' +
-        '        <div>' +
-        '          <textarea id="ny27FeedbackComment" rows="2" maxlength="500" placeholder="พิมพ์ข้อเสนอแนะเพิ่มเติม (ไม่บังคับ)..." class="thai-safe w-full rounded-[15px] bg-white border border-[#CBD5E1] focus:border-[#E11D48] focus:outline-none px-3.5 py-2 text-xs text-slate-800 placeholder:text-[#94A3B8] resize-none transition">' +
-                     escapeHtml(feedbackState.comment) +
-        '</textarea>' +
-        '        </div>' +
-                 errorHtml +
-        '        <button type="button" onclick="submitSmartFeedbackForm()" ' +
-                   (feedbackState.isSubmitting ? 'disabled ' : '') +
-                   'class="thai-safe w-full rounded-full bg-[#DC2626] hover:bg-[#B91C1C] disabled:opacity-60 text-white font-bold text-[13.5px] py-2.5 px-4 shadow-[0_6px_18px_rgba(220,38,38,0.28)] transition active:scale-[0.99]">' +
-                   (feedbackState.isSubmitting ? 'กำลังบันทึกข้อมูล...' : 'ส่งผลประเมิน') +
-        '        </button>' +
-        '      </div>' +
-        '    </div>' +
-        '  </div>' +
-        '</div>';
-
-      const empEl = document.getElementById('ny27EmpIdInput');
-      if (empEl) {
-        empEl.addEventListener('input', (e) => handleEmpIdTyping(e.target.value));
-      }
-
-      const commentEl = document.getElementById('ny27FeedbackComment');
-      if (commentEl) {
-        commentEl.addEventListener('input', (e) => {
-          feedbackState.comment = e.target.value;
+        Swal.fire({
+          icon: sendRes.success ? 'success' : 'error',
+          title: sendRes.success ? 'ดำเนินการสำเร็จ!' : 'ส่งไม่สำเร็จ',
+          text: sendRes.message || '',
+          confirmButtonColor: '#E60012'
+        });
+      } catch (err) {
+        Swal.fire({
+          icon: 'error',
+          title: 'เกิดข้อผิดพลาดในการส่ง',
+          text: err.message,
+          confirmButtonColor: '#E60012'
         });
       }
     }
